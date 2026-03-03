@@ -11,6 +11,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
+import Fade from "@mui/material/Fade";
+import Grow from "@mui/material/Grow";
 import type { ChallengeCategory } from "@/lib/game/types";
 import { ArrowRight } from "lucide-react";
 
@@ -197,41 +199,49 @@ export function Game() {
         />
       </Box>
 
-      <Stack
-        spacing={2}
-        sx={{
-          visibility: currentAnswer ? "visible" : "hidden",
-          pointerEvents: currentAnswer ? "auto" : "none",
-        }}
-      >
-        <ExplanationPanel
-          isCorrect={currentAnswer === "correct"}
-          text={
-            currentAnswer === "correct"
-              ? currentChallenge.explanationCorrect
-              : currentChallenge.explanationWrong
-          }
-          sourceUrl={currentChallenge.sourceUrl}
-          sourceLabel={currentChallenge.sourceLabel}
-        />
+      <Stack spacing={2}>
+        <Grow
+          in={!!currentAnswer}
+          timeout={400}
+          style={{ transformOrigin: "top center" }}
+        >
+          <Box>
+            <ExplanationPanel
+              isCorrect={currentAnswer === "correct"}
+              text={
+                currentAnswer === "correct"
+                  ? currentChallenge.explanationCorrect
+                  : currentChallenge.explanationWrong
+              }
+              sourceUrl={currentChallenge.sourceUrl}
+              sourceLabel={currentChallenge.sourceLabel}
+            />
+          </Box>
+        </Grow>
 
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={next}
-            tabIndex={currentAnswer ? 0 : -1}
-            endIcon={
-              state.currentIndex + 1 < totalChallenges ? (
-                <ArrowRight size={18} />
-              ) : undefined
-            }
-          >
-            {state.currentIndex + 1 < totalChallenges
-              ? "Next Challenge"
-              : "See Results"}
-          </Button>
-        </Box>
+        <Fade
+          in={!!currentAnswer}
+          timeout={400}
+          style={{ transitionDelay: currentAnswer ? "200ms" : "0ms" }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={next}
+              tabIndex={currentAnswer ? 0 : -1}
+              endIcon={
+                state.currentIndex + 1 < totalChallenges ? (
+                  <ArrowRight size={18} />
+                ) : undefined
+              }
+            >
+              {state.currentIndex + 1 < totalChallenges
+                ? "Next Challenge"
+                : "See Results"}
+            </Button>
+          </Box>
+        </Fade>
       </Stack>
 
       <Typography

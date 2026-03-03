@@ -5,6 +5,7 @@ import Editor, { type OnMount } from "@monaco-editor/react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import Fade from "@mui/material/Fade";
 
 interface CodePanelProps {
   code: string;
@@ -111,8 +112,26 @@ export function CodePanel({
         borderColor,
         overflow: "hidden",
         cursor: isSelectable ? "pointer" : "default",
-        transition: "all 0.2s ease",
+        transition: "all 0.3s ease",
         boxShadow: ringColor ? `0 0 0 3px ${ringColor}` : undefined,
+        ...(result === "correct" && {
+          animation: "panelCorrect 0.4s ease",
+          "@keyframes panelCorrect": {
+            "0%": { transform: "scale(1)" },
+            "50%": { transform: "scale(1.015)" },
+            "100%": { transform: "scale(1)" },
+          },
+        }),
+        ...(result === "wrong" && {
+          animation: "panelWrong 0.3s ease",
+          "@keyframes panelWrong": {
+            "0%": { transform: "translateX(0)" },
+            "25%": { transform: "translateX(-3px)" },
+            "50%": { transform: "translateX(3px)" },
+            "75%": { transform: "translateX(-2px)" },
+            "100%": { transform: "translateX(0)" },
+          },
+        }),
         "&:hover": isSelectable
           ? {
               borderColor: "text.secondary",
@@ -157,19 +176,29 @@ export function CodePanel({
         >
           {label}
         </Typography>
-        {result === "correct" && (
+        <Fade in={result === "correct"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="success.main">
             Better
           </Typography>
-        )}
-        {result === "wrong" && (
+        </Fade>
+        <Fade in={result === "wrong"} timeout={300} unmountOnExit>
           <Typography variant="caption" fontWeight={500} color="error.main">
             Worse
           </Typography>
-        )}
+        </Fade>
       </Box>
 
-      <Box sx={{ height: editorHeight }}>
+      <Box sx={{ height: editorHeight, position: "relative" }}>
+        {isSelectable && (
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              cursor: "pointer",
+            }}
+          />
+        )}
         <Editor
           height={editorHeight}
           defaultLanguage="typescript"
