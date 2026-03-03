@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Challenge, Difficulty, GameState } from "./types";
 import { challenges as allChallenges } from "./challenges";
 
@@ -46,9 +46,8 @@ function prepareChallenges(): Challenge[] {
     );
 }
 
-/** Core game state hook. Handles scoring, progression, and answers. */
-export function useGame() {
-  const [state, setState] = useState<GameState>(() => ({
+function createInitialState(): GameState {
+  return {
     challenges: prepareChallenges(),
     currentIndex: 0,
     score: 0,
@@ -57,26 +56,36 @@ export function useGame() {
     answers: {},
     isFinished: false,
     startedAt: Date.now(),
-  }));
+  };
+}
+
+/** Core game state hook. Handles scoring, progression, and answers. */
+export function useGame() {
+  const [state, setState] = useState<GameState | null>(null);
+
+  // Defer random shuffle to client to avoid hydration mismatch
+  useEffect(() => {
+    setState(createInitialState());
+  }, []);
 
   const currentChallenge = useMemo(
-    () => state.challenges[state.currentIndex] ?? null,
-    [state.challenges, state.currentIndex],
+    () => state?.challenges[state.currentIndex] ?? null,
+    [state],
   );
 
-  const totalChallenges = state.challenges.length;
+  const totalChallenges = state?.challenges.length ?? 0;
 
   const currentDifficulty: Difficulty | null = currentChallenge?.difficulty ?? null;
 
   /** The user's answer for the current challenge, if any. */
-  const currentAnswer = currentChallenge
+  const currentAnswer = currentChallenge && state
     ? state.answers[currentChallenge.id] ?? null
     : null;
 
   /** Submit an answer for the current challenge. */
   const answer = useCallback(
     (side: "left" | "right") => {
-      if (!currentChallenge || state.answers[currentChallenge.id]) return;
+      if (!currentChallenge || !state || state.answers[currentChallenge.id]) return;
 
       const isCorrect = side === currentChallenge.correctSide;
 
@@ -100,6 +109,7 @@ export function useGame() {
   /** Move to the next challenge. */
   const next = useCallback(() => {
     setState((prev) => {
+      if (!prev) return prev;
       const nextIndex = prev.currentIndex + 1;
       if (nextIndex >= prev.challenges.length) {
         return { ...prev, isFinished: true };
@@ -110,16 +120,7 @@ export function useGame() {
 
   /** Restart the game with freshly shuffled challenges. */
   const restart = useCallback(() => {
-    setState({
-      challenges: prepareChallenges(),
-      currentIndex: 0,
-      score: 0,
-      streak: 0,
-      bestStreak: 0,
-      answers: {},
-      isFinished: false,
-      startedAt: Date.now(),
-    });
+    setState(createInitialState());
   }, []);
 
   return {
