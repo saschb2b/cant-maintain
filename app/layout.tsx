@@ -7,7 +7,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'PropDoc - React Prop Naming Game',
+  title: "Can't Maintain - React Prop Naming Game",
   description: 'A fun training game to learn React prop naming conventions, callback patterns, and JSDoc documentation best practices.',
   generator: 'v0.app',
   icons: {

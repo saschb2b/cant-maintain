@@ -1,4 +1,4 @@
-# PropDoc - React Prop Naming Game
+# Can't Maintain - React Prop Naming Game
 
 A "Can't Unsee"-style training game that teaches junior React/TypeScript developers proper prop naming conventions and JSDoc documentation.
 

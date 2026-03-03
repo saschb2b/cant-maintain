@@ -11,7 +11,7 @@ export default function HomePage() {
             <Code2 className="w-6 h-6 text-primary" />
             <div>
               <h1 className="text-lg font-bold font-sans text-foreground leading-tight">
-                PropDoc
+                {"Can't Maintain"}
               </h1>
               <p className="text-xs text-muted-foreground font-mono">
                 Can you spot the better props?

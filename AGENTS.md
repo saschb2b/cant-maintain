@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-PropDoc is a "Can't Unsee"-style quiz game for learning React prop naming. Players choose between two code snippets (displayed in Monaco Editor), picking the one with better prop naming. The game ramps difficulty from easy to hard.
+Can't Maintain is a "Can't Unsee"-style quiz game for learning React prop naming. Players choose between two code snippets (displayed in Monaco Editor), picking the one with better prop naming. The game ramps difficulty from easy to hard.
 
 ## Key Architecture Decisions
 
