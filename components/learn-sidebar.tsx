@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { CATEGORY_ORDER, CATEGORY_LABELS } from "@/lib/game/categories";
+import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
 
 export function LearnSidebar() {
   const pathname = usePathname();
@@ -31,7 +31,7 @@ export function LearnSidebar() {
           variant="subtitle2"
           fontWeight={700}
           sx={{
-            mb: 2,
+            mb: 2.5,
             px: 1.5,
             fontSize: "0.85rem",
             color: pathname === "/learn" ? "text.primary" : "text.secondary",
@@ -42,37 +42,56 @@ export function LearnSidebar() {
         </Typography>
       </NextLink>
 
-      <Stack spacing={0.25}>
-        {CATEGORY_ORDER.map((category) => {
-          const isActive = pathname === `/learn/${category}`;
-          return (
-            <NextLink
-              key={category}
-              href={`/learn/${category}`}
-              style={{ textDecoration: "none", color: "inherit" }}
+      <Stack spacing={2.5}>
+        {CATEGORY_SECTIONS.map((section) => (
+          <Box key={section.label}>
+            <Typography
+              variant="overline"
+              sx={{
+                display: "block",
+                px: 1.5,
+                mb: 0.5,
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                color: "text.secondary",
+              }}
             >
-              <Typography
-                variant="body2"
-                sx={{
-                  px: 1.5,
-                  py: 0.75,
-                  fontSize: "0.84rem",
-                  fontWeight: isActive ? 600 : 400,
-                  color: isActive ? "text.primary" : "text.secondary",
-                  borderLeft: 2,
-                  borderColor: isActive ? "primary.main" : "transparent",
-                  borderRadius: 0,
-                  transition: "all 0.15s ease",
-                  "&:hover": {
-                    color: "text.primary",
-                  },
-                }}
-              >
-                {CATEGORY_LABELS[category]}
-              </Typography>
-            </NextLink>
-          );
-        })}
+              {section.label}
+            </Typography>
+
+            <Stack spacing={0.25}>
+              {section.categories.map((category) => {
+                const isActive = pathname === `/learn/${category}`;
+                return (
+                  <NextLink
+                    key={category}
+                    href={`/learn/${category}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        px: 1.5,
+                        py: 0.75,
+                        fontSize: "0.84rem",
+                        fontWeight: isActive ? 600 : 400,
+                        color: isActive ? "text.primary" : "text.secondary",
+                        borderLeft: 2,
+                        borderColor: isActive ? "primary.main" : "transparent",
+                        borderRadius: 0,
+                        transition: "all 0.15s ease",
+                        "&:hover": { color: "text.primary" },
+                      }}
+                    >
+                      {CATEGORY_LABELS[category]}
+                    </Typography>
+                  </NextLink>
+                );
+              })}
+            </Stack>
+          </Box>
+        ))}
       </Stack>
     </Box>
   );

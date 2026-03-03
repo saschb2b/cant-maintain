@@ -32,6 +32,36 @@ export const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "prop-organization": "Prop Organization",
 };
 
+/** Logical grouping of categories for sidebar navigation. */
+export interface CategorySection {
+  label: string;
+  categories: ChallengeCategory[];
+}
+
+export const CATEGORY_SECTIONS: CategorySection[] = [
+  {
+    label: "Naming & Docs",
+    categories: ["boolean-naming", "callback-naming", "jsdoc"],
+  },
+  {
+    label: "Prop Design",
+    categories: ["default-values", "prop-specificity", "prop-organization"],
+  },
+  {
+    label: "Composition",
+    categories: ["children-pattern", "render-props"],
+  },
+  {
+    label: "Advanced Patterns",
+    categories: [
+      "extending-html",
+      "ref-forwarding",
+      "accessibility-props",
+      "discriminated-unions",
+    ],
+  },
+];
+
 /** Short description for each category, shown on the learn overview. */
 export const CATEGORY_DESCRIPTIONS: Record<ChallengeCategory, string> = {
   "callback-naming":

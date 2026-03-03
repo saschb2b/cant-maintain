@@ -274,13 +274,16 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                       ml: 4.75,
                     }}
                   >
-                    <Typography
-                      variant="body2"
-                      color="text.primary"
-                      sx={{ lineHeight: 1.6, mb: 1 }}
+                    <Box
+                      sx={{
+                        fontSize: "0.875rem",
+                        lineHeight: 1.6,
+                        color: "text.primary",
+                        mb: 1,
+                      }}
                     >
                       <FormattedText text={challenge.explanationWrong} />
-                    </Typography>
+                    </Box>
                     <Link
                       href={challenge.sourceUrl}
                       target="_blank"

@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
 import { LearnSidebar } from "@/components/learn-sidebar";
+import { LearnMobileNav } from "@/components/learn-mobile-nav";
 
 export default function LearnLayout({ children }: { children: ReactNode }) {
   return (
@@ -39,6 +40,7 @@ export default function LearnLayout({ children }: { children: ReactNode }) {
               py: { xs: 4, md: 5 },
             }}
           >
+            <LearnMobileNav />
             {children}
           </Box>
         </Box>

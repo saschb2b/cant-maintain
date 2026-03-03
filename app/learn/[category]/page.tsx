@@ -181,7 +181,7 @@ export default async function CategoryPage({ params }: PageProps) {
               }
               sx={{ borderTop: 1, borderBottom: 1, borderColor: "divider" }}
             >
-              <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "#F9F6F1" }}>
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -221,7 +221,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
               <Divider sx={{ display: { sm: "none" } }} />
 
-              <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>
+              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "#F9F6F1" }}>
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -262,12 +262,15 @@ export default async function CategoryPage({ params }: PageProps) {
 
             {/* Explanation + source */}
             <Box sx={{ px: 2.5, py: 2 }}>
-              <Typography
-                variant="body2"
-                sx={{ lineHeight: 1.7, color: "text.secondary" }}
+              <Box
+                sx={{
+                  fontSize: "0.925rem",
+                  lineHeight: 1.75,
+                  color: "text.primary",
+                }}
               >
                 <FormattedText text={challenge.explanationCorrect} />
-              </Typography>
+              </Box>
               <Link
                 href={challenge.sourceUrl}
                 target="_blank"

@@ -2,7 +2,6 @@
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
@@ -58,9 +57,9 @@ export function ExplanationPanel({
           {isCorrect ? "+" : "-"}
         </Avatar>
         <Box sx={{ flex: 1 }}>
-          <Typography variant="body2" sx={{ lineHeight: 1.6, mb: 1 }}>
+          <Box sx={{ fontSize: "0.875rem", lineHeight: 1.6, mb: 1 }}>
             <FormattedText text={text} />
-          </Typography>
+          </Box>
           <Link
             href={sourceUrl}
             target="_blank"
