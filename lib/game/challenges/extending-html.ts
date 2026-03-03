@@ -30,7 +30,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     explanationCorrect:
       "When you extend `ComponentProps<'button'>`, `onClick`, `disabled`, and `type` are already included with correct types. Only add props that the native element doesn't have — `label`, `variant`, and `size` are genuine additions. Re-declaring inherited props clutters the API.",
     explanationWrong:
-      "Re-declaring `onClick`, `disabled`, and `type` after extending `ComponentProps<'button'>` is redundant. Worse, it can narrow the types — `onClick?: () => void` drops the `React.MouseEvent` parameter, and `type` limits to 3 values when the native type is more permissive. Extend once and only declare what's truly new.",
+      "Re-declaring `onClick`, `disabled`, and `type` after extending `ComponentProps<'button'>` is redundant. Worse, it can narrow the types — `onClick?: () => void` drops the `React.MouseEvent` parameter, and `type` limits to 3 values when the native type is more permissive.\n\n**Extend once and only declare what's truly new.**",
     sourceUrl: "https://react.dev/reference/react-dom/components/common",
     sourceLabel: "React Docs: Common Components",
   },
@@ -64,9 +64,9 @@ export const extendingHtmlChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "`Omit` should only remove props you need to redefine. The native `value` on `<input>` already works fine — omitting and re-declaring it as `string` is unnecessary. The real win is simplifying `onChange` to pass just the string value, so consumers write `onChange={setValue}` instead of `onChange={(e) => setValue(e.target.value)}`.",
+      "`Omit` should only remove props you actually need to redefine. The native `value` on `<input>` already works fine — omitting and re-declaring it as `string` is unnecessary.\n\nThe real win is simplifying `onChange` to pass just the string value, so consumers write `onChange={setValue}` instead of `onChange={(e) => setValue(e.target.value)}`.",
     explanationWrong:
-      "Omitting `value` just to re-declare it as `string` is redundant — the native input already accepts `string`. The `onChange` still passes the raw event, forcing every consumer to extract `e.target.value`. Omit only what you're genuinely changing, and simplify the callback signature to pass just the data consumers need.",
+      "Omitting `value` just to re-declare it as `string` is redundant — the native input already accepts `string`. The `onChange` still passes the raw event, forcing every consumer to extract `e.target.value`. **Omit only what you're genuinely changing**, and simplify the callback signature to pass just the data consumers need.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
     sourceLabel: "TypeScript: Omit Utility Type",
@@ -98,9 +98,9 @@ export const extendingHtmlChallenges: Challenge[] = [
 >;`,
     correctSide: "right",
     explanationCorrect:
-      '`React.ElementType` constrains `as` to valid elements/components, and `ComponentPropsWithoutRef<E>` adapts the available props based on the element. `as="a"` enables `href`; `as="button"` enables `type`. Compare `string` + `HTMLAttributes<HTMLElement>` which accepts any string and always gives generic div-like props regardless of the element.',
+      '`React.ElementType` constrains `as` to valid elements/components, and `ComponentPropsWithoutRef<E>` adapts the available props based on the element. `as="a"` enables `href`; `as="button"` enables `type`.\n\nCompare `string` + `HTMLAttributes<HTMLElement>` which accepts any string and always gives generic div-like props regardless of the element.',
     explanationWrong:
-      'Using `string` for `as` accepts `"banana"` as a valid element. `HTMLAttributes<HTMLElement>` always gives the same generic props — `as="a"` won\'t enable `href`, and `as="button"` won\'t enable `type`. `React.ElementType` + `ComponentPropsWithoutRef<E>` make TypeScript infer the correct props for whatever element type is passed.',
+      'Using `string` for `as` accepts `"banana"` as a valid element. `HTMLAttributes<HTMLElement>` always gives the same generic props — `as="a"` won\'t enable `href`, and `as="button"` won\'t enable `type`.\n\n`React.ElementType` + `ComponentPropsWithoutRef<E>` make TypeScript infer the correct props for whatever element type is passed.',
     sourceUrl: "https://react.dev/reference/react/createElement",
     sourceLabel: "React Docs: createElement",
   },

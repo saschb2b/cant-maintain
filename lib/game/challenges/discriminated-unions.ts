@@ -17,9 +17,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
   | { status: 'success'; data: string };`,
     correctSide: "right",
     explanationCorrect:
-      "A union type ties each status to exactly the props it needs. When `status` is `'loading'`, there's no `errorMessage` to accidentally render. When `status` is `'error'`, `errorMessage` is required - not optional. TypeScript narrows the type automatically when you check `status`.",
+      "A union type ties each status to exactly the props it needs. When `status` is `'loading'`, there's no `errorMessage` to accidentally render. When `status` is `'error'`, `errorMessage` is required — not optional. TypeScript narrows the type automatically when you check `status`.",
     explanationWrong:
-      "With optional props, nothing stops `{ status: 'loading', errorMessage: 'oops' }` - a combination that makes no sense. Worse, `errorMessage` is optional even when `status` is `'error'`, so you could forget it entirely. Union types make impossible states impossible.",
+      "With optional props, nothing stops `{ status: 'loading', errorMessage: 'oops' }` — a combination that makes no sense. Worse, `errorMessage` is optional even when `status` is `'error'`, so you could forget it entirely. **Union types make impossible states impossible.**",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
     sourceLabel: "TypeScript: Discriminated Unions",
@@ -140,9 +140,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     };`,
     correctSide: "right",
     explanationCorrect:
-      "Even though both use union types, the correct version makes each variant self-contained: `onRetry` is required (not optional) only for errors, `autoDismissMs` only exists on success, and `onDismiss` only on warnings. The other version duplicates every prop across all variants as optional — a success alert can still have `onRetry`.",
+      "Even though both use union types, the correct version makes each variant **self-contained**: `onRetry` is required (not optional) only for errors, `autoDismissMs` only exists on success, and `onDismiss` only on warnings.\n\nThe other version duplicates every prop across all variants as optional — a success alert can still have `onRetry`.",
     explanationWrong:
-      "Using a union type is the right instinct, but making every prop available in every variant defeats the purpose. `onRetry` is optional on the success variant — nothing stops a consumer from passing it. Worse, `onRetry` is optional on the error variant too, meaning you can forget it entirely. Restrict each variant to only its relevant props, and make them required where appropriate.",
+      "Using a union type is the right instinct, but making every prop available in every variant defeats the purpose. `onRetry` is optional on the success variant — nothing stops a consumer from passing it.\n\nWorse, `onRetry` is optional on the error variant too, meaning you can forget it entirely. Restrict each variant to only its relevant props, and make them required where appropriate.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
     sourceLabel: "TypeScript: Discriminated Unions",
@@ -190,9 +190,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
 );`,
     correctSide: "right",
     explanationCorrect:
-      'The `never` type is the key difference. Without it, both `value` and `defaultValue` are allowed in both variants — the union doesn\'t actually prevent mixing. `defaultValue?: never` in controlled mode and `value?: never` in uncontrolled mode make TypeScript reject `<Input value="hi" defaultValue="there" />` at compile time.',
+      'The `never` type is the key difference. Without it, both `value` and `defaultValue` are allowed in both variants — the union doesn\'t actually prevent mixing.\n\n`defaultValue?: never` in controlled mode and `value?: never` in uncontrolled mode make TypeScript reject `<Input value="hi" defaultValue="there" />` at compile time.',
     explanationWrong:
-      'Both use union types, but without `never` to exclude cross-variant props, nothing stops `<Input value="hello" defaultValue="world" />`. TypeScript sees that `value` exists in both variants and allows it everywhere. The `never` type turns a union from documentation into an actual compile-time constraint.',
+      'Both use union types, but without `never` to exclude cross-variant props, nothing stops `<Input value="hello" defaultValue="world" />`.\n\nTypeScript sees that `value` exists in both variants and allows it everywhere. The `never` type turns a union from documentation into an **actual compile-time constraint**.',
     sourceUrl:
       "https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable",
     sourceLabel: "React Docs: Controlling an Input",
@@ -216,7 +216,7 @@ export const discriminatedUnionsChallenges: Challenge[] = [
 );`,
     correctSide: "right",
     explanationCorrect:
-      "An avatar is either an image (src + alt) or initials (name). The union makes both variants clear and ensures an image avatar always has alt text for accessibility. You can't accidentally pass `src` without `alt` or pass nothing at all.",
+      "An avatar is either an image (`src` + `alt`) or initials (`name`). The union makes both variants clear and ensures an image avatar always has `alt` text for accessibility. You can't accidentally pass `src` without `alt` or pass nothing at all.",
     explanationWrong:
       'Making everything optional allows `<Avatar />` with no content, `<Avatar src="..." />` with no alt text, or `<Avatar name="Jo" src="..." />` with conflicting content. A union type forces the consumer to pick one variant and provide its required props.',
     sourceUrl:

@@ -16,9 +16,9 @@ export const callbackNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Correct! Child components don\'t "set" state - they signal that something changed. The `on` prefix followed by what happened (`ValueChange`) is the React convention. This mirrors native DOM events like `onChange` and `onClick`.',
+      'Child components don\'t "set" state — they signal that something changed. The `on` prefix followed by what happened (`ValueChange`) is the React convention. This mirrors native DOM events like `onChange` and `onClick`.',
     explanationWrong:
-      '`setValue` implies the child owns and mutates state directly. In React, data flows down and events flow up. Use `onValueChange` to signal "this value changed" - the parent decides what to do with it.',
+      '`setValue` implies the child owns and mutates state directly. In React, data flows down and events flow up. Use `onValueChange` to signal "this value changed" — the parent decides what to do with it.',
     sourceUrl: "https://react.dev/learn/responding-to-events",
     sourceLabel: "React Docs: Responding to Events",
   },
@@ -37,7 +37,7 @@ export const callbackNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Correct! `onDelete` clearly communicates this is an event callback. The component requests deletion - the parent performs it.",
+      "`onDelete` clearly communicates this is an event callback. The component requests deletion — the parent performs it.",
     explanationWrong:
       '`delete` is a reserved word in JavaScript and reads as an imperative command. Using `onDelete` follows the event handler convention and clearly signals "call me when delete is requested."',
     sourceUrl:
@@ -59,7 +59,7 @@ export const callbackNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Well spotted! `onSearch` is an event callback that says 'the user triggered a search.' The parent handles the actual search logic.",
+      '`onSearch` is an event callback that says "the user triggered a search." The parent handles the actual search logic.',
     explanationWrong:
       "`search` reads like the component performs the search itself. With `onSearch`, it's clear the component only notifies the parent that a search was requested. Also note: the parameter is named `query` instead of the cryptic `q`.",
     sourceUrl: "https://react.dev/learn/responding-to-events",
@@ -80,7 +80,7 @@ export const callbackNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "`onItemSelect` tells you exactly what happened: the user selected an item. `onChange` is reserved for native `<input>` and `<select>` elements where it has established meaning. For custom components, specific names like `onItemSelect`, `onTabChange`, or `onColorPick` describe the actual user action - invaluable when a component has multiple things that can change.",
+      "`onItemSelect` tells you exactly what happened: the user selected an item. `onChange` is reserved for native `<input>` and `<select>` elements where it has established meaning.\n\nFor custom components, specific names like `onItemSelect`, `onTabChange`, or `onColorPick` describe the actual user action — invaluable when a component has multiple things that can change.",
     explanationWrong:
       "`onChange` is the right name for native form elements, but a Dropdown isn't an `<input>`. When a parent uses `<Dropdown onChange={...} />` alongside `<TextField onChange={...} />`, both callbacks look identical but mean different things. `onItemSelect` makes the Dropdown's event self-documenting, especially in components with multiple callbacks.",
     sourceUrl:
@@ -116,9 +116,9 @@ interface DialogProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Passing the `reason` as a callback parameter lets the parent decide *how* to respond to each close trigger in real time. For example, you might ignore backdrop clicks on a confirmation dialog but allow Escape. MUI's Dialog uses exactly this pattern. A separate prop is reactive (updates after closing) instead of actionable (decides during closing).",
+      "Passing the `reason` as a callback parameter lets the parent decide **how** to respond to each close trigger in real time. For example, you might ignore backdrop clicks on a confirmation dialog but allow Escape.\n\nMUI's Dialog uses exactly this pattern. A separate prop is reactive (updates after closing) instead of actionable (decides during closing).",
     explanationWrong:
-      "Separating the reason into its own prop means the parent can't act on it *during* the close event. `lastCloseReason` updates after `onClose` fires — too late to prevent closing on a backdrop click. The reason belongs as a parameter of `onClose` so the parent can inspect it synchronously and decide whether to actually close.",
+      "Separating the reason into its own prop means the parent can't act on it **during** the close event. `lastCloseReason` updates after `onClose` fires — too late to prevent closing on a backdrop click. The `reason` belongs as a parameter of `onClose` so the parent can inspect it synchronously and decide whether to actually close.",
     sourceUrl: "https://mui.com/material-ui/api/dialog/",
     sourceLabel: "MUI: Dialog API",
   },
@@ -151,9 +151,9 @@ interface DialogProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Some interactions have two meaningful moments: the live update and the final commit. Two callbacks let the parent do different things at each moment — `onChange` for UI preview, `onChangeCommitted` for saving to the server. MUI's Slider uses exactly this pattern. A debounce config forces a trade-off between responsiveness and efficiency.",
+      "Some interactions have two meaningful moments: the live update and the final commit. Two callbacks let the parent do different things at each moment — `onChange` for UI preview, `onChangeCommitted` for saving to the server.\n\nMUI's Slider uses exactly this pattern. A `changeDebounceMs` config forces a trade-off between responsiveness and efficiency.",
     explanationWrong:
-      "Debouncing collapses two distinct events into one. With `changeDebounceMs: 300`, you either get delayed UI updates or set it to `0` and still have no way to know when the user *finished* dragging. Two callbacks (`onChange` for live preview, `onChangeCommitted` for persistence) let the parent respond to each moment appropriately.",
+      "Debouncing collapses two distinct events into one. With `changeDebounceMs: 300`, you either get delayed UI updates or set it to `0` and still have no way to know when the user **finished** dragging.\n\nTwo callbacks (`onChange` for live preview, `onChangeCommitted` for persistence) let the parent respond to each moment appropriately.",
     sourceUrl: "https://mui.com/material-ui/api/slider/",
     sourceLabel: "MUI: Slider API",
   },
@@ -178,7 +178,7 @@ interface DialogProps {
     explanationCorrect:
       "All three callbacks use the `on` prefix and descriptive parameter names (`position` vs `pos`, `targetId` vs `target`). Consistent naming across related events is key.",
     explanationWrong:
-      "Without `on` prefixes, these look like imperative methods. `pos` and `target` are ambiguous shorthand - `position` and `targetId` are self-documenting.",
+      "Without `on` prefixes, these look like imperative methods. `pos` and `target` are ambiguous shorthand — `position` and `targetId` are self-documenting.",
     sourceUrl: "https://react.dev/learn/responding-to-events",
     sourceLabel: "React Docs: Responding to Events",
   },

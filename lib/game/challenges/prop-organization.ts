@@ -26,7 +26,7 @@ interface ProfileCardProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Four `user*` props that always travel together belong in a `User` type. The component receives one structured object instead of four loose strings. If User gains a `phone` field later, only the type changes — not every component that forwards user data.",
+      "Four `user*` props that always travel together belong in a `User` type. The component receives one structured object instead of four loose strings. If `User` gains a `phone` field later, only the type changes — not every component that forwards user data.",
     explanationWrong:
       "Flat props with a shared prefix (`userName`, `userEmail`, `userAvatar`, `userRole`) are a sign they belong to one concept. Passing them individually means every consumer must destructure and forward four props instead of one. Group related data into a typed object.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
@@ -127,9 +127,9 @@ interface MapViewProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Domain-specific names beat generic ones: `LatLng` with `lat`/`lng` is immediately clear for a map, while `Coordinates` with `x`/`y` could mean screen pixels, grid positions, or anything. `position` tells you where the marker sits; `coords` is just a synonym for the type name. `label` specifies what gets displayed; `text` is vague.",
+      "**Domain-specific names** beat generic ones: `LatLng` with `lat`/`lng` is immediately clear for a map, while `Coordinates` with `x`/`y` could mean screen pixels, grid positions, or anything.\n\n`position` tells you where the marker sits; `coords` is just a synonym for the type name. `label` specifies what gets displayed; `text` is vague.",
     explanationWrong:
-      "`Coordinates` with `x`/`y` is a generic math concept — on a map, you work with latitude and longitude, not abstract axes. `coords` is redundant naming (the type already says Coordinates). `text` could be anything; `label` specifies it's the displayed identifier. Domain-specific naming makes the API self-documenting for the use case.",
+      "`Coordinates` with `x`/`y` is a generic math concept — on a map, you work with latitude and longitude, not abstract axes. `coords` is redundant naming (the type already says `Coordinates`). `text` could be anything; `label` specifies it's the displayed identifier. **Domain-specific naming makes the API self-documenting.**",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },
@@ -171,9 +171,9 @@ interface MapViewProps {
 // />`,
     correctSide: "right",
     explanationCorrect:
-      "Six out of eleven original props belonged to the toolbar, not the article. Extracting the toolbar into a `ReactNode` slot cuts the interface in half. Consumers compose their own toolbar — or omit it entirely. The ArticlePage no longer needs to know what toolbar actions exist.",
+      "Six out of eleven original props belonged to the toolbar, not the article. Extracting the toolbar into a `ReactNode` slot cuts the interface in half.\n\nConsumers compose their own toolbar — or omit it entirely. The `ArticlePage` no longer needs to know what toolbar actions exist.",
     explanationWrong:
-      "When half your props share a concern (`toolbar*`, `is*Visible`, `on*`), that's a sub-component trying to escape. Each new action (export, translate) adds two more props. A `ReactNode` slot delegates toolbar composition to the consumer, keeping ArticlePage focused on displaying the article.",
+      "When half your props share a concern (`toolbar*`, `is*Visible`, `on*`), that's a sub-component trying to escape. Each new action (export, translate) adds two more props.\n\nA `ReactNode` slot delegates toolbar composition to the consumer, keeping `ArticlePage` focused on displaying the article.",
     sourceUrl:
       "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
     sourceLabel: "React Docs: Passing JSX as children",
@@ -209,9 +209,9 @@ interface MapViewProps {
 // The parent controls data and selection only.`,
     correctSide: "right",
     explanationCorrect:
-      "Not every piece of state needs to be a prop. Dropdown visibility and keyboard-highlighted index are UI interaction details — the parent doesn't care which item is highlighted. Exposing internal state as props forces the parent to reimplement dropdown behavior. Keep the API to what the parent actually needs: data in, selection out.",
+      "Not every piece of state needs to be a prop. Dropdown visibility and keyboard-highlighted index are UI interaction details — the parent doesn't care which item is highlighted.\n\nExposing internal state as props forces the parent to reimplement dropdown behavior. **Keep the API to what the parent actually needs: data in, selection out.**",
     explanationWrong:
-      "Exposing `isDropdownOpen`, `highlightedIndex`, and their callbacks makes the parent responsible for reimplementing dropdown keyboard navigation. This isn't flexibility — it's leaking implementation details. A SearchInput should manage its own dropdown state, just like a native `<select>` manages its own open state.",
+      "Exposing `isDropdownOpen`, `highlightedIndex`, and their callbacks makes the parent responsible for reimplementing dropdown keyboard navigation. This isn't flexibility — it's leaking implementation details.\n\nA `SearchInput` should manage its own dropdown state, just like a native `<select>` manages its own open state.",
     sourceUrl:
       "https://react.dev/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state",
     sourceLabel: "React Docs: Minimal UI State",

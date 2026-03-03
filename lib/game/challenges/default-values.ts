@@ -33,7 +33,7 @@ function Badge({
     explanationCorrect:
       "`defaultProps` is deprecated in React 19 and will be removed. ES6 destructuring defaults are type-safe, colocated with the function, and work with TypeScript out of the box. Bonus: `@default` JSDoc tags document the defaults in IDE hover tooltips.",
     explanationWrong:
-      "`defaultProps` is a legacy pattern from class components. It's deprecated in React 19, doesn't benefit from TypeScript inference, and separates defaults from where they're used. Use destructuring defaults instead - they're the modern standard.",
+      "`defaultProps` is a legacy pattern from class components. It's deprecated in React 19, doesn't benefit from TypeScript inference, and separates defaults from where they're used. Use destructuring defaults instead — they're the modern standard.",
     sourceUrl:
       "https://react.dev/blog/2024/04/25/react-19#removed-deprecated-react-apis",
     sourceLabel: "React 19: Removed Deprecated APIs",
@@ -65,9 +65,9 @@ function Badge({
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Destructuring defaults only apply when the value is `undefined` - which is exactly what "not passed" means in React. The `||` operator also triggers on `0`, `""`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.',
+      'Destructuring defaults only apply when the value is `undefined` — which is exactly what "not passed" means in React.\n\nThe `||` operator also triggers on `0`, `""`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.',
     explanationWrong:
-      'The `||` operator treats `0`, `""`, and `false` as falsy - so `value || 50` overrides a legitimate `value={0}`. This is a subtle bug. Destructuring defaults (`value = 50`) only kick in for `undefined`, which is the correct behavior for missing props.',
+      'The `||` operator treats `0`, `""`, and `false` as falsy — so `value || 50` overrides a legitimate `value={0}`. This is a subtle bug. Destructuring defaults (`value = 50`) only kick in for `undefined`, which is the correct behavior for missing props.',
     sourceUrl:
       "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
     sourceLabel: "MDN: Destructuring Default Values",
@@ -154,7 +154,7 @@ function DataGrid({
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Inline `= {}`, `= []`, and `= { ... }` create new object references on every render. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time. Module-level constants are created once and have stable references.",
+      "Inline `= {}`, `= []`, and `= { ... }` create **new object references on every render**. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time.\n\nModule-level constants are created once and have stable references.",
     explanationWrong:
       "Every render where `filters` isn't passed creates a brand new `{}`. That new object fails `===` checks in dependency arrays, causing `useEffect(() => fetch(filters), [filters])` to re-fetch on every render. Hoisting defaults to module scope gives them stable identity.",
     sourceUrl:
@@ -210,9 +210,9 @@ function FormField({
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Default callbacks (noop for side effects, null-returning functions for transforms) eliminate `if (callback)` checks throughout the component. The code reads linearly instead of branching on every optional callback. Module-level defaults also provide stable references for dependency arrays.",
+      "Default callbacks (`noop` for side effects, null-returning functions for transforms) eliminate `if (callback)` checks throughout the component. The code reads linearly instead of branching on every optional callback. Module-level defaults also provide stable references for dependency arrays.",
     explanationWrong:
-      "Without defaults, every usage site needs a null check: `validate ? validate(value) : null`, `onBlur && onBlur()`. With 3 optional callbacks that's 3+ conditional checks scattered through the component. Default callbacks let you call them unconditionally, making the code simpler and the intent clearer.",
+      "Without defaults, every usage site needs a null check: `validate ? validate(value) : null`, `onBlur && onBlur()`. With 3 optional callbacks that's 3+ conditional checks scattered through the component.\n\nDefault callbacks let you call them unconditionally, making the code simpler and the intent clearer.",
     sourceUrl:
       "https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop",
     sourceLabel: "React Docs: Default Prop Values",

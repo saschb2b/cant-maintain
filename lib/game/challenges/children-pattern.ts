@@ -31,7 +31,7 @@ export const childrenPatternChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "`renderItem` is specific (render what? an item), the callback includes `index` for key assignment and alternating styles, and `emptyState` clearly describes the slot's purpose. The `@example` in JSDoc shows the expected usage pattern. Compare `render` (of what?) and `empty` (a boolean? a message?).",
+      "`renderItem` is specific (render what? an item), the callback includes `index` for `key` assignment and alternating styles, and `emptyState` clearly describes the slot's purpose.\n\nThe `@example` in JSDoc shows the expected usage pattern. Compare `render` (of what?) and `empty` (a boolean? a message?).",
     explanationWrong:
       "`render` could mean anything — render the list? render an item? render a header? `empty` is equally ambiguous — is it a boolean, a string, or JSX? Specific names like `renderItem` and `emptyState` make the API self-documenting. The callback also misses the `index` parameter, which is needed for `key` props and alternating row styles.",
     sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
@@ -75,9 +75,9 @@ interface SelectProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Compound components (Select + SelectOption) are more flexible than config objects. They support nesting, conditional rendering, custom content, and compose naturally with JSX. Adding icons or groups doesn't require changing the config type.",
+      "Compound components (`Select` + `SelectOption`) are more flexible than config objects. They support nesting, conditional rendering, custom content, and compose naturally with JSX. Adding icons or groups doesn't require changing the config type.",
     explanationWrong:
-      "Config arrays like `options: Array<{...}>` are rigid. Every new feature (icons, descriptions, groups, custom rendering) means extending the config type. Compound components let consumers compose freely with JSX - the React way.",
+      "Config arrays like `options: Array<{...}>` are rigid. Every new feature (icons, descriptions, groups, custom rendering) means extending the config type. Compound components let consumers compose freely with JSX — the React way.",
     sourceUrl: "https://react.dev/learn/thinking-in-react",
     sourceLabel: "React Docs: Thinking in React",
   },
@@ -114,7 +114,7 @@ interface SelectProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Grouping overrides into `slots` and `slotProps` objects scales cleanly. Adding a new customizable element means adding one key to each object - not two new top-level props. This is the pattern MUI adopted across all components, replacing the older `PaperComponent`/`PaperProps` pairs that cluttered the API.",
+      "Grouping overrides into `slots` and `slotProps` objects scales cleanly. Adding a new customizable element means adding one key to each object — not two new top-level props.\n\nThis is the pattern MUI adopted across all components, replacing the older `PaperComponent`/`PaperProps` pairs that cluttered the API.",
     explanationWrong:
       "Each sub-component needs two props (component + props), so three sub-components means six top-level props. A fourth sub-component adds two more. This doesn't scale. The `slots`/`slotProps` pattern groups all overrides into two structured objects, keeping the top-level API clean and discoverable.",
     sourceUrl:
@@ -145,7 +145,7 @@ interface SelectProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Slot props (`header`, `footer`, `icon` as `ReactNode`) let consumers pass anything - text, icons, buttons, or custom components. String-typed slots restrict you to plain text; `ReactNode` slots enable full composition, which is the React way.",
+      "Slot props (`header`, `footer`, `icon` as `ReactNode`) let consumers pass anything — text, icons, buttons, or custom components. String-typed slots restrict you to plain text; `ReactNode` slots enable full composition.",
     explanationWrong:
       "String-typed props like `title: string` and `iconName?: string` limit what consumers can render. What if you need a bold title, an SVG icon, or action buttons in the footer? `ReactNode` slots give consumers full control over content and layout.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",

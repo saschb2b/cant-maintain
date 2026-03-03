@@ -18,6 +18,7 @@ import {
   CATEGORY_DESCRIPTIONS,
 } from "@/lib/game/categories";
 import type { ChallengeCategory, Difficulty } from "@/lib/game/types";
+import { FormattedText } from "@/components/formatted-text";
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 
@@ -265,7 +266,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 variant="body2"
                 sx={{ lineHeight: 1.7, color: "text.secondary" }}
               >
-                {challenge.explanationCorrect}
+                <FormattedText text={challenge.explanationCorrect} />
               </Typography>
               <Link
                 href={challenge.sourceUrl}

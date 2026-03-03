@@ -10,6 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Link from "@mui/material/Link";
 import type { GameState } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
+import { FormattedText } from "@/components/formatted-text";
 import {
   RotateCcw,
   Check,
@@ -278,7 +279,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                       color="text.primary"
                       sx={{ lineHeight: 1.6, mb: 1 }}
                     >
-                      {challenge.explanationWrong}
+                      <FormattedText text={challenge.explanationWrong} />
                     </Typography>
                     <Link
                       href={challenge.sourceUrl}

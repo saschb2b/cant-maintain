@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import { ExternalLink, BookOpen } from "lucide-react";
 import type { ChallengeCategory } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
+import { FormattedText } from "@/components/formatted-text";
 
 interface ExplanationPanelProps {
   /** Whether the user answered correctly; controls color scheme. */
@@ -58,7 +59,7 @@ export function ExplanationPanel({
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Typography variant="body2" sx={{ lineHeight: 1.6, mb: 1 }}>
-            {text}
+            <FormattedText text={text} />
           </Typography>
           <Link
             href={sourceUrl}
