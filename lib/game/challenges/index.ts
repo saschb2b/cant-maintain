@@ -4,10 +4,12 @@ import { callbackNamingChallenges } from "./callback-naming";
 import { childrenPatternChallenges } from "./children-pattern";
 import { defaultValuesChallenges } from "./default-values";
 import { discriminatedUnionsChallenges } from "./discriminated-unions";
+import { accessibilityPropsChallenges } from "./accessibility-props";
 import { extendingHtmlChallenges } from "./extending-html";
 import { jsdocChallenges } from "./jsdoc";
 import { propSpecificityChallenges } from "./prop-specificity";
 import { propOrganizationChallenges } from "./prop-organization";
+import { refForwardingChallenges } from "./ref-forwarding";
 import { renderPropsChallenges } from "./render-props";
 
 /**
@@ -26,6 +28,8 @@ export const challenges: Challenge[] = [
   ...childrenPatternChallenges,
   ...discriminatedUnionsChallenges,
   ...extendingHtmlChallenges,
+  ...refForwardingChallenges,
+  ...accessibilityPropsChallenges,
   ...defaultValuesChallenges,
   ...propOrganizationChallenges,
 ];

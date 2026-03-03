@@ -11,6 +11,8 @@ export const CATEGORY_ORDER: ChallengeCategory[] = [
   "children-pattern",
   "render-props",
   "extending-html",
+  "ref-forwarding",
+  "accessibility-props",
   "discriminated-unions",
 ];
 
@@ -24,6 +26,8 @@ export const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "children-pattern": "Children Pattern",
   "discriminated-unions": "Discriminated Unions",
   "extending-html": "Extending HTML",
+  "ref-forwarding": "Ref Forwarding",
+  "accessibility-props": "Accessibility Props",
   "default-values": "Default Values",
   "prop-organization": "Prop Organization",
 };
@@ -46,6 +50,10 @@ export const CATEGORY_DESCRIPTIONS: Record<ChallengeCategory, string> = {
     "Modeling variant-dependent props with TypeScript so impossible states are unrepresentable.",
   "extending-html":
     "Forwarding native HTML attributes with ComponentProps, Omit, and polymorphic as props.",
+  "ref-forwarding":
+    "Forwarding refs to the right element, typing them correctly, and keeping imperative handles minimal.",
+  "accessibility-props":
+    "Making aria-label required, typing ARIA roles as unions, and wiring up labelledby/describedby.",
   "default-values":
     "Setting sensible defaults via destructuring, stable references, and default callbacks.",
   "prop-organization":

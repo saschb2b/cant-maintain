@@ -63,6 +63,8 @@ lib/
       children-pattern.ts   # cp-* challenges
       discriminated-unions.ts # du-* challenges
       extending-html.ts     # eh-* challenges
+      ref-forwarding.ts     # rf-* challenges
+      accessibility-props.ts # ap-* challenges
       default-values.ts     # dv-* challenges
       prop-organization.ts  # po-* challenges
   theme.ts                  # MUI dark theme
@@ -89,6 +91,8 @@ This is the most common contribution. Each challenge shows two code snippets sid
 | `cp`   | children-pattern     |
 | `du`   | discriminated-unions |
 | `eh`   | extending-html       |
+| `rf`   | ref-forwarding       |
+| `ap`   | accessibility-props  |
 | `dv`   | default-values       |
 | `po`   | prop-organization    |
 

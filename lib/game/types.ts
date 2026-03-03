@@ -11,6 +11,8 @@ export type ChallengeCategory =
   | "children-pattern"
   | "discriminated-unions"
   | "extending-html"
+  | "ref-forwarding"
+  | "accessibility-props"
   | "default-values"
   | "prop-organization";
 
