@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import Editor, { type OnMount } from "@monaco-editor/react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -22,13 +22,22 @@ export function CodePanel({
   result,
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [editorHeight, setEditorHeight] = useState(200);
+  const [mountHeight, setMountHeight] = useState<number | null>(null);
+
+  const calculatedHeight = useMemo(() => {
+    const lineCount = code.split("\n").length;
+    const lineHeight = 20;
+    const padding = 32;
+    return Math.max(lineCount * lineHeight + padding, 120);
+  }, [code]);
+
+  const editorHeight = mountHeight ?? calculatedHeight;
 
   const handleEditorMount: OnMount = useCallback((editor) => {
     const lineCount = editor.getModel()?.getLineCount() ?? 10;
     const lineHeight = 20;
     const padding = 32;
-    setEditorHeight(Math.max(lineCount * lineHeight + padding, 120));
+    setMountHeight(Math.max(lineCount * lineHeight + padding, 120));
 
     editor.updateOptions({
       readOnly: true,
@@ -52,13 +61,6 @@ export function CodePanel({
       padding: { top: 16, bottom: 16 },
     });
   }, []);
-
-  useEffect(() => {
-    const lineCount = code.split("\n").length;
-    const lineHeight = 20;
-    const padding = 32;
-    setEditorHeight(Math.max(lineCount * lineHeight + padding, 120));
-  }, [code]);
 
   const borderColor =
     result === "correct"
@@ -109,9 +111,7 @@ export function CodePanel({
         cursor: isSelectable ? "pointer" : "default",
         transition: "all 0.2s",
         boxShadow: ringColor ? `0 0 0 3px ${ringColor}` : undefined,
-        "&:hover": isSelectable
-          ? { borderColor: "text.secondary" }
-          : undefined,
+        "&:hover": isSelectable ? { borderColor: "text.secondary" } : undefined,
       }}
     >
       <Box

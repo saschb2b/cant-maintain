@@ -19,8 +19,16 @@ const DIFFICULTY_CONFIG: Record<
   Difficulty,
   { label: string; color: string; bgcolor: string }
 > = {
-  easy: { label: "Easy", color: "success.main", bgcolor: "rgba(43,217,123,0.15)" },
-  medium: { label: "Medium", color: "warning.main", bgcolor: "rgba(212,145,61,0.15)" },
+  easy: {
+    label: "Easy",
+    color: "success.main",
+    bgcolor: "rgba(43,217,123,0.15)",
+  },
+  medium: {
+    label: "Medium",
+    color: "warning.main",
+    bgcolor: "rgba(212,145,61,0.15)",
+  },
   hard: { label: "Hard", color: "error.main", bgcolor: "rgba(224,64,64,0.15)" },
 };
 

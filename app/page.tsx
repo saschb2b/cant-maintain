@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import { Game } from "@/components/game/game";
-import { Code2, Github } from "lucide-react";
+import { Code2, ExternalLink } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -21,7 +21,11 @@ export default function HomePage() {
             <Stack direction="row" alignItems="center" spacing={1.5}>
               <Code2 size={24} color="var(--mui-palette-primary-main)" />
               <Box>
-                <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={700}
+                  lineHeight={1.2}
+                >
                   {"Can't Maintain"}
                 </Typography>
                 <Typography
@@ -46,8 +50,11 @@ export default function HomePage() {
                 fontSize: "0.75rem",
               }}
             >
-              <Github size={14} />
-              <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+              <ExternalLink size={14} />
+              <Box
+                component="span"
+                sx={{ display: { xs: "none", sm: "inline" } }}
+              >
                 React Docs
               </Box>
             </Link>

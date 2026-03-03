@@ -73,4 +73,6 @@ export interface GameState {
   isFinished: boolean;
   /** Timestamp game started. */
   startedAt: number;
+  /** Timestamp game finished (set when isFinished becomes true). */
+  finishedAt: number | null;
 }

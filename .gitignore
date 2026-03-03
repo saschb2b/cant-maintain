@@ -1,10 +1,49 @@
+# dependencies
+node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# build
+/.next/
+/out/
+/build/
+
+# testing
+/coverage
+
+# environment
+.env*.local
+
+# IDE
+/.vscode
+/.idea
+
+# misc
+.DS_Store
+*.pem
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# vercel
+.vercel
+
+# claude
+.claude/settings.local.json
+
 # v0 runtime files
 __v0_runtime_loader.js
 __v0_devtools.tsx
 __v0_jsx-dev-runtime.ts
-
-# Common ignores
-node_modules/
-.next/
-.env*.local
-.DS_Store

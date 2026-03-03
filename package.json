@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -20,9 +22,15 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.3",
     "@types/node": "^22",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "typescript": "5.7.3"
+    "eslint": "^9.39.3",
+    "eslint-config-next": "^16.1.6",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "typescript": "5.7.3",
+    "typescript-eslint": "^8.56.1"
   }
 }

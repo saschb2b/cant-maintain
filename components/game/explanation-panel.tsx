@@ -28,12 +28,8 @@ export function ExplanationPanel({
       elevation={0}
       sx={{
         border: 1,
-        borderColor: isCorrect
-          ? "rgba(43,217,123,0.3)"
-          : "rgba(224,64,64,0.3)",
-        bgcolor: isCorrect
-          ? "rgba(43,217,123,0.05)"
-          : "rgba(224,64,64,0.05)",
+        borderColor: isCorrect ? "rgba(43,217,123,0.3)" : "rgba(224,64,64,0.3)",
+        bgcolor: isCorrect ? "rgba(43,217,123,0.05)" : "rgba(224,64,64,0.05)",
         p: 2,
       }}
     >

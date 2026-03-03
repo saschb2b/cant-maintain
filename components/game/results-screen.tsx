@@ -16,10 +16,12 @@ interface ResultsScreenProps {
 export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   const total = state.challenges.length;
   const correct = Object.values(state.answers).filter(
-    (a) => a === "correct"
+    (a) => a === "correct",
   ).length;
   const percentage = Math.round((correct / total) * 100);
-  const elapsed = Math.round((Date.now() - state.startedAt) / 1000);
+  const elapsed = Math.round(
+    ((state.finishedAt ?? state.startedAt) - state.startedAt) / 1000,
+  );
   const minutes = Math.floor(elapsed / 60);
   const seconds = elapsed % 60;
 
@@ -44,11 +46,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
         </Typography>
       </Box>
 
-      <Stack
-        direction="row"
-        spacing={3}
-        sx={{ width: "100%", maxWidth: 450 }}
-      >
+      <Stack direction="row" spacing={3} sx={{ width: "100%", maxWidth: 450 }}>
         <Paper
           elevation={0}
           sx={{

@@ -52,7 +52,8 @@ export const challenges: Challenge[] = [
       "Correct! `onDelete` clearly communicates this is an event callback. The component requests deletion - the parent performs it.",
     explanationWrong:
       '`delete` is a reserved word in JavaScript and reads as an imperative command. Using `onDelete` follows the event handler convention and clearly signals "call me when delete is requested."',
-    sourceUrl: "https://react.dev/learn/responding-to-events#naming-event-handler-props",
+    sourceUrl:
+      "https://react.dev/learn/responding-to-events#naming-event-handler-props",
     sourceLabel: "React Docs: Naming event handler props",
   },
   {
@@ -96,8 +97,7 @@ export const challenges: Challenge[] = [
       "Correct! Boolean props should read as a yes/no question: 'Is it loading?' The `is` prefix makes the type obvious at the call site without checking the definition.",
     explanationWrong:
       "Without a prefix like `is`, `has`, or `should`, it's ambiguous whether `loading` is a boolean, a loading state enum, or a loading message. `isLoading` is self-documenting.",
-    sourceUrl:
-      "https://react.dev/learn/passing-props-to-a-component",
+    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props to a Component",
   },
   {
@@ -143,7 +143,8 @@ export const challenges: Challenge[] = [
       "Nice! `onItemSelect` is more specific than `onChange`. It tells you exactly what event occurred - an item was selected. `onChange` is vague and could mean anything changed.",
     explanationWrong:
       "`onChange` is fine for native inputs, but for custom components it's too generic. `onItemSelect` describes the exact event: the user selected an item. Be specific about what changed.",
-    sourceUrl: "https://react.dev/learn/responding-to-events#naming-event-handler-props",
+    sourceUrl:
+      "https://react.dev/learn/responding-to-events#naming-event-handler-props",
     sourceLabel: "React Docs: Naming event handler props",
   },
   {
@@ -191,7 +192,8 @@ export const challenges: Challenge[] = [
       "Excellent! `color` is vague (text color? bg color? border?), and `string` accepts invalid values. `backgroundColor` with a template literal type is precise and type-safe.",
     explanationWrong:
       "`color` doesn't say which color (text, background, border?) and `string` accepts anything. Be explicit with `backgroundColor` and narrow the type for safety.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
     sourceLabel: "TypeScript: Template Literal Types",
   },
   {
@@ -212,7 +214,8 @@ export const challenges: Challenge[] = [
       "Union types for size are predictable and discoverable in IDE autocomplete. A raw number could be anything - pixels? rem? percentage?",
     explanationWrong:
       "`size: number` has no units, no bounds, and no discoverability. A union like `'sm' | 'md' | 'lg' | 'xl'` constrains valid values and lights up autocomplete.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types",
     sourceLabel: "TypeScript: Union Types",
   },
 
@@ -249,7 +252,8 @@ export const challenges: Challenge[] = [
       "JSDoc comments appear in IDE hover tooltips, making your component self-documenting. Noting `@default` values for optional props is especially valuable - no need to read the implementation.",
     explanationWrong:
       "Without JSDoc, every consumer of this component must read the source to understand what `delay` means (seconds? ms?), what happens without `position`, and what `content` actually renders.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
     sourceLabel: "TypeScript: JSDoc Reference",
   },
   {
@@ -281,7 +285,8 @@ export const challenges: Challenge[] = [
       "Documenting callbacks is crucial: what triggers them, and what the parameters represent. Notice `columnKey` is also more descriptive than `col`.",
     explanationWrong:
       "Undocumented callbacks force consumers to guess: When is `onSort` called? What does the `col` string represent - a column name, index, or key? JSDoc eliminates the guesswork.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
     sourceLabel: "TypeScript: JSDoc Reference",
   },
 
@@ -317,11 +322,10 @@ export const challenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Full marks! Three patterns at once: `is` for state booleans, `has` for feature booleans, and JSDoc with `@default` for every optional prop. `<Navigation hasIcons isMobile />` reads like English.',
+      "Full marks! Three patterns at once: `is` for state booleans, `has` for feature booleans, and JSDoc with `@default` for every optional prop. `<Navigation hasIcons isMobile />` reads like English.",
     explanationWrong:
-      '`collapsed` - is this a verb or adjective? `icons` - a boolean or an array of icons? `mobile` - a phone number? Each prop is ambiguous. Prefix booleans with `is`/`has`/`should` and document defaults.',
-    sourceUrl:
-      "https://react.dev/learn/passing-props-to-a-component",
+      "`collapsed` - is this a verb or adjective? `icons` - a boolean or an array of icons? `mobile` - a phone number? Each prop is ambiguous. Prefix booleans with `is`/`has`/`should` and document defaults.",
+    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props to a Component",
   },
 
@@ -423,7 +427,8 @@ interface ConfirmDialogProps {
       "Discriminated unions ensure that `onRetry` is only required (and allowed) when `type` is `'error'`. TypeScript catches impossible combinations at compile time. No more 'why is retryLabel set on a success alert?' bugs.",
     explanationWrong:
       "The flat interface makes every optional prop available for every variant. Nothing stops you from passing `onRetry` to a success alert. Discriminated unions tie props to their specific variant, giving you compile-time safety.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
     sourceLabel: "TypeScript: Discriminated Unions",
   },
 
@@ -505,7 +510,7 @@ interface TableProps<T extends Record<string, unknown>> {
 }`,
     correctSide: "right",
     explanationCorrect:
-      'This is production-grade API design. Generic types, structured column config, `on*` event callbacks instead of setter functions, and `isLoading` boolean. No `Function` type, no `object[]`, no `string[]` columns.',
+      "This is production-grade API design. Generic types, structured column config, `on*` event callbacks instead of setter functions, and `isLoading` boolean. No `Function` type, no `object[]`, no `string[]` columns.",
     explanationWrong:
       "Multiple issues: `Function` type is unsafe, `object[]` has no shape, `string[]` columns lose structure, `set*` callbacks imply child state ownership, `loading` is an ambiguous boolean, and `sort`/`select` could be nouns or verbs.",
     sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
@@ -536,7 +541,8 @@ interface TableProps<T extends Record<string, unknown>> {
       "Even simple props benefit from JSDoc. When another developer hovers over `variant` in their IDE, they instantly see what it does and what the default is.",
     explanationWrong:
       "Without JSDoc, developers must open the component source to learn what each prop does. A few seconds of documentation saves minutes of code reading for every future consumer.",
-    sourceUrl: "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
     sourceLabel: "TypeScript: JSDoc Reference",
   },
 

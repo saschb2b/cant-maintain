@@ -9,7 +9,12 @@ function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+    // Indices i and j are guaranteed to be in bounds by the loop and Math.floor
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const temp = a[i]!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    a[i] = a[j]!;
+    a[j] = temp;
   }
   return a;
 }
@@ -26,22 +31,22 @@ const DIFFICULTY_ORDER: Record<Difficulty, number> = {
  * Also randomizes which side the "good" code appears on.
  */
 function prepareChallenges(): Challenge[] {
-  const byDifficulty = allChallenges.reduce(
+  const byDifficulty = allChallenges.reduce<Record<Difficulty, Challenge[]>>(
     (acc, c) => {
       acc[c.difficulty].push(c);
       return acc;
     },
-    { easy: [], medium: [], hard: [] } as Record<Difficulty, Challenge[]>,
+    { easy: [], medium: [], hard: [] },
   );
 
-  return (
-    Object.entries(byDifficulty) as [Difficulty, Challenge[]][]
-  )
+  return (Object.entries(byDifficulty) as [Difficulty, Challenge[]][])
     .sort(([a], [b]) => DIFFICULTY_ORDER[a] - DIFFICULTY_ORDER[b])
     .flatMap(([, cs]) =>
       shuffle(cs).map((c) => ({
         ...c,
-        correctSide: (Math.random() > 0.5 ? "left" : "right") as "left" | "right",
+        correctSide: (Math.random() > 0.5 ? "left" : "right") satisfies
+          | "left"
+          | "right",
       })),
     );
 }
@@ -56,6 +61,7 @@ function createInitialState(): GameState {
     answers: {},
     isFinished: false,
     startedAt: Date.now(),
+    finishedAt: null,
   };
 }
 
@@ -64,9 +70,8 @@ export function useGame() {
   const [state, setState] = useState<GameState | null>(null);
 
   // Defer random shuffle to client to avoid hydration mismatch
-  useEffect(() => {
-    setState(createInitialState());
-  }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setState(createInitialState()), []);
 
   const currentChallenge = useMemo(
     () => state?.challenges[state.currentIndex] ?? null,
@@ -75,12 +80,14 @@ export function useGame() {
 
   const totalChallenges = state?.challenges.length ?? 0;
 
-  const currentDifficulty: Difficulty | null = currentChallenge?.difficulty ?? null;
+  const currentDifficulty: Difficulty | null =
+    currentChallenge?.difficulty ?? null;
 
   /** The user's answer for the current challenge, if any. */
-  const currentAnswer = currentChallenge && state
-    ? state.answers[currentChallenge.id] ?? null
-    : null;
+  const currentAnswer =
+    currentChallenge && state
+      ? (state.answers[currentChallenge.id] ?? null)
+      : null;
 
   /** Submit an answer for the current challenge. */
   const answer = useCallback(
@@ -115,7 +122,7 @@ export function useGame() {
       if (!prev) return prev;
       const nextIndex = prev.currentIndex + 1;
       if (nextIndex >= prev.challenges.length) {
-        return { ...prev, isFinished: true };
+        return { ...prev, isFinished: true, finishedAt: Date.now() };
       }
       return { ...prev, currentIndex: nextIndex };
     });

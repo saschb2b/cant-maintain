@@ -27,8 +27,14 @@ export function Game() {
   const { leftCode, rightCode } = useMemo(() => {
     if (!currentChallenge) return { leftCode: "", rightCode: "" };
     return currentChallenge.correctSide === "left"
-      ? { leftCode: currentChallenge.goodCode, rightCode: currentChallenge.badCode }
-      : { leftCode: currentChallenge.badCode, rightCode: currentChallenge.goodCode };
+      ? {
+          leftCode: currentChallenge.goodCode,
+          rightCode: currentChallenge.badCode,
+        }
+      : {
+          leftCode: currentChallenge.badCode,
+          rightCode: currentChallenge.goodCode,
+        };
   }, [currentChallenge]);
 
   const getResult = (side: "left" | "right"): "correct" | "wrong" | null => {
