@@ -8,7 +8,8 @@ import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 import Link from "@mui/material/Link";
-import type { GameState, ChallengeCategory } from "@/lib/game/types";
+import type { GameState } from "@/lib/game/types";
+import { CATEGORY_LABELS } from "@/lib/game/categories";
 import {
   RotateCcw,
   Check,
@@ -16,22 +17,10 @@ import {
   Zap,
   Clock,
   ExternalLink,
+  BookOpen,
   Coffee,
   GitPullRequestArrow,
 } from "lucide-react";
-
-const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
-  "callback-naming": "Callback Naming",
-  "boolean-naming": "Boolean Props",
-  jsdoc: "JSDoc",
-  "prop-specificity": "Prop Specificity",
-  "render-props": "Render Props",
-  "children-pattern": "Children Pattern",
-  "discriminated-unions": "Discriminated Unions",
-  "extending-html": "Extending HTML",
-  "default-values": "Default Values",
-  "prop-organization": "Prop Organization",
-};
 
 interface ResultsScreenProps {
   /** Complete game state with all challenges and answers. */
@@ -338,6 +327,25 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
           Perfect run — every convention nailed. Play again for new challenges!
         </Typography>
       )}
+
+      {/* Learn link */}
+      <Link
+        href="/learn"
+        underline="hover"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
+          color: "text.secondary",
+          fontWeight: 500,
+          fontSize: "0.85rem",
+          "&:hover": { color: "text.primary" },
+        }}
+      >
+        <BookOpen size={16} />
+        Review all patterns
+      </Link>
 
       {/* Contribute / Support CTA */}
       <Paper

@@ -11,6 +11,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
 import { getHighlighter } from "@/lib/shiki";
+import { codeBlockStyles } from "@/lib/code-styles";
 
 const BAD_CODE = `interface TodoItemProps {
   todo: Todo;
@@ -23,21 +24,6 @@ const GOOD_CODE = `interface TodoItemProps {
   isLoading: boolean;
   onDelete: () => void;
 }`;
-
-const codeBlockStyles = {
-  "& pre": {
-    m: 0,
-    p: 2,
-    fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
-    fontSize: "0.8rem",
-    lineHeight: 1.7,
-    overflowX: "auto",
-    bgcolor: "transparent !important",
-  },
-  "& code": {
-    fontFamily: "inherit",
-  },
-};
 
 export default async function LandingPage() {
   const highlighter = await getHighlighter();
@@ -233,6 +219,17 @@ export default async function LandingPage() {
           >
             10 challenges &middot; no signup &middot; takes 3 min
           </Typography>
+          <NextLink
+            href="/learn"
+            style={{
+              textDecoration: "none",
+              fontSize: "0.8rem",
+              fontWeight: 500,
+              color: "#6B7B8D",
+            }}
+          >
+            Or browse the patterns
+          </NextLink>
         </Stack>
       </Container>
 

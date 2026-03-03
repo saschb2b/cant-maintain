@@ -6,7 +6,9 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, BookOpen } from "lucide-react";
+import type { ChallengeCategory } from "@/lib/game/types";
+import { CATEGORY_LABELS } from "@/lib/game/categories";
 
 interface ExplanationPanelProps {
   /** Whether the user answered correctly; controls color scheme. */
@@ -17,6 +19,8 @@ interface ExplanationPanelProps {
   sourceUrl: string;
   /** Display label for the source link. */
   sourceLabel: string;
+  /** Challenge category, used to link to the learn page. */
+  category: ChallengeCategory;
 }
 
 export function ExplanationPanel({
@@ -24,6 +28,7 @@ export function ExplanationPanel({
   text,
   sourceUrl,
   sourceLabel,
+  category,
 }: ExplanationPanelProps) {
   const color = isCorrect ? "success" : "error";
 
@@ -71,6 +76,22 @@ export function ExplanationPanel({
           >
             <ExternalLink size={12} />
             {sourceLabel}
+          </Link>
+          <Link
+            href={`/learn/${category}`}
+            underline="hover"
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 0.75,
+              fontSize: "0.75rem",
+              fontWeight: 500,
+              color: "text.secondary",
+              ml: 2,
+            }}
+          >
+            <BookOpen size={12} />
+            All {CATEGORY_LABELS[category]} patterns
           </Link>
         </Box>
       </Stack>

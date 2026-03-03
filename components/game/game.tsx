@@ -14,21 +14,8 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Fade from "@mui/material/Fade";
 import Grow from "@mui/material/Grow";
-import type { ChallengeCategory } from "@/lib/game/types";
+import { CATEGORY_LABELS } from "@/lib/game/categories";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-
-const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
-  "callback-naming": "Callback Naming",
-  "boolean-naming": "Boolean Props",
-  jsdoc: "JSDoc",
-  "prop-specificity": "Prop Specificity",
-  "render-props": "Render Props",
-  "children-pattern": "Children Pattern",
-  "discriminated-unions": "Discriminated Unions",
-  "extending-html": "Extending HTML",
-  "default-values": "Default Values",
-  "prop-organization": "Prop Organization",
-};
 
 export function Game() {
   const {
@@ -291,6 +278,7 @@ export function Game() {
               }
               sourceUrl={displayChallenge.sourceUrl}
               sourceLabel={displayChallenge.sourceLabel}
+              category={displayChallenge.category}
             />
           </Box>
         </Grow>

@@ -35,6 +35,26 @@ export function SiteHeader() {
               </Typography>
             </Box>
           </NextLink>
+
+          <Stack direction="row" spacing={2} sx={{ ml: "auto" }}>
+            <NextLink
+              href="/learn"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography
+                variant="body2"
+                fontWeight={500}
+                fontFamily="var(--font-geist-mono), monospace"
+                sx={{
+                  color: "text.secondary",
+                  "&:hover": { color: "text.primary" },
+                  fontSize: "0.85rem",
+                }}
+              >
+                Learn
+              </Typography>
+            </NextLink>
+          </Stack>
         </Stack>
       </Container>
       <Divider />

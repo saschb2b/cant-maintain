@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import { getHighlighter } from "@/lib/shiki";
+import { codeBlockStyles } from "@/lib/code-styles";
 
 interface CodePanelProps {
   /** TypeScript/TSX source code to display in the editor. */
@@ -172,18 +173,7 @@ export function CodePanel({
         sx={{
           flex: 1,
           bgcolor: "#FAF8F5",
-          "& pre": {
-            m: 0,
-            p: 2,
-            fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
-            fontSize: "0.85rem",
-            lineHeight: 1.7,
-            overflowX: "auto",
-            bgcolor: "transparent !important",
-          },
-          "& code": {
-            fontFamily: "inherit",
-          },
+          ...codeBlockStyles,
         }}
       >
         {highlightedHtml ? (
