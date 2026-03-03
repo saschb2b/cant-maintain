@@ -207,9 +207,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                 elevation={0}
                 sx={{
                   border: 1,
-                  borderColor: isCorrect
-                    ? "divider"
-                    : "rgba(196,87,58,0.3)",
+                  borderColor: isCorrect ? "divider" : "rgba(196,87,58,0.3)",
                   bgcolor: isCorrect
                     ? "background.paper"
                     : "rgba(196,87,58,0.04)",
@@ -392,7 +390,6 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
           </Link>
         </Stack>
       </Paper>
-
     </Stack>
   );
 }

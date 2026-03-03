@@ -46,21 +46,21 @@ All game logic is in `lib/game/use-game.ts`. The `prepareChallenges()` function 
 
 ## File Map
 
-| File | Purpose |
-| --- | --- |
-| `lib/game/types.ts` | All TypeScript types |
-| `lib/game/challenges/index.ts` | Combines per-category challenge arrays |
-| `lib/game/challenges/*.ts` | Per-category challenge content |
-| `lib/game/use-game.ts` | Game state machine hook |
-| `components/game/game.tsx` | Main game orchestrator |
-| `components/game/code-panel.tsx` | Monaco-powered code display |
-| `components/game/explanation-panel.tsx` | Post-answer explanation |
-| `components/game/game-header.tsx` | Score/progress UI |
-| `components/game/results-screen.tsx` | End screen with challenge review |
-| `app/page.tsx` | Landing page |
-| `app/play/page.tsx` | Game page |
-| `lib/theme.ts` | MUI dark theme configuration |
-| `components/theme-provider.tsx` | MUI ThemeProvider wrapper |
+| File                                    | Purpose                                |
+| --------------------------------------- | -------------------------------------- |
+| `lib/game/types.ts`                     | All TypeScript types                   |
+| `lib/game/challenges/index.ts`          | Combines per-category challenge arrays |
+| `lib/game/challenges/*.ts`              | Per-category challenge content         |
+| `lib/game/use-game.ts`                  | Game state machine hook                |
+| `components/game/game.tsx`              | Main game orchestrator                 |
+| `components/game/code-panel.tsx`        | Monaco-powered code display            |
+| `components/game/explanation-panel.tsx` | Post-answer explanation                |
+| `components/game/game-header.tsx`       | Score/progress UI                      |
+| `components/game/results-screen.tsx`    | End screen with challenge review       |
+| `app/page.tsx`                          | Landing page                           |
+| `app/play/page.tsx`                     | Game page                              |
+| `lib/theme.ts`                          | MUI dark theme configuration           |
+| `components/theme-provider.tsx`         | MUI ThemeProvider wrapper              |
 
 ## Conventions
 

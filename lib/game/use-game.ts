@@ -69,6 +69,7 @@ function createInitialState(): GameState {
     streak: 0,
     bestStreak: 0,
     answers: {},
+    reviewIndex: null,
     isFinished: false,
     startedAt: Date.now(),
     finishedAt: null,
@@ -98,6 +99,22 @@ export function useGame() {
     currentChallenge && state
       ? (state.answers[currentChallenge.id] ?? null)
       : null;
+
+  const isReviewing = state?.reviewIndex != null;
+
+  /** The challenge currently displayed (reviewed or current). */
+  const displayChallenge = useMemo(() => {
+    if (state?.reviewIndex != null) {
+      return state.challenges[state.reviewIndex] ?? null;
+    }
+    return currentChallenge;
+  }, [state, currentChallenge]);
+
+  /** The answer for the displayed challenge (always non-null in review mode). */
+  const displayAnswer = useMemo(() => {
+    if (!displayChallenge || !state) return null;
+    return state.answers[displayChallenge.id] ?? null;
+  }, [displayChallenge, state]);
 
   /** Submit an answer for the current challenge. */
   const answer = useCallback(
@@ -132,9 +149,14 @@ export function useGame() {
       if (!prev) return prev;
       const nextIndex = prev.currentIndex + 1;
       if (nextIndex >= prev.challenges.length) {
-        return { ...prev, isFinished: true, finishedAt: Date.now() };
+        return {
+          ...prev,
+          reviewIndex: null,
+          isFinished: true,
+          finishedAt: Date.now(),
+        };
       }
-      return { ...prev, currentIndex: nextIndex };
+      return { ...prev, reviewIndex: null, currentIndex: nextIndex };
     });
   }, []);
 
@@ -143,14 +165,37 @@ export function useGame() {
     setState(createInitialState());
   }, []);
 
+  /** Enter review mode for a previously answered challenge. */
+  const reviewQuestion = useCallback((index: number) => {
+    setState((prev) => {
+      if (!prev) return prev;
+      const challenge = prev.challenges[index];
+      if (!challenge || !prev.answers[challenge.id]) return prev;
+      return { ...prev, reviewIndex: index };
+    });
+  }, []);
+
+  /** Exit review mode and return to the current question. */
+  const exitReview = useCallback(() => {
+    setState((prev) => {
+      if (!prev) return prev;
+      return { ...prev, reviewIndex: null };
+    });
+  }, []);
+
   return {
     state,
     currentChallenge,
     currentAnswer,
     currentDifficulty,
     totalChallenges,
+    isReviewing,
+    displayChallenge,
+    displayAnswer,
     answer,
     next,
     restart,
+    reviewQuestion,
+    exitReview,
   };
 }

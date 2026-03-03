@@ -177,8 +177,7 @@ interface ToggleProps {
       "A headless component exposes state and behavior through a render callback, leaving all visual decisions to the consumer. Instead of adding `size`, `color`, `onLabel`, and `offLabel` props to handle every use case, the consumer gets full control. This is the pattern behind libraries like Downshift and React Aria.",
     explanationWrong:
       "Adding visual props (`size`, `color`, `onLabel`) makes the component increasingly rigid. Want a toggle that looks like a checkbox? A switch? An icon button? Each new design requires new props. A render callback hands control to the consumer — they render whatever they want using the toggle state.",
-    sourceUrl:
-      "https://react.dev/reference/react/cloneElement#alternatives",
+    sourceUrl: "https://react.dev/reference/react/cloneElement#alternatives",
     sourceLabel: "React Docs: Alternatives to cloneElement",
   },
 ];

@@ -29,8 +29,7 @@ interface ProfileCardProps {
       "Four `user*` props that always travel together belong in a `User` type. The component receives one structured object instead of four loose strings. If User gains a `phone` field later, only the type changes — not every component that forwards user data.",
     explanationWrong:
       "Flat props with a shared prefix (`userName`, `userEmail`, `userAvatar`, `userRole`) are a sign they belong to one concept. Passing them individually means every consumer must destructure and forward four props instead of one. Group related data into a typed object.",
-    sourceUrl:
-      "https://react.dev/learn/passing-props-to-a-component",
+    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },
   {
@@ -130,8 +129,7 @@ interface MapViewProps {
       "Nine flat props become five structured ones. `center` groups lat/lng into a reusable `LatLng` type. `marker` is optional as a whole — you don't need three independent optional props that are only valid together. The callback receives a `LatLng` instead of two loose numbers, consistent with the rest of the API.",
     explanationWrong:
       "Flat props with shared prefixes (`centerLat`/`centerLng`, `markerLat`/`markerLng`) signal missing structure. A marker always has both a position and a label — three independent optionals allow passing `markerLabel` without a position. Grouping into typed objects makes relationships explicit and the API smaller.",
-    sourceUrl:
-      "https://react.dev/learn/passing-props-to-a-component",
+    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },
   {
@@ -174,7 +172,7 @@ interface MapViewProps {
     explanationCorrect:
       "Six out of eleven original props belonged to the toolbar, not the article. Extracting the toolbar into a `ReactNode` slot cuts the interface in half. Consumers compose their own toolbar — or omit it entirely. The ArticlePage no longer needs to know what toolbar actions exist.",
     explanationWrong:
-      'When half your props share a concern (`toolbar*`, `is*Visible`, `on*`), that\'s a sub-component trying to escape. Each new action (export, translate) adds two more props. A `ReactNode` slot delegates toolbar composition to the consumer, keeping ArticlePage focused on displaying the article.',
+      "When half your props share a concern (`toolbar*`, `is*Visible`, `on*`), that's a sub-component trying to escape. Each new action (export, translate) adds two more props. A `ReactNode` slot delegates toolbar composition to the consumer, keeping ArticlePage focused on displaying the article.",
     sourceUrl:
       "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
     sourceLabel: "React Docs: Passing JSX as children",

@@ -9,12 +9,13 @@ import { ResultsScreen } from "./results-screen";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Fade from "@mui/material/Fade";
 import Grow from "@mui/material/Grow";
 import type { ChallengeCategory } from "@/lib/game/types";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "callback-naming": "Callback Naming",
@@ -36,22 +37,27 @@ export function Game() {
     currentAnswer,
     currentDifficulty,
     totalChallenges,
+    isReviewing,
+    displayChallenge,
+    displayAnswer,
     answer,
     next,
     restart,
+    reviewQuestion,
+    exitReview,
   } = useGame();
 
   const { leftCode, rightCode, editorHeight } = useMemo(() => {
-    if (!currentChallenge)
+    if (!displayChallenge)
       return { leftCode: "", rightCode: "", editorHeight: 120 };
     const left =
-      currentChallenge.correctSide === "left"
-        ? currentChallenge.goodCode
-        : currentChallenge.badCode;
+      displayChallenge.correctSide === "left"
+        ? displayChallenge.goodCode
+        : displayChallenge.badCode;
     const right =
-      currentChallenge.correctSide === "left"
-        ? currentChallenge.badCode
-        : currentChallenge.goodCode;
+      displayChallenge.correctSide === "left"
+        ? displayChallenge.badCode
+        : displayChallenge.goodCode;
     const maxLines = Math.max(
       left.split("\n").length,
       right.split("\n").length,
@@ -60,11 +66,11 @@ export function Game() {
     const padding = 32;
     const height = Math.max(maxLines * lineHeight + padding, 120);
     return { leftCode: left, rightCode: right, editorHeight: height };
-  }, [currentChallenge]);
+  }, [displayChallenge]);
 
   const getResult = (side: "left" | "right"): "correct" | "wrong" | null => {
-    if (!currentAnswer || !currentChallenge) return null;
-    return side === currentChallenge.correctSide ? "correct" : "wrong";
+    if (!displayAnswer || !displayChallenge) return null;
+    return side === displayChallenge.correctSide ? "correct" : "wrong";
   };
 
   const questionResults = useMemo(() => {
@@ -75,6 +81,15 @@ export function Game() {
   const handleKeyPress = useCallback(
     (e: KeyboardEvent) => {
       if (!currentChallenge) return;
+
+      // In review mode: Escape / Enter / Space exits review
+      if (isReviewing) {
+        if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          exitReview();
+        }
+        return;
+      }
 
       // After answering: Enter/Space advances to next
       if (currentAnswer) {
@@ -102,7 +117,7 @@ export function Game() {
         answer("right");
       }
     },
-    [currentAnswer, currentChallenge, answer, next],
+    [currentAnswer, currentChallenge, answer, next, isReviewing, exitReview],
   );
 
   useEffect(() => {
@@ -135,7 +150,7 @@ export function Game() {
     );
   }
 
-  if (!currentChallenge) return null;
+  if (!displayChallenge) return null;
 
   return (
     <Stack spacing={3}>
@@ -146,11 +161,51 @@ export function Game() {
         streak={state.streak}
         difficulty={currentDifficulty}
         questionResults={questionResults}
+        reviewIndex={state.reviewIndex}
+        onQuestionClick={reviewQuestion}
       />
+
+      {isReviewing && (
+        <Fade in timeout={200}>
+          <Paper
+            elevation={0}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              px: 2,
+              py: 1,
+              border: 1,
+              borderColor: "primary.main",
+              bgcolor: "rgba(43,76,126,0.06)",
+              borderRadius: 2,
+            }}
+          >
+            <Typography
+              variant="body2"
+              fontWeight={500}
+              color="primary.main"
+              fontFamily="var(--font-geist-mono), monospace"
+              sx={{ fontSize: "0.8rem" }}
+            >
+              Reviewing question {(state.reviewIndex ?? 0) + 1}
+            </Typography>
+            <Button
+              size="small"
+              variant="text"
+              onClick={exitReview}
+              startIcon={<ArrowLeft size={14} />}
+              sx={{ textTransform: "none", fontWeight: 600 }}
+            >
+              Back to question {state.currentIndex + 1}
+            </Button>
+          </Paper>
+        </Fade>
+      )}
 
       <Box sx={{ textAlign: "center" }}>
         <Chip
-          label={CATEGORY_LABELS[currentChallenge.category]}
+          label={CATEGORY_LABELS[displayChallenge.category]}
           size="small"
           sx={{
             mb: 1,
@@ -161,10 +216,12 @@ export function Game() {
           }}
         />
         <Typography variant="h6" fontWeight={600}>
-          {currentChallenge.title}
+          {displayChallenge.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Pick the code with better prop naming
+          {isReviewing
+            ? "Reviewing your previous answer"
+            : "Pick the code with better prop naming"}
         </Typography>
       </Box>
 
@@ -179,7 +236,7 @@ export function Game() {
         <CodePanel
           code={leftCode}
           label="A"
-          isSelectable={!currentAnswer}
+          isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => answer("left")}
           result={getResult("left")}
           fixedHeight={editorHeight}
@@ -214,7 +271,7 @@ export function Game() {
         <CodePanel
           code={rightCode}
           label="B"
-          isSelectable={!currentAnswer}
+          isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => answer("right")}
           result={getResult("right")}
           fixedHeight={editorHeight}
@@ -223,45 +280,56 @@ export function Game() {
 
       <Stack spacing={2}>
         <Grow
-          in={!!currentAnswer}
+          in={!!displayAnswer}
           timeout={400}
           style={{ transformOrigin: "top center" }}
         >
           <Box>
             <ExplanationPanel
-              isCorrect={currentAnswer === "correct"}
+              isCorrect={displayAnswer === "correct"}
               text={
-                currentAnswer === "correct"
-                  ? currentChallenge.explanationCorrect
-                  : currentChallenge.explanationWrong
+                displayAnswer === "correct"
+                  ? displayChallenge.explanationCorrect
+                  : displayChallenge.explanationWrong
               }
-              sourceUrl={currentChallenge.sourceUrl}
-              sourceLabel={currentChallenge.sourceLabel}
+              sourceUrl={displayChallenge.sourceUrl}
+              sourceLabel={displayChallenge.sourceLabel}
             />
           </Box>
         </Grow>
 
         <Fade
-          in={!!currentAnswer}
+          in={!!displayAnswer}
           timeout={400}
-          style={{ transitionDelay: currentAnswer ? "200ms" : "0ms" }}
+          style={{ transitionDelay: displayAnswer ? "200ms" : "0ms" }}
         >
           <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              variant="contained"
-              size="large"
-              onClick={next}
-              tabIndex={currentAnswer ? 0 : -1}
-              endIcon={
-                state.currentIndex + 1 < totalChallenges ? (
-                  <ArrowRight size={18} />
-                ) : undefined
-              }
-            >
-              {state.currentIndex + 1 < totalChallenges
-                ? "Next Challenge"
-                : "See Results"}
-            </Button>
+            {isReviewing ? (
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={exitReview}
+                startIcon={<ArrowLeft size={18} />}
+              >
+                Back to Question {state.currentIndex + 1}
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                size="large"
+                onClick={next}
+                tabIndex={currentAnswer ? 0 : -1}
+                endIcon={
+                  state.currentIndex + 1 < totalChallenges ? (
+                    <ArrowRight size={18} />
+                  ) : undefined
+                }
+              >
+                {state.currentIndex + 1 < totalChallenges
+                  ? "Next Challenge"
+                  : "See Results"}
+              </Button>
+            )}
           </Box>
         </Fade>
       </Stack>
@@ -277,7 +345,11 @@ export function Game() {
           fontSize: "0.7rem",
         }}
       >
-        {currentAnswer ? "Press Enter to continue" : "A / ← for left · B / → for right"}
+        {isReviewing
+          ? "Press Escape to return"
+          : currentAnswer
+            ? "Press Enter to continue"
+            : "A / \u2190 for left \u00B7 B / \u2192 for right"}
       </Typography>
     </Stack>
   );

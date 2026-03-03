@@ -72,6 +72,8 @@ export interface GameState {
   bestStreak: number;
   /** Map of challenge id -> "correct" | "wrong". */
   answers: Record<string, "correct" | "wrong">;
+  /** Index of a previously answered challenge being reviewed, or null. */
+  reviewIndex: number | null;
   /** Whether the game has ended. */
   isFinished: boolean;
   /** Timestamp game started. */

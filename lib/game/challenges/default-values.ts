@@ -65,9 +65,9 @@ function Badge({
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Destructuring defaults only apply when the value is `undefined` - which is exactly what \"not passed\" means in React. The `||` operator also triggers on `0`, `\"\"`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.",
+      'Destructuring defaults only apply when the value is `undefined` - which is exactly what "not passed" means in React. The `||` operator also triggers on `0`, `""`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.',
     explanationWrong:
-      "The `||` operator treats `0`, `\"\"`, and `false` as falsy - so `value || 50` overrides a legitimate `value={0}`. This is a subtle bug. Destructuring defaults (`value = 50`) only kick in for `undefined`, which is the correct behavior for missing props.",
+      'The `||` operator treats `0`, `""`, and `false` as falsy - so `value || 50` overrides a legitimate `value={0}`. This is a subtle bug. Destructuring defaults (`value = 50`) only kick in for `undefined`, which is the correct behavior for missing props.',
     sourceUrl:
       "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
     sourceLabel: "MDN: Destructuring Default Values",
@@ -156,7 +156,7 @@ function DataGrid({
     explanationCorrect:
       "Inline `= {}`, `= []`, and `= { ... }` create new object references on every render. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time. Module-level constants are created once and have stable references.",
     explanationWrong:
-      'Every render where `filters` isn\'t passed creates a brand new `{}`. That new object fails `===` checks in dependency arrays, causing `useEffect(() => fetch(filters), [filters])` to re-fetch on every render. Hoisting defaults to module scope gives them stable identity.',
+      "Every render where `filters` isn't passed creates a brand new `{}`. That new object fails `===` checks in dependency arrays, causing `useEffect(() => fetch(filters), [filters])` to re-fetch on every render. Hoisting defaults to module scope gives them stable identity.",
     sourceUrl:
       "https://react.dev/reference/react/useMemo#every-time-my-component-renders-the-calculation-in-usememo-re-runs",
     sourceLabel: "React Docs: useMemo troubleshooting",

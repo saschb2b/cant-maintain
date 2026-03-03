@@ -84,11 +84,10 @@ export const extendingHtmlChallenges: Challenge[] = [
 >;`,
     correctSide: "right",
     explanationCorrect:
-      "The generic `as` prop lets a Card render as a `div`, `section`, `a`, or any component - with type-safe props for that element. `as=\"a\"` enables `href`; `as=\"button\"` enables `onClick` and `type`. TypeScript catches invalid combos like `<Card as=\"a\" disabled />` at compile time.",
+      'The generic `as` prop lets a Card render as a `div`, `section`, `a`, or any component - with type-safe props for that element. `as="a"` enables `href`; `as="button"` enables `onClick` and `type`. TypeScript catches invalid combos like `<Card as="a" disabled />` at compile time.',
     explanationWrong:
       "Typing `as` as `string` gives no type safety - you'd need to manually add every possible HTML prop (`href`, `onClick`, `disabled`, etc.) and hope consumers use the right ones. A generic `ElementType` constraint makes TypeScript infer the correct props automatically.",
-    sourceUrl:
-      "https://react.dev/reference/react/createElement",
+    sourceUrl: "https://react.dev/reference/react/createElement",
     sourceLabel: "React Docs: createElement",
   },
   {

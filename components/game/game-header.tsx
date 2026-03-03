@@ -1,6 +1,7 @@
 "use client";
 
 import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -17,6 +18,8 @@ interface GameHeaderProps {
   streak: number;
   difficulty: Difficulty | null;
   questionResults: QuestionResult[];
+  reviewIndex: number | null;
+  onQuestionClick: (index: number) => void;
 }
 
 const DIFFICULTY_CONFIG: Record<
@@ -43,6 +46,8 @@ export function GameHeader({
   streak,
   difficulty,
   questionResults,
+  reviewIndex,
+  onQuestionClick,
 }: GameHeaderProps) {
   const diffConfig = difficulty ? DIFFICULTY_CONFIG[difficulty] : null;
 
@@ -159,6 +164,9 @@ export function GameHeader({
         >
           {questionResults.map((result, i) => {
             const isCurrent = i === currentQuestion - 1;
+            const isReviewed = i === reviewIndex;
+            const isAnswered = result !== null;
+
             let bgcolor: string;
             let shadow: string | undefined;
             if (result === "correct") {
@@ -172,20 +180,39 @@ export function GameHeader({
               bgcolor = "#DDD6CA";
             }
 
-            return (
-              <Box
-                key={i}
-                sx={{
-                  flex: 1,
-                  height: 10,
-                  borderRadius: 1.5,
-                  bgcolor,
-                  boxShadow: shadow,
-                  opacity: isCurrent && !result ? 0.7 : 1,
-                  transition: "all 0.3s ease",
-                }}
-              />
-            );
+            if (isReviewed) {
+              shadow = `0 0 0 2px #FFFFFF, 0 0 0 4px ${bgcolor}`;
+            }
+
+            const dotSx = {
+              flex: 1,
+              height: 10,
+              borderRadius: 1.5,
+              bgcolor,
+              boxShadow: shadow,
+              opacity: isCurrent && !result ? 0.7 : 1,
+              transition: "all 0.3s ease",
+              ...(isAnswered && {
+                cursor: "pointer",
+                "&:hover": {
+                  transform: "scaleY(1.6)",
+                  filter: "brightness(1.15)",
+                },
+              }),
+            };
+
+            if (isAnswered) {
+              return (
+                <ButtonBase
+                  key={i}
+                  onClick={() => onQuestionClick(i)}
+                  aria-label={`Review question ${String(i + 1)} (${result})`}
+                  sx={dotSx}
+                />
+              );
+            }
+
+            return <Box key={i} sx={dotSx} />;
           })}
         </Box>
       </Stack>

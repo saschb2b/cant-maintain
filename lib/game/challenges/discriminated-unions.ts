@@ -56,9 +56,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
 );`,
     correctSide: "right",
     explanationCorrect:
-      "A button with an `href` is a link; a button with `onClick` is a button. Mixing both (`<Button href=\"/about\" onClick={fn}>`) leads to confusing behavior. The union ensures `target` only appears with `href` and `type` only appears without it. The `never` type blocks invalid combinations at compile time.",
+      'A button with an `href` is a link; a button with `onClick` is a button. Mixing both (`<Button href="/about" onClick={fn}>`) leads to confusing behavior. The union ensures `target` only appears with `href` and `type` only appears without it. The `never` type blocks invalid combinations at compile time.',
     explanationWrong:
-      "Making everything optional allows `<Button href=\"/page\" onClick={fn} type=\"submit\" target=\"_blank\" />` - should this navigate or call the handler? Submit a form or open a link? Union types force the consumer to pick one behavior, making the component predictable.",
+      'Making everything optional allows `<Button href="/page" onClick={fn} type="submit" target="_blank" />` - should this navigate or call the handler? Submit a form or open a link? Union types force the consumer to pick one behavior, making the component predictable.',
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
     sourceLabel: "TypeScript: Discriminated Unions",

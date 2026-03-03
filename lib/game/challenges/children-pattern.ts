@@ -114,7 +114,8 @@ interface SelectProps {
       "Grouping overrides into `slots` and `slotProps` objects scales cleanly. Adding a new customizable element means adding one key to each object - not two new top-level props. This is the pattern MUI adopted across all components, replacing the older `PaperComponent`/`PaperProps` pairs that cluttered the API.",
     explanationWrong:
       "Each sub-component needs two props (component + props), so three sub-components means six top-level props. A fourth sub-component adds two more. This doesn't scale. The `slots`/`slotProps` pattern groups all overrides into two structured objects, keeping the top-level API clean and discoverable.",
-    sourceUrl: "https://mui.com/material-ui/customization/creating-themed-components/",
+    sourceUrl:
+      "https://mui.com/material-ui/customization/creating-themed-components/",
     sourceLabel: "MUI: Themed Components",
   },
   {
