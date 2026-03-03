@@ -85,11 +85,14 @@ export function useGame() {
   /** Submit an answer for the current challenge. */
   const answer = useCallback(
     (side: "left" | "right") => {
-      if (!currentChallenge || !state || state.answers[currentChallenge.id]) return;
+      if (!currentChallenge) return;
 
-      const isCorrect = side === currentChallenge.correctSide;
+      const challengeId = currentChallenge.id;
+      const correctSide = currentChallenge.correctSide;
 
       setState((prev) => {
+        if (!prev || prev.answers[challengeId]) return prev;
+        const isCorrect = side === correctSide;
         const newStreak = isCorrect ? prev.streak + 1 : 0;
         return {
           ...prev,
@@ -98,12 +101,12 @@ export function useGame() {
           bestStreak: Math.max(prev.bestStreak, newStreak),
           answers: {
             ...prev.answers,
-            [currentChallenge.id]: isCorrect ? "correct" : "wrong",
+            [challengeId]: isCorrect ? "correct" : "wrong",
           },
         };
       });
     },
-    [currentChallenge, state.answers],
+    [currentChallenge],
   );
 
   /** Move to the next challenge. */
