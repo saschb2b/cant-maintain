@@ -147,4 +147,36 @@ interface ConfirmDialogProps {
     sourceUrl: "https://jsdoc.app/tags-example",
     sourceLabel: "JSDoc: @example tag",
   },
+  {
+    id: "jd-005",
+    category: "jsdoc",
+    difficulty: "easy",
+    title: "Deprecation notice in JSDoc",
+    badCode: `interface AccordionProps {
+  // Don't use isOpen, use expanded instead
+  isOpen?: boolean;
+  expanded?: boolean;
+  children: React.ReactNode;
+  onToggle?: () => void;
+}`,
+    goodCode: `interface AccordionProps {
+  /**
+   * @deprecated Use \`isExpanded\` instead.
+   * Will be removed in v3.0.
+   */
+  isOpen?: boolean;
+  /** Whether the section is expanded. */
+  isExpanded?: boolean;
+  children: React.ReactNode;
+  onToggle?: () => void;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "The `@deprecated` JSDoc tag triggers a visual strikethrough in most IDEs and shows a warning on hover. It's machine-readable — linters can flag usage. A code comment is invisible at the call site and can't be enforced by tooling.",
+    explanationWrong:
+      "A plain comment above `isOpen` is only visible when reading the interface source. At the call site, `<Accordion isOpen />` shows no warning. The `@deprecated` tag surfaces warnings directly in the IDE, making migration discoverable without reading the component internals.",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
+    sourceLabel: "TypeScript: JSDoc Reference",
+  },
 ];

@@ -147,4 +147,66 @@ interface SelectProps {
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },
+  {
+    id: "cp-005",
+    category: "children-pattern",
+    difficulty: "easy",
+    title: "Primary content as children",
+    badCode: `interface PanelProps {
+  title: string;
+  content: React.ReactNode;
+}
+
+// Usage:
+// <Panel
+//   title="Settings"
+//   content={<SettingsForm />}
+// />`,
+    goodCode: `interface PanelProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+// Usage:
+// <Panel title="Settings">
+//   <SettingsForm />
+// </Panel>`,
+    correctSide: "right",
+    explanationCorrect:
+      "The primary content of a component should use `children`, not a named prop. This follows JSX composition conventions and lets consumers nest content naturally. Named slots like `header` or `footer` are for secondary content areas.",
+    explanationWrong:
+      "A `content` prop works, but it fights JSX conventions. `children` is the default slot for primary content — it enables natural nesting `<Panel>...</Panel>` instead of the awkward `<Panel content={...} />`. Reserve named props for secondary content areas.",
+    sourceUrl:
+      "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
+    sourceLabel: "React Docs: Passing JSX as children",
+  },
+  {
+    id: "cp-006",
+    category: "children-pattern",
+    difficulty: "easy",
+    title: "Composition over prop drilling",
+    badCode: `interface LayoutProps {
+  userName: string;
+  userAvatar: string;
+  userRole: string;
+  navItems: NavItem[];
+  children: React.ReactNode;
+}`,
+    goodCode: `interface LayoutProps {
+  /** Rendered in the sidebar area. */
+  sidebar: React.ReactNode;
+  /** Rendered in the top header area. */
+  header: React.ReactNode;
+  /** Main content area. */
+  children: React.ReactNode;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Passing pre-rendered `ReactNode` slots avoids prop drilling. The Layout doesn't need to know about user data or nav items — it just renders whatever components the parent composes. If the sidebar design changes, only the parent's JSX changes, not the Layout props.",
+    explanationWrong:
+      "Passing raw data props forces the Layout to render user info and navigation internally. If you want a different avatar style or nav layout, you'd need to add more props or a `renderSidebar` function. `ReactNode` slots let the parent compose freely, keeping the Layout a pure layout shell.",
+    sourceUrl:
+      "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
+    sourceLabel: "React Docs: Passing JSX as children",
+  },
 ];

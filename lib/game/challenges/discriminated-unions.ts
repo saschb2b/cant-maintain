@@ -150,4 +150,30 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       "https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable",
     sourceLabel: "React Docs: Controlling an Input",
   },
+  {
+    id: "du-005",
+    category: "discriminated-unions",
+    difficulty: "easy",
+    title: "Image avatar vs initials avatar",
+    badCode: `interface AvatarProps {
+  src?: string;
+  alt?: string;
+  name?: string;
+  size?: 'sm' | 'md' | 'lg';
+}`,
+    goodCode: `type AvatarProps = {
+  size?: 'sm' | 'md' | 'lg';
+} & (
+  | { src: string; alt: string }
+  | { name: string }
+);`,
+    correctSide: "right",
+    explanationCorrect:
+      "An avatar is either an image (src + alt) or initials (name). The union makes both variants clear and ensures an image avatar always has alt text for accessibility. You can't accidentally pass `src` without `alt` or pass nothing at all.",
+    explanationWrong:
+      'Making everything optional allows `<Avatar />` with no content, `<Avatar src="..." />` with no alt text, or `<Avatar name="Jo" src="..." />` with conflicting content. A union type forces the consumer to pick one variant and provide its required props.',
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
+    sourceLabel: "TypeScript: Discriminated Unions",
+  },
 ];

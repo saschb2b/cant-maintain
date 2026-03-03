@@ -72,4 +72,149 @@ function Badge({
       "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
     sourceLabel: "MDN: Destructuring Default Values",
   },
+  {
+    id: "dv-003",
+    category: "default-values",
+    difficulty: "easy",
+    title: "Defaults in signature vs body",
+    badCode: `function Avatar({
+  src,
+  alt,
+  size,
+}: AvatarProps) {
+  const imgSize = size ?? 40;
+  const imgSrc = src ?? '/default-avatar.png';
+  const imgAlt = alt ?? 'User avatar';
+
+  return (
+    <img
+      src={imgSrc}
+      alt={imgAlt}
+      width={imgSize}
+      height={imgSize}
+    />
+  );
+}`,
+    goodCode: `function Avatar({
+  src = '/default-avatar.png',
+  alt = 'User avatar',
+  size = 40,
+}: AvatarProps) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      width={size}
+      height={size}
+    />
+  );
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      'Destructuring defaults apply when a prop is `undefined` — exactly what "not passed" means in React. This eliminates the intermediate variables and makes defaults visible in the function signature. Any developer reading the code instantly sees the fallback values.',
+    explanationWrong:
+      "Using `??` in the function body works correctly (unlike `||`), but it buries defaults inside the implementation. Destructuring defaults put them right in the signature where they're most discoverable. Compare: scanning one line vs reading through the function body to find each fallback.",
+    sourceUrl:
+      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
+    sourceLabel: "MDN: Destructuring Default Values",
+  },
+  {
+    id: "dv-004",
+    category: "default-values",
+    difficulty: "medium",
+    title: "Stable default object references",
+    badCode: `function DataGrid({
+  columns,
+  data,
+  filters = {},
+  sortOrder = [],
+  pagination = { page: 1, pageSize: 20 },
+}: DataGridProps) {
+  useEffect(() => {
+    fetchData({ filters, sortOrder, pagination });
+  }, [filters, sortOrder, pagination]);
+}`,
+    goodCode: `const EMPTY_FILTERS: Filters = {};
+const EMPTY_SORT: SortOrder[] = [];
+const DEFAULT_PAGINATION: Pagination = {
+  page: 1,
+  pageSize: 20,
+};
+
+function DataGrid({
+  columns,
+  data,
+  filters = EMPTY_FILTERS,
+  sortOrder = EMPTY_SORT,
+  pagination = DEFAULT_PAGINATION,
+}: DataGridProps) {
+  useEffect(() => {
+    fetchData({ filters, sortOrder, pagination });
+  }, [filters, sortOrder, pagination]);
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Inline `= {}`, `= []`, and `= { ... }` create new object references on every render. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time. Module-level constants are created once and have stable references.",
+    explanationWrong:
+      'Every render where `filters` isn\'t passed creates a brand new `{}`. That new object fails `===` checks in dependency arrays, causing `useEffect(() => fetch(filters), [filters])` to re-fetch on every render. Hoisting defaults to module scope gives them stable identity.',
+    sourceUrl:
+      "https://react.dev/reference/react/useMemo#every-time-my-component-renders-the-calculation-in-usememo-re-runs",
+    sourceLabel: "React Docs: useMemo troubleshooting",
+  },
+  {
+    id: "dv-005",
+    category: "default-values",
+    difficulty: "hard",
+    title: "Default callbacks that skip null checks",
+    badCode: `interface FormFieldProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  onBlur?: () => void;
+  onFocus?: () => void;
+  validate?: (value: string) => string | null;
+}
+
+function FormField({
+  onBlur,
+  onFocus,
+  validate,
+  ...props
+}: FormFieldProps) {
+  const error = validate ? validate(props.value) : null;
+  // Must null-check every callback before calling...
+}`,
+    goodCode: `const noop = () => {};
+const noValidation = () => null;
+
+interface FormFieldProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  /** @default noop */
+  onBlur?: () => void;
+  /** @default noop */
+  onFocus?: () => void;
+  /** @default () => null */
+  validate?: (value: string) => string | null;
+}
+
+function FormField({
+  onBlur = noop,
+  onFocus = noop,
+  validate = noValidation,
+  ...props
+}: FormFieldProps) {
+  const error = validate(props.value);
+  // No null checks — defaults handle missing callbacks.
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Default callbacks (noop for side effects, null-returning functions for transforms) eliminate `if (callback)` checks throughout the component. The code reads linearly instead of branching on every optional callback. Module-level defaults also provide stable references for dependency arrays.",
+    explanationWrong:
+      "Without defaults, every usage site needs a null check: `validate ? validate(value) : null`, `onBlur && onBlur()`. With 3 optional callbacks that's 3+ conditional checks scattered through the component. Default callbacks let you call them unconditionally, making the code simpler and the intent clearer.",
+    sourceUrl:
+      "https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop",
+    sourceLabel: "React Docs: Default Prop Values",
+  },
 ];

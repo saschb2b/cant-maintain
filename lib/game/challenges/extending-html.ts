@@ -91,4 +91,58 @@ export const extendingHtmlChallenges: Challenge[] = [
       "https://react.dev/reference/react/createElement",
     sourceLabel: "React Docs: createElement",
   },
+  {
+    id: "eh-004",
+    category: "extending-html",
+    difficulty: "easy",
+    title: "Wrapper div component props",
+    badCode: `interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+  style?: React.CSSProperties;
+  role?: string;
+  'aria-label'?: string;
+}`,
+    goodCode: `interface CardProps
+  extends React.ComponentProps<'div'> {
+  children: React.ReactNode;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Extending `React.ComponentProps<'div'>` inherits every valid div attribute — `className`, `style`, `role`, all ARIA props, event handlers, and more. Only declare custom props that don't exist on the native element.",
+    explanationWrong:
+      "Manually listing HTML attributes is incomplete by definition. You've covered 5 of hundreds of valid div props. What about `tabIndex`, `aria-describedby`, `onKeyDown`, `data-testid`? Extend from the native type and get them all for free.",
+    sourceUrl: "https://react.dev/reference/react-dom/components/common",
+    sourceLabel: "React Docs: Common Components",
+  },
+  {
+    id: "eh-005",
+    category: "extending-html",
+    difficulty: "easy",
+    title: "Link component extending anchor",
+    badCode: `interface LinkProps {
+  href: string;
+  children: React.ReactNode;
+  target?: string;
+  rel?: string;
+  className?: string;
+  onClick?: () => void;
+}`,
+    goodCode: `interface LinkProps
+  extends React.ComponentProps<'a'> {
+  /**
+   * Opens in a new tab with noopener noreferrer.
+   * @default false
+   */
+  isExternal?: boolean;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      'Extending `<a>` gives you `href`, `target`, `rel`, `download`, ARIA props, and all event handlers for free. The custom `isExternal` prop adds real value — it encapsulates the `target="_blank" rel="noopener noreferrer"` pattern into a single boolean.',
+    explanationWrong:
+      "Re-declaring `href`, `target`, `rel`, `className`, and `onClick` is five props you didn't need to write. You've also missed `download`, `hrefLang`, `aria-current`, and dozens more. Extend `<a>` and only add props that provide new functionality.",
+    sourceUrl: "https://react.dev/reference/react-dom/components/common",
+    sourceLabel: "React Docs: Common Components",
+  },
 ];

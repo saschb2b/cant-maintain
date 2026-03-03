@@ -64,4 +64,121 @@ export const renderPropsChallenges: Challenge[] = [
     sourceUrl: "https://mui.com/material-ui/api/autocomplete/",
     sourceLabel: "MUI: Autocomplete API",
   },
+  {
+    id: "rp-003",
+    category: "render-props",
+    difficulty: "easy",
+    title: "Static slot vs unnecessary render function",
+    badCode: `interface EmptyStateProps {
+  renderIcon: () => React.ReactNode;
+  renderTitle: () => React.ReactNode;
+  renderAction: () => React.ReactNode;
+}
+
+// Usage:
+// <EmptyState
+//   renderIcon={() => <SearchIcon />}
+//   renderTitle={() => "No results found"}
+//   renderAction={() => <Button>Reset</Button>}
+// />`,
+    goodCode: `interface EmptyStateProps {
+  icon?: React.ReactNode;
+  title: React.ReactNode;
+  action?: React.ReactNode;
+}
+
+// Usage:
+// <EmptyState
+//   icon={<SearchIcon />}
+//   title="No results found"
+//   action={<Button>Reset</Button>}
+// />`,
+    correctSide: "right",
+    explanationCorrect:
+      "Render functions are only needed when the component passes data back to the consumer. Here, EmptyState doesn't provide any data — it just displays content. Plain `ReactNode` slots are simpler: `icon={<SearchIcon />}` vs `renderIcon={() => <SearchIcon />}`.",
+    explanationWrong:
+      "These render functions take no arguments and return JSX — they're just `ReactNode` with extra ceremony. `renderIcon={() => <SearchIcon />}` creates a new function on every render for no benefit. Use `icon={<SearchIcon />}` instead. Reserve `render*` for when the component passes runtime data to the callback.",
+    sourceUrl:
+      "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
+    sourceLabel: "React Docs: Passing JSX as children",
+  },
+  {
+    id: "rp-004",
+    category: "render-props",
+    difficulty: "medium",
+    title: "Error boundary fallback",
+    badCode: `interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  fallback: React.ReactNode;
+}
+
+// Usage:
+// <ErrorBoundary
+//   fallback={<p>Something went wrong</p>}
+// >
+//   <App />
+// </ErrorBoundary>`,
+    goodCode: `interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  renderFallback: (
+    error: Error,
+    reset: () => void,
+  ) => React.ReactNode;
+}
+
+// Usage:
+// <ErrorBoundary renderFallback={(error, reset) => (
+//   <div>
+//     <p>{error.message}</p>
+//     <button onClick={reset}>Try again</button>
+//   </div>
+// )}>
+//   <App />
+// </ErrorBoundary>`,
+    correctSide: "right",
+    explanationCorrect:
+      "A render function gives the fallback access to the actual error and a reset function. A static `ReactNode` can't show the error message or offer a retry button. Use `render*` when the component has runtime data the consumer needs.",
+    explanationWrong:
+      "A static `fallback` works for generic error messages, but it can't show what went wrong or let the user retry. The Error Boundary knows the error and can reset itself — a `renderFallback` callback passes this context to the consumer.",
+    sourceUrl:
+      "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary",
+    sourceLabel: "React Docs: Error Boundaries",
+  },
+  {
+    id: "rp-005",
+    category: "render-props",
+    difficulty: "hard",
+    title: "Headless component with state callback",
+    badCode: `interface ToggleProps {
+  isOn: boolean;
+  onToggle: () => void;
+  onLabel?: string;
+  offLabel?: string;
+  size?: 'sm' | 'md' | 'lg';
+  color?: string;
+  children?: React.ReactNode;
+}`,
+    goodCode: `interface ToggleState {
+  isOn: boolean;
+  toggle: () => void;
+}
+
+interface ToggleProps {
+  isOn: boolean;
+  onToggle: () => void;
+  /**
+   * Full control over rendering.
+   * Receives the toggle state.
+   */
+  children: (state: ToggleState) => React.ReactNode;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "A headless component exposes state and behavior through a render callback, leaving all visual decisions to the consumer. Instead of adding `size`, `color`, `onLabel`, and `offLabel` props to handle every use case, the consumer gets full control. This is the pattern behind libraries like Downshift and React Aria.",
+    explanationWrong:
+      "Adding visual props (`size`, `color`, `onLabel`) makes the component increasingly rigid. Want a toggle that looks like a checkbox? A switch? An icon button? Each new design requires new props. A render callback hands control to the consumer — they render whatever they want using the toggle state.",
+    sourceUrl:
+      "https://react.dev/reference/react/cloneElement#alternatives",
+    sourceLabel: "React Docs: Alternatives to cloneElement",
+  },
 ];
