@@ -39,6 +39,15 @@ export function Game() {
     return side === currentChallenge.correctSide ? "correct" : "wrong";
   };
 
+  // Loading state while client-side shuffle initializes
+  if (!state) {
+    return (
+      <div className="w-full max-w-6xl mx-auto flex items-center justify-center py-24">
+        <div className="text-muted-foreground text-sm animate-pulse">Loading challenges...</div>
+      </div>
+    );
+  }
+
   if (state.isFinished) {
     return (
       <div className="w-full max-w-3xl mx-auto">
