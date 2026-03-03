@@ -9,7 +9,9 @@ import { Game } from "@/components/game/game";
 import { Code2, Heart, Coffee, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Play — Can't Maintain",
+  title: "Play",
+  description:
+    "Pick the better React prop naming in 10 side-by-side code challenges. Covers callbacks, booleans, JSDoc, discriminated unions, and more.",
 };
 
 export default function PlayPage() {

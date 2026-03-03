@@ -13,11 +13,45 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
 });
 
+const siteUrl = "https://cant-maintain.saschb2b.com";
+
 export const metadata: Metadata = {
-  title: "Can't Maintain - React Prop Naming Game",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Can't Maintain — React Prop Naming Game",
+    template: "%s — Can't Maintain",
+  },
   description:
-    "A fun training game to learn React prop naming conventions, callback patterns, and JSDoc documentation best practices.",
-  generator: "v0.app",
+    "Train your eye for clean React component APIs. Pick the better prop naming in 10 side-by-side challenges — callbacks, booleans, JSDoc, TypeScript patterns, and more.",
+  keywords: [
+    "React",
+    "props",
+    "TypeScript",
+    "component API",
+    "prop naming",
+    "quiz",
+    "training",
+    "best practices",
+    "JSDoc",
+    "callbacks",
+    "boolean props",
+  ],
+  authors: [{ name: "Sascha", url: "https://www.saschb2b.com/" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Can't Maintain",
+    title: "Can't Maintain — React Prop Naming Game",
+    description:
+      "Can you spot the better props? Train your eye for clean React component APIs in under 5 minutes.",
+    url: siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Can't Maintain — React Prop Naming Game",
+    description:
+      "Can you spot the better props? Train your eye for clean React component APIs in under 5 minutes.",
+  },
   icons: {
     icon: [
       {
