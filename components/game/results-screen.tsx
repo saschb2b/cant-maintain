@@ -190,7 +190,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
         <Typography
           variant="body2"
           fontWeight={600}
-          sx={{ mb: 1.5, color: "text.secondary" }}
+          sx={{ mb: 1.5, color: "text.primary" }}
         >
           Challenge Review
         </Typography>
@@ -267,8 +267,8 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                     sx={{
                       height: 20,
                       fontSize: "0.65rem",
-                      bgcolor: "rgba(0,0,0,0.04)",
-                      color: "text.secondary",
+                      bgcolor: "rgba(0,0,0,0.08)",
+                      color: "text.primary",
                     }}
                   />
                 </Stack>
@@ -285,7 +285,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                   >
                     <Typography
                       variant="body2"
-                      color="text.secondary"
+                      color="text.primary"
                       sx={{ lineHeight: 1.6, mb: 1 }}
                     >
                       {challenge.explanationWrong}
@@ -319,7 +319,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
       {wrongChallenges.length > 0 && wrongChallenges.length < total && (
         <Typography
           variant="body2"
-          color="text.secondary"
+          color="text.primary"
           sx={{ textAlign: "center", fontStyle: "italic" }}
         >
           {wrongChallenges.length === 1
