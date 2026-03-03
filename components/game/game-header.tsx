@@ -4,8 +4,9 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import LinearProgress from "@mui/material/LinearProgress";
 import type { Difficulty } from "@/lib/game/types";
+
+type QuestionResult = "correct" | "wrong" | null;
 
 interface GameHeaderProps {
   score: number;
@@ -13,6 +14,7 @@ interface GameHeaderProps {
   currentQuestion: number;
   streak: number;
   difficulty: Difficulty | null;
+  questionResults: QuestionResult[];
 }
 
 const DIFFICULTY_CONFIG: Record<
@@ -38,8 +40,8 @@ export function GameHeader({
   currentQuestion,
   streak,
   difficulty,
+  questionResults,
 }: GameHeaderProps) {
-  const progressPercent = (currentQuestion / total) * 100;
   const diffConfig = difficulty ? DIFFICULTY_CONFIG[difficulty] : null;
 
   return (
@@ -116,7 +118,41 @@ export function GameHeader({
         </Stack>
       </Stack>
 
-      <LinearProgress variant="determinate" value={progressPercent} />
+      <Box
+        sx={{
+          display: "flex",
+          gap: "3px",
+          width: "100%",
+        }}
+      >
+        {questionResults.map((result, i) => {
+          const isCurrent = i === currentQuestion - 1;
+          let bgcolor: string;
+          if (result === "correct") {
+            bgcolor = "var(--mui-palette-success-main)";
+          } else if (result === "wrong") {
+            bgcolor = "var(--mui-palette-error-main)";
+          } else if (isCurrent) {
+            bgcolor = "var(--mui-palette-primary-main)";
+          } else {
+            bgcolor = "rgba(255,255,255,0.08)";
+          }
+
+          return (
+            <Box
+              key={i}
+              sx={{
+                flex: 1,
+                height: 6,
+                borderRadius: 1,
+                bgcolor,
+                opacity: isCurrent && !result ? 0.6 : 1,
+                transition: "background-color 0.3s, opacity 0.3s",
+              }}
+            />
+          );
+        })}
+      </Box>
     </Stack>
   );
 }

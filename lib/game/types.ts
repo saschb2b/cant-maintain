@@ -9,7 +9,9 @@ export type ChallengeCategory =
   | "prop-specificity"
   | "render-props"
   | "children-pattern"
-  | "discriminated-unions";
+  | "discriminated-unions"
+  | "extending-html"
+  | "default-values";
 
 /**
  * A single challenge in the game.

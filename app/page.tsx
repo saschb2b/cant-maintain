@@ -63,7 +63,11 @@ export default function HomePage() {
         <Divider />
       </Box>
 
-      <Container maxWidth="lg" component="section" sx={{ py: 4, flex: 1 }}>
+      <Container
+        maxWidth="lg"
+        component="section"
+        sx={{ py: 4, flex: 1 }}
+      >
         <Game />
       </Container>
 

@@ -12,6 +12,7 @@ interface CodePanelProps {
   isSelectable: boolean;
   onSelect: () => void;
   result?: "correct" | "wrong" | null;
+  fixedHeight?: number;
 }
 
 export function CodePanel({
@@ -20,6 +21,7 @@ export function CodePanel({
   isSelectable,
   onSelect,
   result,
+  fixedHeight,
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mountHeight, setMountHeight] = useState<number | null>(null);
@@ -31,7 +33,7 @@ export function CodePanel({
     return Math.max(lineCount * lineHeight + padding, 120);
   }, [code]);
 
-  const editorHeight = mountHeight ?? calculatedHeight;
+  const editorHeight = fixedHeight ?? mountHeight ?? calculatedHeight;
 
   const handleEditorMount: OnMount = useCallback((editor) => {
     const lineCount = editor.getModel()?.getLineCount() ?? 10;
@@ -109,9 +111,22 @@ export function CodePanel({
         borderColor,
         overflow: "hidden",
         cursor: isSelectable ? "pointer" : "default",
-        transition: "all 0.2s",
+        transition: "all 0.2s ease",
         boxShadow: ringColor ? `0 0 0 3px ${ringColor}` : undefined,
-        "&:hover": isSelectable ? { borderColor: "text.secondary" } : undefined,
+        "&:hover": isSelectable
+          ? {
+              borderColor: "text.secondary",
+              transform: "translateY(-2px)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+            }
+          : undefined,
+        "&:focus-visible": isSelectable
+          ? {
+              borderColor: "primary.main",
+              outline: "none",
+              boxShadow: "0 0 0 3px rgba(43,217,123,0.3)",
+            }
+          : undefined,
       }}
     >
       <Box
@@ -129,8 +144,16 @@ export function CodePanel({
         <Typography
           variant="body2"
           fontFamily="var(--font-geist-mono), monospace"
-          fontWeight={600}
-          color="text.secondary"
+          fontWeight={700}
+          sx={{
+            color:
+              result === "correct"
+                ? "success.main"
+                : result === "wrong"
+                  ? "error.main"
+                  : "text.primary",
+            fontSize: "0.9rem",
+          }}
         >
           {label}
         </Typography>
