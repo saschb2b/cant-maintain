@@ -5,9 +5,30 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
-import type { GameState } from "@/lib/game/types";
-import { RotateCcw, Trophy, Target, Zap, Clock } from "lucide-react";
+import Link from "@mui/material/Link";
+import type { GameState, ChallengeCategory } from "@/lib/game/types";
+import {
+  RotateCcw,
+  Check,
+  X,
+  Zap,
+  Clock,
+  ExternalLink,
+} from "lucide-react";
+
+const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
+  "callback-naming": "Callback Naming",
+  "boolean-naming": "Boolean Props",
+  jsdoc: "JSDoc",
+  "prop-specificity": "Prop Specificity",
+  "render-props": "Render Props",
+  "children-pattern": "Children Pattern",
+  "discriminated-unions": "Discriminated Unions",
+  "extending-html": "Extending HTML",
+  "default-values": "Default Values",
+};
 
 interface ResultsScreenProps {
   state: GameState;
@@ -35,154 +56,286 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
           ? "Getting There"
           : "Keep Practicing";
 
+  const scoreColor =
+    percentage >= 70
+      ? "success.main"
+      : percentage >= 50
+        ? "warning.main"
+        : "error.main";
+
+  const wrongChallenges = state.challenges.filter(
+    (c) => state.answers[c.id] === "wrong",
+  );
+
   return (
-    <Stack alignItems="center" spacing={4} sx={{ py: 6 }}>
-      <Box sx={{ textAlign: "center" }}>
-        <Trophy size={64} color="var(--mui-palette-warning-main)" />
-        <Typography variant="h4" fontWeight={700} sx={{ mt: 1 }}>
-          {rank}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Challenge your colleagues to beat your score!
-        </Typography>
-      </Box>
-
-      <Box sx={{ position: "relative", display: "inline-flex" }}>
-        <CircularProgress
-          variant="determinate"
-          value={100}
-          size={160}
-          thickness={3}
-          sx={{ color: "rgba(0,0,0,0.06)", position: "absolute" }}
-        />
-        <CircularProgress
-          variant="determinate"
-          value={percentage}
-          size={160}
-          thickness={3}
-          sx={{
-            color:
-              percentage >= 70
-                ? "success.main"
-                : percentage >= 50
-                  ? "warning.main"
-                  : "error.main",
-          }}
-        />
-        <Box
-          sx={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Typography
-            variant="h3"
-            fontWeight={700}
-            fontFamily="var(--font-geist-mono), monospace"
-          >
-            {percentage}%
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Final Score
-          </Typography>
-        </Box>
-      </Box>
-
-      <Stack direction="row" spacing={2} sx={{ width: "100%", maxWidth: 450 }}>
-        <Paper
-          elevation={0}
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 0.5,
-            p: 2.5,
-            bgcolor: "secondary.main",
-            border: 1,
-            borderColor: "divider",
-          }}
-        >
-          <Target size={20} color="var(--mui-palette-success-main)" />
-          <Typography
-            variant="h5"
-            fontWeight={700}
-            fontFamily="var(--font-geist-mono), monospace"
-          >
-            {correct}/{total}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Correct
-          </Typography>
-        </Paper>
-
-        <Paper
-          elevation={0}
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 0.5,
-            p: 2.5,
-            bgcolor: "secondary.main",
-            border: 1,
-            borderColor: "divider",
-          }}
-        >
-          <Zap size={20} color="var(--mui-palette-warning-main)" />
-          <Typography
-            variant="h5"
-            fontWeight={700}
-            fontFamily="var(--font-geist-mono), monospace"
-          >
-            {state.bestStreak}x
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Best Streak
-          </Typography>
-        </Paper>
-
-        <Paper
-          elevation={0}
-          sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 0.5,
-            p: 2.5,
-            bgcolor: "secondary.main",
-            border: 1,
-            borderColor: "divider",
-          }}
-        >
-          <Clock size={20} color="var(--mui-palette-text-secondary)" />
-          <Typography
-            variant="h5"
-            fontWeight={700}
-            fontFamily="var(--font-geist-mono), monospace"
-          >
-            {minutes}:{seconds.toString().padStart(2, "0")}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Time
-          </Typography>
-        </Paper>
-      </Stack>
-
-      <Button
-        variant="contained"
-        size="large"
-        onClick={onRestart}
-        startIcon={<RotateCcw size={18} />}
+    <Stack spacing={4} sx={{ py: 4 }}>
+      {/* Summary header */}
+      <Paper
+        elevation={0}
+        sx={{
+          border: 1,
+          borderColor: "divider",
+          p: 3,
+        }}
       >
-        Play Again
-      </Button>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          alignItems="center"
+          spacing={3}
+        >
+          {/* Score ring */}
+          <Box
+            sx={{
+              position: "relative",
+              display: "inline-flex",
+              flexShrink: 0,
+            }}
+          >
+            <CircularProgress
+              variant="determinate"
+              value={100}
+              size={80}
+              thickness={3.5}
+              sx={{ color: "rgba(0,0,0,0.06)", position: "absolute" }}
+            />
+            <CircularProgress
+              variant="determinate"
+              value={percentage}
+              size={80}
+              thickness={3.5}
+              sx={{ color: scoreColor }}
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                fontFamily="var(--font-geist-mono), monospace"
+              >
+                {percentage}%
+              </Typography>
+            </Box>
+          </Box>
+
+          {/* Rank + stats */}
+          <Box sx={{ flex: 1, textAlign: { xs: "center", sm: "left" } }}>
+            <Typography variant="h5" fontWeight={700}>
+              {rank}
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={2.5}
+              sx={{
+                mt: 0.5,
+                justifyContent: { xs: "center", sm: "flex-start" },
+              }}
+            >
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Check size={14} color="var(--mui-palette-success-main)" />
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  fontFamily="var(--font-geist-mono), monospace"
+                >
+                  {correct}/{total}
+                </Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Zap size={14} color="var(--mui-palette-warning-main)" />
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  fontFamily="var(--font-geist-mono), monospace"
+                >
+                  {state.bestStreak}x streak
+                </Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Clock size={14} color="var(--mui-palette-text-secondary)" />
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  fontFamily="var(--font-geist-mono), monospace"
+                >
+                  {minutes}:{seconds.toString().padStart(2, "0")}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Box>
+
+          {/* Play Again */}
+          <Button
+            variant="contained"
+            size="large"
+            onClick={onRestart}
+            startIcon={<RotateCcw size={18} />}
+            sx={{ flexShrink: 0 }}
+          >
+            Play Again
+          </Button>
+        </Stack>
+      </Paper>
+
+      {/* Challenge review */}
+      <Box>
+        <Typography
+          variant="body2"
+          fontWeight={600}
+          sx={{ mb: 1.5, color: "text.secondary" }}
+        >
+          Challenge Review
+        </Typography>
+
+        <Stack spacing={1}>
+          {state.challenges.map((challenge, i) => {
+            const result = state.answers[challenge.id];
+            const isCorrect = result === "correct";
+
+            return (
+              <Paper
+                key={challenge.id}
+                elevation={0}
+                sx={{
+                  border: 1,
+                  borderColor: isCorrect
+                    ? "divider"
+                    : "rgba(196,87,58,0.3)",
+                  bgcolor: isCorrect
+                    ? "background.paper"
+                    : "rgba(196,87,58,0.04)",
+                  overflow: "hidden",
+                }}
+              >
+                {/* Row header */}
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1.5}
+                  sx={{ px: 2, py: 1.5 }}
+                >
+                  <Box
+                    sx={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: "50%",
+                      bgcolor: isCorrect
+                        ? "rgba(91,138,114,0.12)"
+                        : "rgba(196,87,58,0.12)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {isCorrect ? (
+                      <Check size={12} color="#5B8A72" strokeWidth={3} />
+                    ) : (
+                      <X size={12} color="#C4573A" strokeWidth={3} />
+                    )}
+                  </Box>
+                  <Typography
+                    variant="body2"
+                    fontWeight={500}
+                    sx={{
+                      flex: 1,
+                      color: isCorrect ? "text.primary" : "error.main",
+                    }}
+                  >
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      color="text.secondary"
+                      fontFamily="var(--font-geist-mono), monospace"
+                      sx={{ mr: 1, fontSize: "0.75rem" }}
+                    >
+                      {i + 1}.
+                    </Typography>
+                    {challenge.title}
+                  </Typography>
+                  <Chip
+                    label={CATEGORY_LABELS[challenge.category]}
+                    size="small"
+                    sx={{
+                      height: 20,
+                      fontSize: "0.65rem",
+                      bgcolor: "rgba(0,0,0,0.04)",
+                      color: "text.secondary",
+                    }}
+                  />
+                </Stack>
+
+                {/* Expanded explanation for wrong answers */}
+                {!isCorrect && (
+                  <Box
+                    sx={{
+                      px: 2,
+                      pb: 2,
+                      pt: 0,
+                      ml: 4.75,
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ lineHeight: 1.6, mb: 1 }}
+                    >
+                      {challenge.explanationWrong}
+                    </Typography>
+                    <Link
+                      href={challenge.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="hover"
+                      sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 0.5,
+                        fontSize: "0.75rem",
+                        fontWeight: 500,
+                        color: "primary.main",
+                      }}
+                    >
+                      <ExternalLink size={12} />
+                      {challenge.sourceLabel}
+                    </Link>
+                  </Box>
+                )}
+              </Paper>
+            );
+          })}
+        </Stack>
+      </Box>
+
+      {/* Encouragement for wrong answers */}
+      {wrongChallenges.length > 0 && wrongChallenges.length < total && (
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", fontStyle: "italic" }}
+        >
+          {wrongChallenges.length === 1
+            ? "Just 1 to review — you almost nailed it!"
+            : `${String(wrongChallenges.length)} to review — play again for a fresh set.`}
+        </Typography>
+      )}
+
+      {wrongChallenges.length === 0 && (
+        <Typography
+          variant="body2"
+          color="success.main"
+          sx={{ textAlign: "center", fontWeight: 500 }}
+        >
+          Perfect run — every convention nailed. Play again for new challenges!
+        </Typography>
+      )}
+
     </Stack>
   );
 }

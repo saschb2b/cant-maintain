@@ -73,14 +73,35 @@ export function Game() {
 
   const handleKeyPress = useCallback(
     (e: KeyboardEvent) => {
-      if (currentAnswer || !currentChallenge) return;
-      if (e.key === "a" || e.key === "A" || e.key === "1") {
+      if (!currentChallenge) return;
+
+      // After answering: Enter/Space advances to next
+      if (currentAnswer) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          next();
+        }
+        return;
+      }
+
+      // Before answering: A/B/1/2/ArrowLeft/ArrowRight to pick
+      if (
+        e.key === "a" ||
+        e.key === "A" ||
+        e.key === "1" ||
+        e.key === "ArrowLeft"
+      ) {
         answer("left");
-      } else if (e.key === "b" || e.key === "B" || e.key === "2") {
+      } else if (
+        e.key === "b" ||
+        e.key === "B" ||
+        e.key === "2" ||
+        e.key === "ArrowRight"
+      ) {
         answer("right");
       }
     },
-    [currentAnswer, currentChallenge, answer],
+    [currentAnswer, currentChallenge, answer, next],
   );
 
   useEffect(() => {
@@ -247,13 +268,15 @@ export function Game() {
       <Typography
         variant="caption"
         color="text.secondary"
+        fontFamily="var(--font-geist-mono), monospace"
         sx={{
           textAlign: "center",
-          opacity: currentAnswer ? 0 : 0.5,
+          opacity: 0.5,
           transition: "opacity 0.2s",
+          fontSize: "0.7rem",
         }}
       >
-        Press A or B to choose
+        {currentAnswer ? "Press Enter to continue" : "A / ← for left · B / → for right"}
       </Typography>
     </Stack>
   );

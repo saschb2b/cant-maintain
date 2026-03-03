@@ -25,10 +25,18 @@ const DIFFICULTY_ORDER: Record<Difficulty, number> = {
   hard: 2,
 };
 
+/** How many challenges per difficulty tier in a single session. */
+const SESSION_PICKS: Record<Difficulty, number> = {
+  easy: 3,
+  medium: 4,
+  hard: 3,
+};
+
 /**
- * Prepares the challenge list: shuffles within each difficulty tier,
- * then concatenates easy -> medium -> hard for progressive difficulty.
- * Also randomizes which side the "good" code appears on.
+ * Prepares a session of 10 challenges: shuffles within each difficulty tier,
+ * picks a fixed number per tier, then concatenates easy -> medium -> hard
+ * for progressive difficulty. Also randomizes which side the "good" code
+ * appears on.
  */
 function prepareChallenges(): Challenge[] {
   const byDifficulty = allChallenges.reduce<Record<Difficulty, Challenge[]>>(
@@ -42,12 +50,14 @@ function prepareChallenges(): Challenge[] {
   return (Object.entries(byDifficulty) as [Difficulty, Challenge[]][])
     .sort(([a], [b]) => DIFFICULTY_ORDER[a] - DIFFICULTY_ORDER[b])
     .flatMap(([, cs]) =>
-      shuffle(cs).map((c) => ({
-        ...c,
-        correctSide: (Math.random() > 0.5 ? "left" : "right") satisfies
-          | "left"
-          | "right",
-      })),
+      shuffle(cs)
+        .slice(0, SESSION_PICKS[cs[0]?.difficulty ?? "medium"])
+        .map((c) => ({
+          ...c,
+          correctSide: (Math.random() > 0.5 ? "left" : "right") satisfies
+            | "left"
+            | "right",
+        })),
     );
 }
 
