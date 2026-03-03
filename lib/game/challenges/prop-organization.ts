@@ -101,16 +101,17 @@ interface ProfileCardProps {
     category: "prop-organization",
     difficulty: "medium",
     title: "Structure flat coordinate props",
-    badCode: `interface MapViewProps {
-  centerLat: number;
-  centerLng: number;
-  zoomLevel: number;
-  minZoom: number;
-  maxZoom: number;
-  markerLat?: number;
-  markerLng?: number;
-  markerLabel?: string;
-  onMapClick: (lat: number, lng: number) => void;
+    badCode: `interface Coordinates {
+  x: number;
+  y: number;
+}
+
+interface MapViewProps {
+  center: Coordinates;
+  zoom: number;
+  zoomRange?: { min: number; max: number };
+  marker?: { coords: Coordinates; text: string };
+  onMapClick: (coords: Coordinates) => void;
 }`,
     goodCode: `interface LatLng {
   lat: number;
@@ -126,9 +127,9 @@ interface MapViewProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Nine flat props become five structured ones. `center` groups lat/lng into a reusable `LatLng` type. `marker` is optional as a whole — you don't need three independent optional props that are only valid together. The callback receives a `LatLng` instead of two loose numbers, consistent with the rest of the API.",
+      "Domain-specific names beat generic ones: `LatLng` with `lat`/`lng` is immediately clear for a map, while `Coordinates` with `x`/`y` could mean screen pixels, grid positions, or anything. `position` tells you where the marker sits; `coords` is just a synonym for the type name. `label` specifies what gets displayed; `text` is vague.",
     explanationWrong:
-      "Flat props with shared prefixes (`centerLat`/`centerLng`, `markerLat`/`markerLng`) signal missing structure. A marker always has both a position and a label — three independent optionals allow passing `markerLabel` without a position. Grouping into typed objects makes relationships explicit and the API smaller.",
+      "`Coordinates` with `x`/`y` is a generic math concept — on a map, you work with latitude and longitude, not abstract axes. `coords` is redundant naming (the type already says Coordinates). `text` could be anything; `label` specifies it's the displayed identifier. Domain-specific naming makes the API self-documenting for the use case.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },

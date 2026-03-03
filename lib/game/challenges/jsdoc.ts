@@ -34,9 +34,13 @@ export const jsdocChallenges: Challenge[] = [
     difficulty: "medium",
     title: "Component documentation",
     badCode: `interface TooltipProps {
+  /** The content. */
   content: string;
+  /** The children. */
   children: React.ReactNode;
+  /** The position. */
   position?: 'top' | 'bottom';
+  /** The delay. */
   delay?: number;
 }`,
     goodCode: `interface TooltipProps {
@@ -57,9 +61,9 @@ export const jsdocChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "JSDoc comments appear in IDE hover tooltips, making your component self-documenting. Noting `@default` values for optional props is especially valuable - no need to read the implementation.",
+      "Good JSDoc explains *what* a prop does and documents defaults. 'The text content displayed inside the tooltip' is useful; 'The content' just repeats the prop name. The `@default` tags on optional props are especially valuable — no need to read the implementation to know the fallback.",
     explanationWrong:
-      "Without JSDoc, every consumer of this component must read the source to understand what `delay` means (seconds? ms?), what happens without `position`, and what `content` actually renders.",
+      "JSDoc that just restates the prop name ('The delay', 'The position') adds noise, not clarity. Compare: 'The delay' tells you nothing about the unit or default. 'Delay in milliseconds before the tooltip appears. @default 200' answers every question a consumer would have.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
     sourceLabel: "TypeScript: JSDoc Reference",
@@ -70,8 +74,11 @@ export const jsdocChallenges: Challenge[] = [
     difficulty: "medium",
     title: "Callback prop documentation",
     badCode: `interface DataTableProps<T> {
+  /** The data to display. */
   data: T[];
+  /** Handler for row clicks. */
   onRowClick?: (row: T) => void;
+  /** Handler for sorting. */
   onSort?: (col: string) => void;
 }`,
     goodCode: `interface DataTableProps<T> {
@@ -90,9 +97,9 @@ export const jsdocChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Documenting callbacks is crucial: what triggers them, and what the parameters represent. Notice `columnKey` is also more descriptive than `col`.",
+      "Good callback documentation explains *when* the callback fires and *what* the parameters represent. 'Called when a column header is clicked for sorting' tells you the trigger. The rename from `col` to `columnKey` reinforces clarity. Compare 'Handler for sorting' — that just restates the prop name.",
     explanationWrong:
-      "Undocumented callbacks force consumers to guess: When is `onSort` called? What does the `col` string represent - a column name, index, or key? JSDoc eliminates the guesswork.",
+      "JSDoc like 'Handler for sorting' tells you nothing you can't already see from `onSort`. Good documentation answers the questions developers actually have: *when* is it called (on header click), *what* does the parameter represent (the column key, not an index or label). The rename from `col` to `columnKey` also helps — parameter names are documentation too.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html",
     sourceLabel: "TypeScript: JSDoc Reference",
@@ -101,13 +108,28 @@ export const jsdocChallenges: Challenge[] = [
     id: "jd-003",
     category: "jsdoc",
     difficulty: "hard",
-    title: "JSDoc with usage examples",
-    badCode: `// Renders a confirmation dialog
+    title: "Realistic JSDoc examples",
+    badCode: `/**
+ * A confirmation dialog component.
+ *
+ * @example
+ * <ConfirmDialog
+ *   title="Title"
+ *   message="Message"
+ *   onConfirm={handleConfirm}
+ *   onCancel={handleCancel}
+ * />
+ */
 interface ConfirmDialogProps {
+  /** The title. */
   title: string;
+  /** The message. */
   message: string;
+  /** Confirm handler. */
   onConfirm: () => void;
+  /** Cancel handler. */
   onCancel: () => void;
+  /** The variant. */
   variant?: 'info' | 'danger';
 }`,
     goodCode: `/**
@@ -141,9 +163,9 @@ interface ConfirmDialogProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "The `@example` tag in JSDoc shows up directly in your IDE on hover. New developers can see exactly how to use the component without searching the codebase for usage patterns.",
+      "A good `@example` uses realistic prop values that show how the component is *actually* used. `title=\"Delete project?\"` and `variant=\"danger\"` paint a real scenario. Prop-level JSDoc explains purpose, not just the name: 'The heading text of the dialog' vs 'The title.'",
     explanationWrong:
-      "A single-line comment above the interface is almost useless. JSDoc with `@example` gives IDE-integrated documentation, showing developers exactly how to use the component with realistic prop values.",
+      "Both have `@example` blocks, but generic placeholders like `title=\"Title\"` defeat the purpose. An example should teach by showing a real use case — what kind of message goes here, which variant to pick. Prop-level JSDoc like 'The title' also just restates the name. Compare 'The heading text of the dialog' which tells you it renders as a heading.",
     sourceUrl: "https://jsdoc.app/tags-example",
     sourceLabel: "JSDoc: @example tag",
   },

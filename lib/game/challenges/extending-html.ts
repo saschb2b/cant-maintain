@@ -6,24 +6,31 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "medium",
     title: "Custom button component props",
-    badCode: `interface ButtonProps {
+    badCode: `interface ButtonProps
+  extends React.ComponentProps<'button'> {
+  /** The button text. */
   label: string;
+  /** Click handler. */
   onClick?: () => void;
+  /** Whether the button is disabled. */
   disabled?: boolean;
+  /** Button type. @default 'button' */
   type?: 'button' | 'submit' | 'reset';
-  className?: string;
-  id?: string;
 }`,
     goodCode: `interface ButtonProps
   extends React.ComponentProps<'button'> {
   /** The button's visible text content. */
   label: string;
+  /** Visual style variant. @default 'primary' */
+  variant?: 'primary' | 'secondary' | 'danger';
+  /** Button size. @default 'md' */
+  size?: 'sm' | 'md' | 'lg';
 }`,
     correctSide: "right",
     explanationCorrect:
-      "`React.ComponentProps<'button'>` gives you every native button attribute for free - onClick, disabled, type, aria attributes, and more. Only declare custom props that the native element doesn't have.",
+      "When you extend `ComponentProps<'button'>`, `onClick`, `disabled`, and `type` are already included with correct types. Only add props that the native element doesn't have — `label`, `variant`, and `size` are genuine additions. Re-declaring inherited props clutters the API.",
     explanationWrong:
-      "Manually re-declaring native attributes is incomplete and tedious. You'll miss `aria-describedby`, `form`, `formAction`, and dozens more. Extend from `React.ComponentProps` and only add what's new.",
+      "Re-declaring `onClick`, `disabled`, and `type` after extending `ComponentProps<'button'>` is redundant. Worse, it can narrow the types — `onClick?: () => void` drops the `React.MouseEvent` parameter, and `type` limits to 3 values when the native type is more permissive. Extend once and only declare what's truly new.",
     sourceUrl: "https://react.dev/reference/react-dom/components/common",
     sourceLabel: "React Docs: Common Components",
   },
@@ -32,13 +39,17 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "medium",
     title: "Input wrapper with custom onChange",
-    badCode: `interface TextFieldProps {
+    badCode: `interface TextFieldProps
+  extends Omit<
+    React.ComponentProps<'input'>,
+    'onChange' | 'value'
+  > {
+  /** Controlled string value. */
   value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  disabled?: boolean;
-  maxLength?: number;
-  name?: string;
+  /** Called on input change with the full event. */
+  onChange: (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
 }`,
     goodCode: `interface TextFieldProps
   extends Omit<
@@ -53,9 +64,9 @@ export const extendingHtmlChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Using `Omit` lets you override specific native props while keeping all others. Here, `onChange` is simplified to pass just the value string. Consumers still get `placeholder`, `disabled`, `maxLength`, and every other input attribute automatically.",
+      "`Omit` should only remove props you need to redefine. The native `value` on `<input>` already works fine — omitting and re-declaring it as `string` is unnecessary. The real win is simplifying `onChange` to pass just the string value, so consumers write `onChange={setValue}` instead of `onChange={(e) => setValue(e.target.value)}`.",
     explanationWrong:
-      "Re-declaring native input attributes one by one means you'll inevitably miss some. `Omit<React.ComponentProps<'input'>, 'onChange'>` inherits everything and only overrides what's different - a common pattern in design system components.",
+      "Omitting `value` just to re-declare it as `string` is redundant — the native input already accepts `string`. The `onChange` still passes the raw event, forcing every consumer to extract `e.target.value`. Omit only what you're genuinely changing, and simplify the callback signature to pass just the data consumers need.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
     sourceLabel: "TypeScript: Omit Utility Type",
@@ -65,13 +76,16 @@ export const extendingHtmlChallenges: Challenge[] = [
     category: "extending-html",
     difficulty: "hard",
     title: "Polymorphic component typing",
-    badCode: `interface CardProps {
-  as?: string;
+    badCode: `type CardProps<
+  E extends string = 'div'
+> = {
+  /** The HTML element to render as. */
+  as?: E;
   children: React.ReactNode;
-  className?: string;
-  href?: string;
-  onClick?: () => void;
-}`,
+} & Omit<
+  React.HTMLAttributes<HTMLElement>,
+  'as' | 'children'
+>;`,
     goodCode: `type CardProps<
   E extends React.ElementType = 'div'
 > = {
@@ -84,9 +98,9 @@ export const extendingHtmlChallenges: Challenge[] = [
 >;`,
     correctSide: "right",
     explanationCorrect:
-      'The generic `as` prop lets a Card render as a `div`, `section`, `a`, or any component - with type-safe props for that element. `as="a"` enables `href`; `as="button"` enables `onClick` and `type`. TypeScript catches invalid combos like `<Card as="a" disabled />` at compile time.',
+      '`React.ElementType` constrains `as` to valid elements/components, and `ComponentPropsWithoutRef<E>` adapts the available props based on the element. `as="a"` enables `href`; `as="button"` enables `type`. Compare `string` + `HTMLAttributes<HTMLElement>` which accepts any string and always gives generic div-like props regardless of the element.',
     explanationWrong:
-      "Typing `as` as `string` gives no type safety - you'd need to manually add every possible HTML prop (`href`, `onClick`, `disabled`, etc.) and hope consumers use the right ones. A generic `ElementType` constraint makes TypeScript infer the correct props automatically.",
+      'Using `string` for `as` accepts `"banana"` as a valid element. `HTMLAttributes<HTMLElement>` always gives the same generic props — `as="a"` won\'t enable `href`, and `as="button"` won\'t enable `type`. `React.ElementType` + `ComponentPropsWithoutRef<E>` make TypeScript infer the correct props for whatever element type is passed.',
     sourceUrl: "https://react.dev/reference/react/createElement",
     sourceLabel: "React Docs: createElement",
   },

@@ -6,10 +6,13 @@ export const childrenPatternChallenges: Challenge[] = [
     category: "children-pattern",
     difficulty: "hard",
     title: "Generic list component",
-    badCode: `interface ListProps {
-  data: any[];
-  render: (item: any) => any;
-  empty: any;
+    badCode: `interface ListProps<T> {
+  /** The data to iterate. */
+  data: T[];
+  /** Render function for each item. */
+  render: (item: T) => React.ReactNode;
+  /** Empty state content. */
+  empty: React.ReactNode;
 }`,
     goodCode: `interface ListProps<T> {
   /** The data array to iterate over. */
@@ -28,9 +31,9 @@ export const childrenPatternChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Generics (`<T>`) make `renderItem` type-safe: if `data` is `User[]`, the callback receives `User` - no casting needed. `renderItem` is specific (not vague `render`), `emptyState` is a `ReactNode` slot (not mystery `any`), and `React.ReactNode` is the correct return type for anything renderable.",
+      "`renderItem` is specific (render what? an item), the callback includes `index` for key assignment and alternating styles, and `emptyState` clearly describes the slot's purpose. The `@example` in JSDoc shows the expected usage pattern. Compare `render` (of what?) and `empty` (a boolean? a message?).",
     explanationWrong:
-      "Five uses of `any` means zero type safety. If `data` is `User[]`, `render` still receives `any` - you've lost the connection between input and output types. Generics preserve that link. Beyond types, `render` (of what?) and `empty` (boolean? string? component?) are ambiguously named.",
+      "`render` could mean anything — render the list? render an item? render a header? `empty` is equally ambiguous — is it a boolean, a string, or JSX? Specific names like `renderItem` and `emptyState` make the API self-documenting. The callback also misses the `index` parameter, which is needed for `key` props and alternating row styles.",
     sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
     sourceLabel: "TypeScript: Generics",
   },

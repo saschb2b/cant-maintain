@@ -199,9 +199,30 @@ export function Game() {
             color: "text.primary",
             fontSize: "0.7rem",
             height: 22,
+            filter: displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
+            opacity: displayAnswer || isReviewing ? 1 : 0.6,
+            transition:
+              displayAnswer || isReviewing
+                ? "filter 0.4s ease, opacity 0.4s ease"
+                : "none",
+            userSelect: displayAnswer || isReviewing ? "auto" : "none",
           }}
         />
-        <Typography variant="h6" fontWeight={600}>
+        <Typography
+          variant="h6"
+          fontWeight={600}
+          sx={{
+            filter: displayAnswer || isReviewing ? "blur(0)" : "blur(6px)",
+            opacity: displayAnswer || isReviewing ? 1 : 0.6,
+            transform:
+              displayAnswer || isReviewing ? "scale(1)" : "scale(0.97)",
+            transition:
+              displayAnswer || isReviewing
+                ? "filter 0.4s ease, opacity 0.4s ease, transform 0.3s ease"
+                : "none",
+            userSelect: displayAnswer || isReviewing ? "auto" : "none",
+          }}
+        >
           {displayChallenge.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">

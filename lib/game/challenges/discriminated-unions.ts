@@ -29,13 +29,22 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "medium",
     title: "Button action variants",
-    badCode: `interface ButtonProps {
+    badCode: `type ButtonProps = {
   children: React.ReactNode;
-  href?: string;
-  onClick?: () => void;
-  target?: '_blank' | '_self';
-  type?: 'button' | 'submit';
-}`,
+} & (
+  | {
+      /** Renders as an anchor element. */
+      href: string;
+      target?: '_blank' | '_self';
+      onClick?: () => void;
+    }
+  | {
+      /** Renders as a button element. */
+      onClick?: () => void;
+      type?: 'button' | 'submit';
+      href?: string;
+    }
+);`,
     goodCode: `type ButtonProps = {
   children: React.ReactNode;
 } & (
@@ -56,9 +65,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
 );`,
     correctSide: "right",
     explanationCorrect:
-      'A button with an `href` is a link; a button with `onClick` is a button. Mixing both (`<Button href="/about" onClick={fn}>`) leads to confusing behavior. The union ensures `target` only appears with `href` and `type` only appears without it. The `never` type blocks invalid combinations at compile time.',
+      'The `never` type blocks invalid combinations at compile time. Without it, both `onClick` and `href` appear in both variants — the union doesn\'t actually constrain anything. With `never`, `<Button href="/about" onClick={fn} />` is a type error. Each variant is truly exclusive.',
     explanationWrong:
-      'Making everything optional allows `<Button href="/page" onClick={fn} type="submit" target="_blank" />` - should this navigate or call the handler? Submit a form or open a link? Union types force the consumer to pick one behavior, making the component predictable.',
+      'Both variants allow `onClick` and `href`, so the union provides no enforcement — `<Button href="/page" onClick={fn} type="submit" />` compiles fine. The `never` type is what turns a union from documentation into a real constraint: `onClick?: never` in the link variant means TypeScript rejects it at the call site.',
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
     sourceLabel: "TypeScript: Discriminated Unions",
@@ -68,14 +77,40 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "hard",
     title: "Variant-dependent props",
-    badCode: `interface AlertProps {
-  type: 'success' | 'error' | 'warning';
-  message: string;
-  onRetry?: () => void;
-  retryLabel?: string;
-  onDismiss?: () => void;
-  autoDismissMs?: number;
-}`,
+    badCode: `type AlertProps =
+  | {
+      /** Success state. */
+      type: 'success';
+      message: string;
+      /** Auto-dismiss delay. */
+      autoDismissMs?: number;
+      /** Retry handler. */
+      onRetry?: () => void;
+      /** Dismiss handler. */
+      onDismiss?: () => void;
+    }
+  | {
+      /** Error state. */
+      type: 'error';
+      message: string;
+      /** Retry handler. */
+      onRetry?: () => void;
+      /** Retry button text. */
+      retryLabel?: string;
+      /** Dismiss handler. */
+      onDismiss?: () => void;
+    }
+  | {
+      /** Warning state. */
+      type: 'warning';
+      message: string;
+      /** Dismiss handler. */
+      onDismiss?: () => void;
+      /** Retry handler. */
+      onRetry?: () => void;
+      /** Auto-dismiss delay. */
+      autoDismissMs?: number;
+    };`,
     goodCode: `type AlertProps =
   | {
       /** Shown on successful operations. Auto-dismisses. */
@@ -105,9 +140,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     };`,
     correctSide: "right",
     explanationCorrect:
-      "Discriminated unions ensure that `onRetry` is only required (and allowed) when `type` is `'error'`. TypeScript catches impossible combinations at compile time. No more 'why is retryLabel set on a success alert?' bugs.",
+      "Even though both use union types, the correct version makes each variant self-contained: `onRetry` is required (not optional) only for errors, `autoDismissMs` only exists on success, and `onDismiss` only on warnings. The other version duplicates every prop across all variants as optional — a success alert can still have `onRetry`.",
     explanationWrong:
-      "The flat interface makes every optional prop available for every variant. Nothing stops you from passing `onRetry` to a success alert. Discriminated unions tie props to their specific variant, giving you compile-time safety.",
+      "Using a union type is the right instinct, but making every prop available in every variant defeats the purpose. `onRetry` is optional on the success variant — nothing stops a consumer from passing it. Worse, `onRetry` is optional on the error variant too, meaning you can forget it entirely. Restrict each variant to only its relevant props, and make them required where appropriate.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
     sourceLabel: "TypeScript: Discriminated Unions",
@@ -117,12 +152,24 @@ export const discriminatedUnionsChallenges: Challenge[] = [
     category: "discriminated-unions",
     difficulty: "hard",
     title: "Controlled vs uncontrolled input",
-    badCode: `interface InputProps {
-  value?: string;
-  defaultValue?: string;
-  onChange?: (value: string) => void;
+    badCode: `type InputProps = {
   placeholder?: string;
-}`,
+} & (
+  | {
+      /** Controlled mode: parent owns value. */
+      value: string;
+      /** Called when the value changes. */
+      onChange: (value: string) => void;
+      defaultValue?: string;
+    }
+  | {
+      /** Uncontrolled mode: internal state. */
+      defaultValue?: string;
+      /** Called when the value changes. */
+      onChange?: (value: string) => void;
+      value?: string;
+    }
+);`,
     goodCode: `type InputProps = {
   placeholder?: string;
 } & (
@@ -143,9 +190,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
 );`,
     correctSide: "right",
     explanationCorrect:
-      "Discriminated unions with `never` prevent mixing controlled and uncontrolled patterns. You can't pass both `value` and `defaultValue`, and controlled mode requires `onChange`. This catches the exact bug React warns about at runtime - but at compile time.",
+      'The `never` type is the key difference. Without it, both `value` and `defaultValue` are allowed in both variants — the union doesn\'t actually prevent mixing. `defaultValue?: never` in controlled mode and `value?: never` in uncontrolled mode make TypeScript reject `<Input value="hi" defaultValue="there" />` at compile time.',
     explanationWrong:
-      'Making everything optional allows `<Input value="hello" defaultValue="world" />` - a React anti-pattern that triggers a runtime warning. A controlled input needs `value` + `onChange`; uncontrolled uses `defaultValue`. TypeScript should enforce this.',
+      'Both use union types, but without `never` to exclude cross-variant props, nothing stops `<Input value="hello" defaultValue="world" />`. TypeScript sees that `value` exists in both variants and allows it everywhere. The `never` type turns a union from documentation into an actual compile-time constraint.',
     sourceUrl:
       "https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable",
     sourceLabel: "React Docs: Controlling an Input",

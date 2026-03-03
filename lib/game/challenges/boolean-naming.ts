@@ -53,8 +53,11 @@ export const booleanNamingChallenges: Challenge[] = [
     badCode: `interface ButtonProps {
   children: React.ReactNode;
   variant?: 'text' | 'outlined' | 'contained';
+  /** @default false */
   noElevation?: boolean;
+  /** @default false */
   noRipple?: boolean;
+  /** @default false */
   noFocusRipple?: boolean;
 }`,
     goodCode: `interface ButtonProps {
@@ -84,8 +87,11 @@ export const booleanNamingChallenges: Challenge[] = [
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  /** Keep in DOM when closed. @default false */
   isMounted?: boolean;
+  /** Hide the backdrop. @default false */
   isBackdropHidden?: boolean;
+  /** Lock body scroll. @default true */
   isScrollLocked?: boolean;
 }`,
     goodCode: `interface ModalProps {
@@ -114,8 +120,20 @@ export const booleanNamingChallenges: Challenge[] = [
     title: "Complex boolean props",
     badCode: `interface NavigationProps {
   items: NavItem[];
+  /**
+   * Whether the navigation is collapsed.
+   * @default false
+   */
   collapsed: boolean;
+  /**
+   * Whether to show icons.
+   * @default true
+   */
   icons: boolean;
+  /**
+   * Whether in mobile layout.
+   * @default false
+   */
   mobile: boolean;
 }`,
     goodCode: `interface NavigationProps {

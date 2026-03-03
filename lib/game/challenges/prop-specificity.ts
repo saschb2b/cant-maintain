@@ -58,10 +58,15 @@ interface ButtonProps {
     difficulty: "medium",
     title: "Autocomplete prop naming",
     badCode: `interface AutocompleteProps {
+  /** Available items. */
   items: string[];
+  /** Current input value. */
   value: string;
+  /** Called on value change. */
   onChange: (v: string) => void;
+  /** Custom render function. */
   render: (item: string) => React.ReactNode;
+  /** Shown when there are no results. */
   noResults: React.ReactNode;
 }`,
     goodCode: `interface AutocompleteProps {
@@ -80,7 +85,7 @@ interface ButtonProps {
     explanationCorrect:
       "Every prop is specific: `renderItem` (not vague `render`), `emptyContent` (not the double-negative `noResults`), `onValueChange` (not generic `onChange`), and parameter names spell out their meaning (`value` not `v`).",
     explanationWrong:
-      "`render` renders what? `noResults` is a confusing name - does `false` mean 'there are results' or 'don't show the no-results state'? `onChange` with `v` forces you to read the type to understand the callback. Specific names eliminate this guesswork.",
+      "`render` renders what? `noResults` is a confusing name — does `false` mean 'there are results' or 'don't show the no-results state'? `onChange` with `v` forces you to read the type to understand the callback. Specific names eliminate this guesswork.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },
@@ -132,12 +137,20 @@ interface ButtonProps {
     id: "ps-007",
     category: "prop-specificity",
     difficulty: "medium",
-    title: "Accessible text props",
+    title: "Accessible text prop conventions",
     badCode: `interface AutocompleteProps<T> {
   options: T[];
   value: T | null;
   onChange: (value: T | null) => void;
   placeholder?: string;
+  /** @default "Clear all" */
+  clearLabel?: string;
+  /** @default "Toggle menu" */
+  toggleLabel?: string;
+  /** @default "Nothing found" */
+  emptyMessage?: string;
+  /** @default "Please wait..." */
+  pendingMessage?: string;
 }`,
     goodCode: `interface AutocompleteProps<T> {
   options: T[];
@@ -157,9 +170,9 @@ interface ButtonProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Interactive elements need accessible labels, and those labels need to be translatable. The `*Text` props provide screen-reader labels for icon buttons (`clearText`, `openText`) and user-facing messages (`noOptionsText`, `loadingText`). MUI's Autocomplete exposes all five. Without them, non-English users get hardcoded English strings and screen readers announce nothing useful.",
+      "Consistent `*Text` suffixes make the API predictable. Separate `openText`/`closeText` props (not a single `toggleLabel`) match the actual UI states. `React.ReactNode` for displayed messages allows rich formatting. MUI's Autocomplete uses this exact pattern — every interactive element and user-facing string gets a `*Text` prop with a sensible default.",
     explanationWrong:
-      "This API looks clean but it's missing accessibility and i18n. The clear button has no label for screen readers. The 'no results' and 'loading' states have no customizable messages. Every interactive element and user-facing string should have a `*Text` prop with a sensible default - this is how components become production-ready across languages.",
+      "Inconsistent suffixes (`*Label` vs `*Message`) make the API confusing. A single `toggleLabel` for both open and close states means the label can't say 'Open' when closed and 'Close' when open. `emptyMessage` and `pendingMessage` use non-standard naming — MUI's convention is `noOptionsText` and `loadingText`, matching what the user actually sees.",
     sourceUrl: "https://mui.com/material-ui/api/autocomplete/",
     sourceLabel: "MUI: Autocomplete API",
   },
@@ -168,17 +181,32 @@ interface ButtonProps {
     category: "prop-specificity",
     difficulty: "hard",
     title: "Complete component API",
-    badCode: `interface TableProps {
+    badCode: `interface TableColumn {
+  /** Column identifier for sorting. */
+  name: string;
+  /** Display header text. */
+  label: string;
+}
+
+interface TableProps {
+  /** Row data. */
   data: object[];
-  columns: string[];
-  sort: boolean;
-  select: boolean;
-  onSelect: Function;
-  page: number;
-  setPage: Function;
-  filter: string;
-  setFilter: Function;
-  loading: boolean;
+  /** Column definitions. */
+  columns: TableColumn[];
+  /** Enable row selection. */
+  isSelectable?: boolean;
+  /** Called when selection changes. */
+  onSelect?: Function;
+  /** Current page number. */
+  page?: number;
+  /** Called when page changes. */
+  onPageChange?: Function;
+  /** Active filter query. */
+  filter?: string;
+  /** Called when filter changes. */
+  onFilterChange?: Function;
+  /** Whether data is loading. */
+  isLoading?: boolean;
 }`,
     goodCode: `interface TableColumn<T> {
   /** Unique key matching a property of T. */
@@ -205,9 +233,9 @@ interface TableProps<T extends Record<string, unknown>> {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "This is production-grade API design. Generic types, structured column config, `on*` event callbacks instead of setter functions, and `isLoading` boolean. No `Function` type, no `object[]`, no `string[]` columns.",
+      "Generics make `columns` and callbacks type-safe: `key: keyof T` ensures column keys match the data shape, and callbacks receive typed values instead of `Function`. `isSortable` lives on each column (not the whole table), and selection/pagination use typed event callbacks — not a mix of state props and untyped setters.",
     explanationWrong:
-      "Multiple issues: `Function` type is unsafe, `object[]` has no shape, `string[]` columns lose structure, `set*` callbacks imply child state ownership, `loading` is an ambiguous boolean, and `sort`/`select` could be nouns or verbs.",
+      "`object[]` loses all type information — TypeScript can't check if column `name` values match data properties. `Function` is effectively `any` for callbacks — no parameter or return type checking. Mixing state props (`page`, `filter`) with callbacks leaks internal state management. Generics and typed callbacks fix all three issues.",
     sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
     sourceLabel: "TypeScript: Generics",
   },

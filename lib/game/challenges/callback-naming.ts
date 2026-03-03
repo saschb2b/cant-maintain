@@ -92,10 +92,17 @@ export const callbackNamingChallenges: Challenge[] = [
     category: "callback-naming",
     difficulty: "hard",
     title: "Close callback with reason",
-    badCode: `interface DialogProps {
+    badCode: `type CloseReason =
+  | 'backdropClick'
+  | 'escapeKeyDown'
+  | 'closeButton';
+
+interface DialogProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  /** Set after the dialog closes. */
+  lastCloseReason?: CloseReason;
 }`,
     goodCode: `type CloseReason =
   | 'backdropClick'
@@ -109,9 +116,9 @@ interface DialogProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "A `reason` parameter lets the parent decide *how* to respond to each close trigger. For example, you might ignore backdrop clicks on a confirmation dialog but allow Escape. MUI's Dialog, Snackbar, and Modal all follow this pattern. Without a reason, you'd need separate `onBackdropClick`, `onEscapeKeyDown` props for each trigger.",
+      "Passing the `reason` as a callback parameter lets the parent decide *how* to respond to each close trigger in real time. For example, you might ignore backdrop clicks on a confirmation dialog but allow Escape. MUI's Dialog uses exactly this pattern. A separate prop is reactive (updates after closing) instead of actionable (decides during closing).",
     explanationWrong:
-      "A bare `onClose: () => void` tells you *that* close was requested but not *why*. Should a click outside a confirmation dialog actually close it? With no reason, you can't distinguish between 'user pressed Escape' and 'user clicked the backdrop' - both fire the same void callback. The reason parameter is one extra argument that unlocks fine-grained control.",
+      "Separating the reason into its own prop means the parent can't act on it *during* the close event. `lastCloseReason` updates after `onClose` fires — too late to prevent closing on a backdrop click. The reason belongs as a parameter of `onClose` so the parent can inspect it synchronously and decide whether to actually close.",
     sourceUrl: "https://mui.com/material-ui/api/dialog/",
     sourceLabel: "MUI: Dialog API",
   },
@@ -124,7 +131,14 @@ interface DialogProps {
   min: number;
   max: number;
   value: number;
+  /** Fires on every value change. */
   onChange: (value: number) => void;
+  /**
+   * Debounce delay in ms before onChange fires.
+   * Use 0 for real-time updates.
+   * @default 0
+   */
+  changeDebounceMs?: number;
 }`,
     goodCode: `interface SliderProps {
   min: number;
@@ -137,9 +151,9 @@ interface DialogProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Some interactions have two meaningful moments: the live update and the final commit. A slider fires `onChange` on every pixel of drag (for live preview) and `onChangeCommitted` on mouse-up (for saving to the server). MUI's Slider uses exactly this pattern. Without both, you either spam API calls on every drag pixel or miss live feedback entirely.",
+      "Some interactions have two meaningful moments: the live update and the final commit. Two callbacks let the parent do different things at each moment — `onChange` for UI preview, `onChangeCommitted` for saving to the server. MUI's Slider uses exactly this pattern. A debounce config forces a trade-off between responsiveness and efficiency.",
     explanationWrong:
-      "A single `onChange` forces a tough choice: call the API on every drag movement (wasteful, may cause flicker) or debounce it (loses real-time preview). Two callbacks solve this cleanly: `onChange` for UI updates, `onChangeCommitted` for expensive operations like network requests. The naming convention `on*Committed` clearly signals 'this is the final value.'",
+      "Debouncing collapses two distinct events into one. With `changeDebounceMs: 300`, you either get delayed UI updates or set it to `0` and still have no way to know when the user *finished* dragging. Two callbacks (`onChange` for live preview, `onChangeCommitted` for persistence) let the parent respond to each moment appropriately.",
     sourceUrl: "https://mui.com/material-ui/api/slider/",
     sourceLabel: "MUI: Slider API",
   },
