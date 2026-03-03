@@ -7,6 +7,7 @@ import { discriminatedUnionsChallenges } from "./discriminated-unions";
 import { extendingHtmlChallenges } from "./extending-html";
 import { jsdocChallenges } from "./jsdoc";
 import { propSpecificityChallenges } from "./prop-specificity";
+import { propOrganizationChallenges } from "./prop-organization";
 import { renderPropsChallenges } from "./render-props";
 
 /**
@@ -26,4 +27,5 @@ export const challenges: Challenge[] = [
   ...discriminatedUnionsChallenges,
   ...extendingHtmlChallenges,
   ...defaultValuesChallenges,
+  ...propOrganizationChallenges,
 ];

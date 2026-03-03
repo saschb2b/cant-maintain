@@ -30,6 +30,7 @@ const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "discriminated-unions": "Discriminated Unions",
   "extending-html": "Extending HTML",
   "default-values": "Default Values",
+  "prop-organization": "Prop Organization",
 };
 
 interface ResultsScreenProps {

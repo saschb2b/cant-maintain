@@ -11,7 +11,8 @@ export type ChallengeCategory =
   | "children-pattern"
   | "discriminated-unions"
   | "extending-html"
-  | "default-values";
+  | "default-values"
+  | "prop-organization";
 
 /**
  * A single challenge in the game.

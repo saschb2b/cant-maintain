@@ -19,6 +19,7 @@ lib/game/
     discriminated-unions.ts # du-* challenges
     extending-html.ts   # eh-* challenges
     default-values.ts   # dv-* challenges
+    prop-organization.ts # po-* challenges
 
 components/game/
   game.tsx             # Main game orchestrator
@@ -50,7 +51,7 @@ Find the relevant category file in `lib/game/challenges/` (e.g. `callback-naming
 
 Each session picks 3 easy, 4 medium, and 3 hard challenges, shuffled within tiers. Side randomization happens automatically.
 
-## Topics Covered (9 categories, 50 challenges)
+## Topics Covered (10 categories, 56 challenges)
 
 - **Callback naming**: `on` prefix, descriptive event names, dual-level events
 - **Boolean naming**: `is`/`has`/`should`/`disable`/`keep`/`hide` prefixes
@@ -61,6 +62,7 @@ Each session picks 3 easy, 4 medium, and 3 hard challenges, shuffled within tier
 - **Discriminated unions**: variant-dependent props, `never` type, linked optionals
 - **Extending HTML**: `React.ComponentProps`, `Omit`, polymorphic `as` prop
 - **Default values**: destructuring defaults, stable references, default callbacks
+- **Prop organization**: grouping related props, removing redundancy, extracting sub-components
 
 ## Tech Stack
 

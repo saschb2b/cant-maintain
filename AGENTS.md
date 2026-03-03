@@ -28,6 +28,7 @@ Can't Maintain is a "Can't Unsee"-style quiz game for learning React prop naming
    - `du` = discriminated-unions
    - `eh` = extending-html
    - `dv` = default-values
+   - `po` = prop-organization
 4. Include both `explanationCorrect` and `explanationWrong`
 5. Always link to an authoritative source (React docs, TypeScript docs, MUI docs, MDN)
 6. The `correctSide` value is overridden at runtime (randomized), but conventionally set to `"right"`
