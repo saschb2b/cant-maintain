@@ -6,7 +6,15 @@ import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { ArrowRight, Check, X } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  X,
+  Star,
+  GitPullRequest,
+  Code2,
+  Heart,
+} from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
@@ -49,187 +57,206 @@ export default async function LandingPage() {
 
       {/* Hero */}
       <Container
-        maxWidth="md"
+        maxWidth="lg"
         sx={{
-          pt: { xs: 6, md: 10 },
-          pb: { xs: 4, md: 6 },
+          pt: { xs: 6, md: 12 },
+          pb: { xs: 4, md: 8 },
           position: "relative",
           zIndex: 1,
         }}
       >
-        <Stack alignItems="center" spacing={1} sx={{ mb: { xs: 4, md: 6 } }}>
-          <Typography
-            variant="h3"
-            component="h1"
-            fontWeight={700}
-            sx={{ textAlign: "center", lineHeight: 1.2, maxWidth: 520 }}
-          >
-            One prop name.{" "}
-            <Box component="span" sx={{ color: "error.main" }}>
-              Two choices.
-            </Box>
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ textAlign: "center", maxWidth: 440, lineHeight: 1.7 }}
-          >
-            Can you tell which props your future self will thank you for? Train
-            your eye in under 5 minutes.
-          </Typography>
-        </Stack>
-
-        {/* Code Preview — a taste of the game */}
-        <Paper
-          elevation={0}
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            overflow: "hidden",
-            maxWidth: 540,
-            mx: "auto",
-            mb: { xs: 4, md: 5 },
-          }}
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          alignItems="center"
+          spacing={{ xs: 4, md: 8 }}
         >
+          {/* Left — title, subtitle, CTA */}
           <Box
             sx={{
-              px: 2,
-              py: 1,
-              bgcolor: "secondary.main",
-              borderBottom: 1,
-              borderColor: "divider",
+              flex: 1,
+              minWidth: 0,
+              textAlign: { xs: "center", md: "left" },
             }}
           >
             <Typography
+              variant="h3"
+              component="h1"
+              fontWeight={700}
+              sx={{ lineHeight: 1.15, mb: 2 }}
+            >
+              One prop name.
+              <br />
+              <Box component="span" sx={{ color: "error.main" }}>
+                Two choices.
+              </Box>
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ lineHeight: 1.7, mb: 4 }}
+            >
+              Can you tell which props your future self will thank you for?
+              Train your eye in under 5 minutes.
+            </Typography>
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1.5}
+              sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
+            >
+              <NextLink href="/play" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowRight size={18} />}
+                  sx={{ px: 5, py: 1.5, fontSize: "1.05rem" }}
+                >
+                  Start Playing
+                </Button>
+              </NextLink>
+              <NextLink href="/learn" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="text"
+                  size="large"
+                  sx={{ px: 3, py: 1.5, fontSize: "1.05rem" }}
+                >
+                  Browse Patterns
+                </Button>
+              </NextLink>
+            </Stack>
+            <Typography
               variant="caption"
-              fontWeight={600}
               color="text.secondary"
               fontFamily="var(--font-geist-mono), monospace"
-              sx={{ fontSize: "0.7rem", letterSpacing: "0.05em" }}
+              sx={{
+                fontSize: "0.7rem",
+                mt: 1.5,
+                textAlign: { xs: "center", md: "left" },
+              }}
             >
-              WHICH IS BETTER?
+              10 challenges &middot; no signup &middot; takes 3 min
             </Typography>
           </Box>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            divider={
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{ display: { xs: "none", sm: "block" } }}
-              />
-            }
-          >
-            {/* Bad code */}
-            <Box sx={{ flex: 1 }}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={0.75}
-                sx={{ px: 2, pt: 1.5 }}
-              >
-                <Box
-                  sx={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: "50%",
-                    bgcolor: "rgba(196,87,58,0.12)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <X size={11} color="#C4573A" strokeWidth={3} />
-                </Box>
-                <Typography
-                  variant="caption"
-                  fontWeight={600}
-                  fontFamily="var(--font-geist-mono), monospace"
-                  color="error.main"
-                  sx={{ fontSize: "0.7rem" }}
-                >
-                  Worse
-                </Typography>
-              </Stack>
-              <Box
-                sx={codeBlockStyles}
-                dangerouslySetInnerHTML={{ __html: badCodeHtml }}
-              />
-            </Box>
 
-            {/* Divider on mobile */}
-            <Divider sx={{ display: { sm: "none" } }} />
-
-            {/* Good code */}
-            <Box sx={{ flex: 1 }}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={0.75}
-                sx={{ px: 2, pt: 1.5 }}
-              >
-                <Box
-                  sx={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: "50%",
-                    bgcolor: "rgba(91,138,114,0.12)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Check size={11} color="#5B8A72" strokeWidth={3} />
-                </Box>
-                <Typography
-                  variant="caption"
-                  fontWeight={600}
-                  fontFamily="var(--font-geist-mono), monospace"
-                  color="success.main"
-                  sx={{ fontSize: "0.7rem" }}
-                >
-                  Better
-                </Typography>
-              </Stack>
-              <Box
-                sx={codeBlockStyles}
-                dangerouslySetInnerHTML={{ __html: goodCodeHtml }}
-              />
-            </Box>
-          </Stack>
-        </Paper>
-
-        {/* CTA */}
-        <Stack alignItems="center" spacing={1.5}>
-          <NextLink href="/play" style={{ textDecoration: "none" }}>
-            <Button
-              variant="contained"
-              size="large"
-              endIcon={<ArrowRight size={18} />}
-              sx={{ px: 5, py: 1.5, fontSize: "1.05rem" }}
+          {/* Right — code preview */}
+          <Box sx={{ flex: 1, minWidth: 0, maxWidth: 520, width: "100%" }}>
+            <Paper
+              elevation={0}
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                overflow: "hidden",
+              }}
             >
-              Start Playing
-            </Button>
-          </NextLink>
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            fontFamily="var(--font-geist-mono), monospace"
-            sx={{ fontSize: "0.7rem" }}
-          >
-            10 challenges &middot; no signup &middot; takes 3 min
-          </Typography>
-          <NextLink
-            href="/learn"
-            style={{
-              textDecoration: "none",
-              fontSize: "0.8rem",
-              fontWeight: 500,
-              color: "#6B7B8D",
-            }}
-          >
-            Or browse the patterns
-          </NextLink>
+              <Box
+                sx={{
+                  px: 2,
+                  py: 1,
+                  bgcolor: "secondary.main",
+                  borderBottom: 1,
+                  borderColor: "divider",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  fontWeight={600}
+                  color="text.secondary"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{ fontSize: "0.7rem", letterSpacing: "0.05em" }}
+                >
+                  WHICH IS BETTER?
+                </Typography>
+              </Box>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                divider={
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ display: { xs: "none", sm: "block" } }}
+                  />
+                }
+              >
+                {/* Bad code */}
+                <Box sx={{ flex: 1 }}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.75}
+                    sx={{ px: 2, pt: 1.5 }}
+                  >
+                    <Box
+                      sx={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        bgcolor: "rgba(196,87,58,0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <X size={11} color="#C4573A" strokeWidth={3} />
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      fontFamily="var(--font-geist-mono), monospace"
+                      color="error.main"
+                      sx={{ fontSize: "0.7rem" }}
+                    >
+                      Worse
+                    </Typography>
+                  </Stack>
+                  <Box
+                    sx={codeBlockStyles}
+                    dangerouslySetInnerHTML={{ __html: badCodeHtml }}
+                  />
+                </Box>
+
+                {/* Divider on mobile */}
+                <Divider sx={{ display: { sm: "none" } }} />
+
+                {/* Good code */}
+                <Box sx={{ flex: 1 }}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={0.75}
+                    sx={{ px: 2, pt: 1.5 }}
+                  >
+                    <Box
+                      sx={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        bgcolor: "rgba(91,138,114,0.12)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Check size={11} color="#5B8A72" strokeWidth={3} />
+                    </Box>
+                    <Typography
+                      variant="caption"
+                      fontWeight={600}
+                      fontFamily="var(--font-geist-mono), monospace"
+                      color="success.main"
+                      sx={{ fontSize: "0.7rem" }}
+                    >
+                      Better
+                    </Typography>
+                  </Stack>
+                  <Box
+                    sx={codeBlockStyles}
+                    dangerouslySetInnerHTML={{ __html: goodCodeHtml }}
+                  />
+                </Box>
+              </Stack>
+            </Paper>
+          </Box>
         </Stack>
       </Container>
 
@@ -452,6 +479,122 @@ export default async function LandingPage() {
           </Stack>
         </Container>
       </Box>
+
+      {/* Open source */}
+      <Container
+        maxWidth="lg"
+        sx={{ py: { xs: 5, md: 7 }, position: "relative", zIndex: 1 }}
+      >
+        <Paper
+          elevation={0}
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            px: { xs: 3, md: 5 },
+            py: { xs: 3, md: 4 },
+          }}
+        >
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            alignItems="center"
+            spacing={{ xs: 3, md: 5 }}
+          >
+            {/* Left — title + description */}
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography variant="h6" component="p" fontWeight={600}>
+                Open source &amp; community-driven
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ lineHeight: 1.7, mt: 0.5 }}
+              >
+                New challenges, categories, and improvements are all welcome.
+              </Typography>
+            </Box>
+
+            {/* Middle — actions with icon circles */}
+            <Stack direction="row" spacing={4} sx={{ flexShrink: 0 }}>
+              {[
+                {
+                  icon: <Star size={18} />,
+                  label: "Star",
+                  color: "#D4A017",
+                  bg: "rgba(212,160,23,0.10)",
+                },
+                {
+                  icon: <GitPullRequest size={18} />,
+                  label: "Contribute",
+                  color: "#5B8A72",
+                  bg: "rgba(91,138,114,0.10)",
+                },
+                {
+                  icon: <Code2 size={18} />,
+                  label: "Add challenges",
+                  color: "#4A7FB5",
+                  bg: "rgba(74,127,181,0.10)",
+                },
+                {
+                  icon: <Heart size={18} />,
+                  label: "Sponsor",
+                  color: "#C4573A",
+                  bg: "rgba(196,87,58,0.10)",
+                },
+              ].map((item) => (
+                <Stack key={item.label} alignItems="center" spacing={0.75}>
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: "50%",
+                      bgcolor: item.bg,
+                      color: item.color,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {item.icon}
+                  </Box>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ fontSize: "0.72rem", whiteSpace: "nowrap" }}
+                  >
+                    {item.label}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+
+            {/* Right — CTA button */}
+            <NextLink
+              href="https://github.com/saschb2b/cant-maintain"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none", flexShrink: 0 }}
+            >
+              <Button
+                variant="outlined"
+                size="medium"
+                sx={{
+                  px: 3,
+                  borderColor: "divider",
+                  color: "text.primary",
+                  fontWeight: 600,
+                  fontSize: "0.85rem",
+                  "&:hover": {
+                    borderColor: "text.secondary",
+                    bgcolor: "rgba(0,0,0,0.03)",
+                  },
+                }}
+              >
+                View on GitHub
+              </Button>
+            </NextLink>
+          </Stack>
+        </Paper>
+      </Container>
 
       <SiteFooter />
     </Box>
