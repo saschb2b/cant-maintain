@@ -1,52 +1,89 @@
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Link from "@mui/material/Link";
+import Divider from "@mui/material/Divider";
 import { Game } from "@/components/game/game";
 import { Code2, Github } from "lucide-react";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Code2 className="w-6 h-6 text-primary" />
-            <div>
-              <h1 className="text-lg font-bold font-sans text-foreground leading-tight">
-                {"Can't Maintain"}
-              </h1>
-              <p className="text-xs text-muted-foreground font-mono">
-                Can you spot the better props?
-              </p>
-            </div>
-          </div>
-          <a
-            href="https://react.dev/learn/passing-props-to-a-component"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <Box component="header">
+        <Container maxWidth="lg">
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ py: 2 }}
           >
-            <Github className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">React Docs</span>
-          </a>
-        </div>
-      </header>
+            <Stack direction="row" alignItems="center" spacing={1.5}>
+              <Code2 size={24} color="var(--mui-palette-primary-main)" />
+              <Box>
+                <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
+                  {"Can't Maintain"}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  fontFamily="var(--font-geist-mono), monospace"
+                >
+                  Can you spot the better props?
+                </Typography>
+              </Box>
+            </Stack>
+            <Link
+              href="https://react.dev/learn/passing-props-to-a-component"
+              target="_blank"
+              rel="noopener noreferrer"
+              color="text.secondary"
+              underline="hover"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                fontSize: "0.75rem",
+              }}
+            >
+              <Github size={14} />
+              <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+                React Docs
+              </Box>
+            </Link>
+          </Stack>
+        </Container>
+        <Divider />
+      </Box>
 
-      {/* Game area */}
-      <section className="px-4 py-8">
+      <Container maxWidth="lg" component="section" sx={{ py: 4, flex: 1 }}>
         <Game />
-      </section>
+      </Container>
 
-      {/* Footer */}
-      <footer className="border-t border-border mt-auto">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <p>
-            A training game for React prop naming conventions and JSDoc documentation.
-          </p>
-          <p className="font-mono">
-            {/* Show challenge count for maintainer reference */}
-            Built for junior devs with love
-          </p>
-        </div>
-      </footer>
-    </main>
+      <Box component="footer">
+        <Divider />
+        <Container maxWidth="lg">
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            alignItems="center"
+            justifyContent="space-between"
+            spacing={1}
+            sx={{ py: 2 }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              A training game for React prop naming conventions and JSDoc
+              documentation.
+            </Typography>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              fontFamily="var(--font-geist-mono), monospace"
+            >
+              Built for junior devs with love
+            </Typography>
+          </Stack>
+        </Container>
+      </Box>
+    </Box>
   );
 }

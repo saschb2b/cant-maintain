@@ -1,67 +1,79 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
 import { ExternalLink } from "lucide-react";
 
 interface ExplanationPanelProps {
-  /** Whether the user picked correctly. */
   isCorrect: boolean;
-  /** The explanation text to display. */
   text: string;
-  /** URL to an external source for learning more. */
   sourceUrl: string;
-  /** Display label for the source link. */
   sourceLabel: string;
 }
 
-/**
- * Shows a post-answer explanation with a link to an authoritative source.
- * Green for correct, red for incorrect.
- */
 export function ExplanationPanel({
   isCorrect,
   text,
   sourceUrl,
   sourceLabel,
 }: ExplanationPanelProps) {
+  const color = isCorrect ? "success" : "error";
+
   return (
-    <div
-      className={cn(
-        "rounded-lg border p-4 transition-all animate-in fade-in slide-in-from-bottom-2 duration-300",
-        isCorrect
-          ? "bg-success/5 border-success/30"
-          : "bg-destructive/5 border-destructive/30",
-      )}
+    <Paper
+      elevation={0}
+      sx={{
+        border: 1,
+        borderColor: isCorrect
+          ? "rgba(43,217,123,0.3)"
+          : "rgba(224,64,64,0.3)",
+        bgcolor: isCorrect
+          ? "rgba(43,217,123,0.05)"
+          : "rgba(224,64,64,0.05)",
+        p: 2,
+      }}
     >
-      <div className="flex items-start gap-3">
-        <div
-          className={cn(
-            "mt-0.5 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold",
-            isCorrect
-              ? "bg-success text-success-foreground"
-              : "bg-destructive text-destructive-foreground",
-          )}
+      <Stack direction="row" spacing={1.5} alignItems="flex-start">
+        <Avatar
+          sx={{
+            width: 24,
+            height: 24,
+            fontSize: "0.75rem",
+            fontWeight: 700,
+            bgcolor: `${color}.main`,
+            color: `${color}.contrastText`,
+            mt: 0.25,
+          }}
         >
           {isCorrect ? "+" : "-"}
-        </div>
-        <div className="flex-1 space-y-2">
-          <p className="text-sm leading-relaxed text-foreground">{text}</p>
-          <a
+        </Avatar>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="body2" sx={{ lineHeight: 1.6, mb: 1 }}>
+            {text}
+          </Typography>
+          <Link
             href={sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(
-              "inline-flex items-center gap-1.5 text-xs font-medium transition-colors",
-              isCorrect
-                ? "text-success hover:text-success/80"
-                : "text-destructive hover:text-destructive/80",
-            )}
+            underline="hover"
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 0.75,
+              fontSize: "0.75rem",
+              fontWeight: 500,
+              color: `${color}.main`,
+            }}
           >
-            <ExternalLink className="w-3 h-3" />
+            <ExternalLink size={12} />
             {sourceLabel}
-          </a>
-        </div>
-      </div>
-    </div>
+          </Link>
+        </Box>
+      </Stack>
+    </Paper>
   );
 }

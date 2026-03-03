@@ -1,22 +1,23 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 import type { GameState } from "@/lib/game/types";
 import { RotateCcw, Trophy, Target, Zap } from "lucide-react";
 
 interface ResultsScreenProps {
-  /** Final game state snapshot. */
   state: GameState;
-  /** Called when the user wants to play again. */
   onRestart: () => void;
 }
 
-/**
- * End-of-game results summary with score breakdown and replay button.
- */
 export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   const total = state.challenges.length;
-  const correct = Object.values(state.answers).filter((a) => a === "correct").length;
+  const correct = Object.values(state.answers).filter(
+    (a) => a === "correct"
+  ).length;
   const percentage = Math.round((correct / total) * 100);
   const elapsed = Math.round((Date.now() - state.startedAt) / 1000);
   const minutes = Math.floor(elapsed / 60);
@@ -32,51 +33,123 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
           : "Keep Practicing";
 
   return (
-    <div className="flex flex-col items-center gap-8 py-12">
-      <div className="text-center space-y-2">
-        <Trophy className="w-16 h-16 mx-auto text-accent" />
-        <h2 className="text-3xl font-bold font-sans text-foreground text-balance">
+    <Stack alignItems="center" spacing={4} sx={{ py: 6 }}>
+      <Box sx={{ textAlign: "center" }}>
+        <Trophy size={64} color="var(--mui-palette-warning-main)" />
+        <Typography variant="h4" fontWeight={700} sx={{ mt: 1 }}>
           {rank}
-        </h2>
-        <p className="text-muted-foreground text-sm">
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
           Challenge your colleagues to beat your score!
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
-      <div className="grid grid-cols-3 gap-6 w-full max-w-md">
-        <div className="flex flex-col items-center gap-1 p-4 rounded-lg bg-secondary">
-          <Target className="w-5 h-5 text-success" />
-          <span className="text-2xl font-bold font-mono text-foreground">
+      <Stack
+        direction="row"
+        spacing={3}
+        sx={{ width: "100%", maxWidth: 450 }}
+      >
+        <Paper
+          elevation={0}
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 0.5,
+            p: 2,
+            bgcolor: "secondary.main",
+          }}
+        >
+          <Target size={20} color="var(--mui-palette-success-main)" />
+          <Typography
+            variant="h5"
+            fontWeight={700}
+            fontFamily="var(--font-geist-mono), monospace"
+          >
             {correct}/{total}
-          </span>
-          <span className="text-xs text-muted-foreground">Correct</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 p-4 rounded-lg bg-secondary">
-          <Zap className="w-5 h-5 text-accent" />
-          <span className="text-2xl font-bold font-mono text-foreground">
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Correct
+          </Typography>
+        </Paper>
+
+        <Paper
+          elevation={0}
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 0.5,
+            p: 2,
+            bgcolor: "secondary.main",
+          }}
+        >
+          <Zap size={20} color="var(--mui-palette-warning-main)" />
+          <Typography
+            variant="h5"
+            fontWeight={700}
+            fontFamily="var(--font-geist-mono), monospace"
+          >
             {state.bestStreak}x
-          </span>
-          <span className="text-xs text-muted-foreground">Best Streak</span>
-        </div>
-        <div className="flex flex-col items-center gap-1 p-4 rounded-lg bg-secondary">
-          <span className="text-lg text-muted-foreground">
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Best Streak
+          </Typography>
+        </Paper>
+
+        <Paper
+          elevation={0}
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 0.5,
+            p: 2,
+            bgcolor: "secondary.main",
+          }}
+        >
+          <Typography variant="body1" color="text.secondary">
             {minutes}:{seconds.toString().padStart(2, "0")}
-          </span>
-          <span className="text-xs text-muted-foreground">Time</span>
-        </div>
-      </div>
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Time
+          </Typography>
+        </Paper>
+      </Stack>
 
-      <div className="w-full max-w-md p-4 rounded-lg bg-secondary text-center">
-        <div className="text-5xl font-bold font-mono text-foreground">
+      <Paper
+        elevation={0}
+        sx={{
+          width: "100%",
+          maxWidth: 450,
+          p: 2,
+          bgcolor: "secondary.main",
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          variant="h3"
+          fontWeight={700}
+          fontFamily="var(--font-geist-mono), monospace"
+        >
           {percentage}%
-        </div>
-        <p className="text-sm text-muted-foreground mt-1">Final Score</p>
-      </div>
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          Final Score
+        </Typography>
+      </Paper>
 
-      <Button onClick={onRestart} size="lg" className="gap-2">
-        <RotateCcw className="w-4 h-4" />
+      <Button
+        variant="contained"
+        size="large"
+        onClick={onRestart}
+        startIcon={<RotateCcw size={18} />}
+      >
         Play Again
       </Button>
-    </div>
+    </Stack>
   );
 }

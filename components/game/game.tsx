@@ -6,14 +6,12 @@ import { CodePanel } from "./code-panel";
 import { ExplanationPanel } from "./explanation-panel";
 import { GameHeader } from "./game-header";
 import { ResultsScreen } from "./results-screen";
-import { Button } from "@/components/ui/button";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { ArrowRight } from "lucide-react";
 
-/**
- * The main game orchestrator. Renders the current challenge as two
- * side-by-side Monaco panels, handles answer selection, shows explanations,
- * and transitions between challenges.
- */
 export function Game() {
   const {
     state,
@@ -26,7 +24,6 @@ export function Game() {
     restart,
   } = useGame();
 
-  // Determine which code goes on which side
   const { leftCode, rightCode } = useMemo(() => {
     if (!currentChallenge) return { leftCode: "", rightCode: "" };
     return currentChallenge.correctSide === "left"
@@ -39,27 +36,35 @@ export function Game() {
     return side === currentChallenge.correctSide ? "correct" : "wrong";
   };
 
-  // Loading state while client-side shuffle initializes
   if (!state) {
     return (
-      <div className="w-full max-w-6xl mx-auto flex items-center justify-center py-24">
-        <div className="text-muted-foreground text-sm animate-pulse">Loading challenges...</div>
-      </div>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          py: 12,
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          Loading challenges...
+        </Typography>
+      </Box>
     );
   }
 
   if (state.isFinished) {
     return (
-      <div className="w-full max-w-3xl mx-auto">
+      <Box sx={{ maxWidth: 700, mx: "auto" }}>
         <ResultsScreen state={state} onRestart={restart} />
-      </div>
+      </Box>
     );
   }
 
   if (!currentChallenge) return null;
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-6">
+    <Stack spacing={3}>
       <GameHeader
         score={state.score}
         total={totalChallenges}
@@ -68,18 +73,22 @@ export function Game() {
         difficulty={currentDifficulty}
       />
 
-      {/* Challenge title + instruction */}
-      <div className="text-center space-y-1">
-        <h2 className="text-lg font-semibold font-sans text-foreground text-balance">
+      <Box sx={{ textAlign: "center" }}>
+        <Typography variant="h6" fontWeight={600}>
           {currentChallenge.title}
-        </h2>
-        <p className="text-sm text-muted-foreground">
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
           Pick the code with better prop naming
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
-      {/* Two code panels side by side */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+          gap: 2,
+        }}
+      >
         <CodePanel
           code={leftCode}
           label="A"
@@ -94,11 +103,10 @@ export function Game() {
           onSelect={() => answer("right")}
           result={getResult("right")}
         />
-      </div>
+      </Box>
 
-      {/* Explanation + Next button */}
       {currentAnswer && (
-        <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <Stack spacing={2}>
           <ExplanationPanel
             isCorrect={currentAnswer === "correct"}
             text={
@@ -110,20 +118,24 @@ export function Game() {
             sourceLabel={currentChallenge.sourceLabel}
           />
 
-          <div className="flex justify-center">
-            <Button onClick={next} size="lg" className="gap-2">
-              {state.currentIndex + 1 < totalChallenges ? (
-                <>
-                  Next Challenge
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              ) : (
-                "See Results"
-              )}
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={next}
+              endIcon={
+                state.currentIndex + 1 < totalChallenges ? (
+                  <ArrowRight size={18} />
+                ) : undefined
+              }
+            >
+              {state.currentIndex + 1 < totalChallenges
+                ? "Next Challenge"
+                : "See Results"}
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Stack>
       )}
-    </div>
+    </Stack>
   );
 }

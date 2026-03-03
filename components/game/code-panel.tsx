@@ -2,25 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Editor, { type OnMount } from "@monaco-editor/react";
-import { cn } from "@/lib/utils";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
 
 interface CodePanelProps {
-  /** The TypeScript code to display in the panel. */
   code: string;
-  /** Label shown at the top of the panel (e.g. "A" or "B"). */
   label: string;
-  /** Whether this panel is currently selectable. */
   isSelectable: boolean;
-  /** Called when this panel is clicked. */
   onSelect: () => void;
-  /** Visual state after the user answers. */
   result?: "correct" | "wrong" | null;
 }
 
-/**
- * A clickable code panel that renders TypeScript code via Monaco Editor.
- * Highlighted green/red after an answer is submitted.
- */
 export function CodePanel({
   code,
   label,
@@ -32,13 +25,11 @@ export function CodePanel({
   const [editorHeight, setEditorHeight] = useState(200);
 
   const handleEditorMount: OnMount = useCallback((editor) => {
-    // Auto-size based on content
     const lineCount = editor.getModel()?.getLineCount() ?? 10;
     const lineHeight = 20;
     const padding = 32;
     setEditorHeight(Math.max(lineCount * lineHeight + padding, 120));
 
-    // Disable all editing interactions
     editor.updateOptions({
       readOnly: true,
       domReadOnly: true,
@@ -57,7 +48,7 @@ export function CodePanel({
       glyphMargin: false,
       contextmenu: false,
       fontSize: 14,
-      fontFamily: "var(--font-mono), 'Geist Mono', monospace",
+      fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
       padding: { top: 16, bottom: 16 },
     });
   }, []);
@@ -71,15 +62,34 @@ export function CodePanel({
 
   const borderColor =
     result === "correct"
-      ? "border-success"
+      ? "success.main"
       : result === "wrong"
-        ? "border-destructive"
-        : isSelectable
-          ? "border-border hover:border-muted-foreground"
-          : "border-border";
+        ? "error.main"
+        : "divider";
+
+  const ringColor =
+    result === "correct"
+      ? "rgba(43,217,123,0.3)"
+      : result === "wrong"
+        ? "rgba(224,64,64,0.3)"
+        : undefined;
+
+  const headerBg =
+    result === "correct"
+      ? "rgba(43,217,123,0.1)"
+      : result === "wrong"
+        ? "rgba(224,64,64,0.1)"
+        : "secondary.main";
+
+  const headerBorderColor =
+    result === "correct"
+      ? "rgba(43,217,123,0.3)"
+      : result === "wrong"
+        ? "rgba(224,64,64,0.3)"
+        : "divider";
 
   return (
-    <div
+    <Paper
       ref={containerRef}
       role="button"
       tabIndex={isSelectable ? 0 : -1}
@@ -91,38 +101,52 @@ export function CodePanel({
           onSelect();
         }
       }}
-      className={cn(
-        "relative flex flex-col rounded-lg border-2 transition-all overflow-hidden",
+      elevation={0}
+      sx={{
+        border: 2,
         borderColor,
-        isSelectable && "cursor-pointer",
-        result === "correct" && "ring-2 ring-success/30",
-        result === "wrong" && "ring-2 ring-destructive/30",
-      )}
+        overflow: "hidden",
+        cursor: isSelectable ? "pointer" : "default",
+        transition: "all 0.2s",
+        boxShadow: ringColor ? `0 0 0 3px ${ringColor}` : undefined,
+        "&:hover": isSelectable
+          ? { borderColor: "text.secondary" }
+          : undefined,
+      }}
     >
-      {/* Label badge */}
-      <div
-        className={cn(
-          "flex items-center justify-between px-4 py-2 border-b",
-          result === "correct"
-            ? "bg-success/10 border-success/30"
-            : result === "wrong"
-              ? "bg-destructive/10 border-destructive/30"
-              : "bg-secondary border-border",
-        )}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          px: 2,
+          py: 1,
+          borderBottom: 1,
+          borderColor: headerBorderColor,
+          bgcolor: headerBg,
+        }}
       >
-        <span className="text-sm font-mono font-semibold text-muted-foreground">
+        <Typography
+          variant="body2"
+          fontFamily="var(--font-geist-mono), monospace"
+          fontWeight={600}
+          color="text.secondary"
+        >
           {label}
-        </span>
+        </Typography>
         {result === "correct" && (
-          <span className="text-xs font-medium text-success">Better</span>
+          <Typography variant="caption" fontWeight={500} color="success.main">
+            Better
+          </Typography>
         )}
         {result === "wrong" && (
-          <span className="text-xs font-medium text-destructive">Worse</span>
+          <Typography variant="caption" fontWeight={500} color="error.main">
+            Worse
+          </Typography>
         )}
-      </div>
+      </Box>
 
-      {/* Monaco editor */}
-      <div style={{ height: editorHeight }}>
+      <Box sx={{ height: editorHeight }}>
         <Editor
           height={editorHeight}
           defaultLanguage="typescript"
@@ -143,12 +167,21 @@ export function CodePanel({
             padding: { top: 16, bottom: 16 },
           }}
           loading={
-            <div className="flex items-center justify-center h-full">
-              <span className="text-muted-foreground text-sm">Loading editor...</span>
-            </div>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+              }}
+            >
+              <Typography variant="body2" color="text.secondary">
+                Loading editor...
+              </Typography>
+            </Box>
           }
         />
-      </div>
-    </div>
+      </Box>
+    </Paper>
   );
 }

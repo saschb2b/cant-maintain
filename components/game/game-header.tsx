@@ -1,32 +1,29 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import LinearProgress from "@mui/material/LinearProgress";
 import type { Difficulty } from "@/lib/game/types";
-import { cn } from "@/lib/utils";
 
 interface GameHeaderProps {
-  /** Current score. */
   score: number;
-  /** Total challenges in the game. */
   total: number;
-  /** 1-based index of the current question. */
   currentQuestion: number;
-  /** Current consecutive correct streak. */
   streak: number;
-  /** Current difficulty tier. */
   difficulty: Difficulty | null;
 }
 
-const DIFFICULTY_CONFIG: Record<Difficulty, { label: string; className: string }> = {
-  easy: { label: "Easy", className: "bg-success/20 text-success border-success/30" },
-  medium: { label: "Medium", className: "bg-accent/20 text-accent border-accent/30" },
-  hard: { label: "Hard", className: "bg-destructive/20 text-destructive border-destructive/30" },
+const DIFFICULTY_CONFIG: Record<
+  Difficulty,
+  { label: string; color: string; bgcolor: string }
+> = {
+  easy: { label: "Easy", color: "success.main", bgcolor: "rgba(43,217,123,0.15)" },
+  medium: { label: "Medium", color: "warning.main", bgcolor: "rgba(212,145,61,0.15)" },
+  hard: { label: "Hard", color: "error.main", bgcolor: "rgba(224,64,64,0.15)" },
 };
 
-/**
- * Top bar showing score, streak, difficulty badge, and progress.
- */
 export function GameHeader({
   score,
   total,
@@ -38,47 +35,80 @@ export function GameHeader({
   const diffConfig = difficulty ? DIFFICULTY_CONFIG[difficulty] : null;
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
+    <Stack spacing={1.5}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Box>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              fontFamily="var(--font-geist-mono), monospace"
+              sx={{ textTransform: "uppercase", letterSpacing: "0.05em" }}
+            >
               Score
-            </span>
-            <span className="text-2xl font-bold font-mono text-foreground">
+            </Typography>
+            <Typography
+              variant="h5"
+              fontWeight={700}
+              fontFamily="var(--font-geist-mono), monospace"
+            >
               {score}
-              <span className="text-sm text-muted-foreground">/{total}</span>
-            </span>
-          </div>
+              <Typography
+                component="span"
+                variant="body2"
+                color="text.secondary"
+              >
+                /{total}
+              </Typography>
+            </Typography>
+          </Box>
 
           {streak >= 2 && (
-            <div className="flex flex-col animate-in fade-in zoom-in duration-200">
-              <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">
+            <Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                fontFamily="var(--font-geist-mono), monospace"
+                sx={{ textTransform: "uppercase", letterSpacing: "0.05em" }}
+              >
                 Streak
-              </span>
-              <span className="text-2xl font-bold font-mono text-accent">
+              </Typography>
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                fontFamily="var(--font-geist-mono), monospace"
+                color="warning.main"
+              >
                 {streak}x
-              </span>
-            </div>
+              </Typography>
+            </Box>
           )}
-        </div>
+        </Stack>
 
-        <div className="flex items-center gap-3">
+        <Stack direction="row" alignItems="center" spacing={1.5}>
           {diffConfig && (
-            <Badge
-              variant="outline"
-              className={cn("font-mono text-xs", diffConfig.className)}
-            >
-              {diffConfig.label}
-            </Badge>
+            <Chip
+              label={diffConfig.label}
+              size="small"
+              variant="outlined"
+              sx={{
+                color: diffConfig.color,
+                bgcolor: diffConfig.bgcolor,
+                borderColor: diffConfig.color,
+              }}
+            />
           )}
-          <span className="text-sm font-mono text-muted-foreground">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            fontFamily="var(--font-geist-mono), monospace"
+          >
             {currentQuestion}/{total}
-          </span>
-        </div>
-      </div>
+          </Typography>
+        </Stack>
+      </Stack>
 
-      <Progress value={progressPercent} className="h-1" />
-    </div>
+      <LinearProgress variant="determinate" value={progressPercent} />
+    </Stack>
   );
 }
