@@ -38,6 +38,8 @@ pnpm typecheck && pnpm lint && pnpm format:check && pnpm build
 
 ```
 app/
+  layout.tsx                # Root layout with fonts, theme, analytics
+  template.tsx              # View transition CSS (fade on navigate)
   page.tsx                  # Landing page
   play/page.tsx             # Game page
   learn/
@@ -46,7 +48,9 @@ app/
     [category]/page.tsx     # Per-category learn page
 components/
   game/                     # Game UI components
-  learn-sidebar.tsx         # Sidebar navigation for /learn
+  learn-sidebar.tsx         # Sidebar navigation for /learn (desktop)
+  learn-mobile-nav.tsx      # Horizontal scroll nav for /learn (mobile)
+  formatted-text.tsx        # Inline markdown rendering for explanations
   theme-provider.tsx        # MUI ThemeProvider wrapper
 lib/
   game/

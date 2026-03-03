@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Can't Maintain is a "Can't Unsee"-style quiz game for learning React prop naming. Players choose between two code snippets (displayed in Monaco Editor), picking the one with better prop naming. The game ramps difficulty from easy to hard, 10 challenges per session.
+Can't Maintain is a "Can't Unsee"-style quiz game for learning React prop naming. Players choose between two Shiki-highlighted code snippets, picking the one with better prop naming. The game ramps difficulty from easy to hard, 10 challenges per session.
 
 ## Key Architecture Decisions
 
@@ -55,6 +55,8 @@ Both sides of a challenge **must have the same visual structure**. The differenc
    - `cp` = children-pattern
    - `du` = discriminated-unions
    - `eh` = extending-html
+   - `rf` = ref-forwarding
+   - `ap` = accessibility-props
    - `dv` = default-values
    - `po` = prop-organization
 4. Include both `explanationCorrect` and `explanationWrong`
@@ -81,21 +83,25 @@ All game logic is in `lib/game/use-game.ts`. The `prepareChallenges()` function 
 | `lib/game/challenges/index.ts`          | Combines per-category challenge arrays |
 | `lib/game/challenges/*.ts`              | Per-category challenge content         |
 | `lib/game/use-game.ts`                  | Game state machine hook                |
-| `components/game/game.tsx`              | Main game orchestrator                 |
 | `lib/game/categories.ts`                | Category order, labels, descriptions   |
 | `lib/code-styles.ts`                    | Shared Shiki code block styles         |
+| `lib/theme.ts`                          | MUI dark theme configuration           |
+| `components/game/game.tsx`              | Main game orchestrator                 |
 | `components/game/code-panel.tsx`        | Shiki-powered code display             |
 | `components/game/explanation-panel.tsx` | Post-answer explanation                |
 | `components/game/game-header.tsx`       | Score/progress UI                      |
 | `components/game/results-screen.tsx`    | End screen with challenge review       |
+| `components/theme-provider.tsx`         | MUI ThemeProvider wrapper              |
+| `components/learn-sidebar.tsx`          | Sidebar navigation for /learn (desktop)|
+| `components/learn-mobile-nav.tsx`       | Horizontal scroll nav for /learn (mobile)|
+| `components/formatted-text.tsx`         | Inline markdown rendering              |
+| `app/layout.tsx`                        | Root layout with fonts, theme, analytics|
+| `app/template.tsx`                      | View transition CSS (fade on navigate) |
 | `app/page.tsx`                          | Landing page                           |
 | `app/play/page.tsx`                     | Game page                              |
 | `app/learn/layout.tsx`                  | Learn section layout with sidebar      |
 | `app/learn/page.tsx`                    | Learn overview page                    |
 | `app/learn/[category]/page.tsx`         | Per-category learn page                |
-| `components/learn-sidebar.tsx`          | Sidebar navigation for /learn          |
-| `lib/theme.ts`                          | MUI dark theme configuration           |
-| `components/theme-provider.tsx`         | MUI ThemeProvider wrapper              |
 
 ## Conventions
 
