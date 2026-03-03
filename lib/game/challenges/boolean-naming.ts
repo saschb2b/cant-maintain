@@ -16,9 +16,9 @@ export const booleanNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "The `is` prefix is a widely used convention that makes boolean props read as yes/no questions: 'Is it loading?' While some libraries use bare names like `disabled`, the prefix makes the type unambiguous at the call site.",
+      "The `is` prefix makes boolean props read as yes/no questions: 'Is it loading?' Some established libraries (MUI, HTML) use bare names like `disabled` - that's fine for well-known HTML attributes. But for custom props, the prefix removes ambiguity: is `loading` a boolean, an enum, or a string?",
     explanationWrong:
-      "Without a prefix like `is`, `has`, or `should`, it can be ambiguous whether `loading` is a boolean, a loading state enum, or a loading message string. The `is` prefix is a common convention that makes the type self-documenting.",
+      "Without a prefix, `loading` could be a boolean, a loading state enum, or a loading message string. The `is`/`has`/`should` convention is most valuable for custom props where the type isn't obvious. Note: native HTML attributes like `disabled` are the exception - everyone knows those are booleans.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props to a Component",
   },
@@ -39,11 +39,73 @@ export const booleanNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Two improvements! `isOpen` reads as a clear yes/no question, and `onClose` is a proper event callback. Note: some libraries (like MUI) use `open` without prefix - both are valid, but `close` as an imperative is the bigger issue here.",
+      "Two improvements! `isOpen` makes the boolean explicit, and `onClose` follows the event callback convention. Fun fact: MUI uses bare `open` for modals - that's fine for a well-known pattern. But `close` as an imperative verb is the real problem here: it should always be `onClose` to signal it's an event callback, not a command.",
     explanationWrong:
-      "`open` is debatable on its own, but pairing it with `close` (an imperative command) is the real problem. `close` should be `onClose` to signal it's an event callback. Adding `is` to the boolean makes the state vs. event distinction clearer.",
+      "The bigger issue is `close` - it reads like an imperative command ('close the modal!') rather than an event callback ('the user requested closing'). `onClose` fixes that. For the boolean, `open` vs `isOpen` is a style choice (MUI uses `open`), but `isOpen` is more self-documenting in your own components.",
     sourceUrl: "https://react.dev/learn/responding-to-events",
     sourceLabel: "React Docs: Responding to Events",
+  },
+  {
+    id: "bl-004",
+    category: "boolean-naming",
+    difficulty: "medium",
+    title: "Opt-out boolean naming",
+    badCode: `interface ButtonProps {
+  children: React.ReactNode;
+  variant?: 'text' | 'outlined' | 'contained';
+  noElevation?: boolean;
+  noRipple?: boolean;
+  noFocusRipple?: boolean;
+}`,
+    goodCode: `interface ButtonProps {
+  children: React.ReactNode;
+  variant?: 'text' | 'outlined' | 'contained';
+  /** @default false */
+  disableElevation?: boolean;
+  /** @default false */
+  disableRipple?: boolean;
+  /** @default false */
+  disableFocusRipple?: boolean;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "The `disable*` prefix is ideal for opt-out booleans: features that are on by default and can be turned off. `<Button disableElevation />` reads as 'disable the elevation' - clear and imperative. MUI uses this pattern across its entire library. The key rule: boolean props should default to `false` so that the JSX shorthand `<Button disableRipple />` means 'true'.",
+    explanationWrong:
+      "`no*` prefixes create double-negative confusion. `noElevation={false}` means... elevation is on? The `disable*` prefix avoids this: `disableElevation={false}` clearly means 'don't disable it' (elevation stays on). Also, `disable*` is the established MUI convention - consistency with the library your team uses matters.",
+    sourceUrl: "https://mui.com/material-ui/api/button/",
+    sourceLabel: "MUI: Button API",
+  },
+  {
+    id: "bl-005",
+    category: "boolean-naming",
+    difficulty: "hard",
+    title: "Intent-specific boolean prefixes",
+    badCode: `interface ModalProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+  isMounted?: boolean;
+  isBackdropHidden?: boolean;
+  isScrollLocked?: boolean;
+}`,
+    goodCode: `interface ModalProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+  /** Keep children in the DOM when closed. @default false */
+  keepMounted?: boolean;
+  /** Hide the backdrop overlay. @default false */
+  hideBackdrop?: boolean;
+  /** Prevent body scroll when open. @default true */
+  disableScrollLock?: boolean;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Different boolean intents deserve different prefixes: `keep*` means 'preserve this behavior that would normally stop,' `hide*` means 'don't render this visual element,' and `disable*` means 'turn off this feature.' `<Modal keepMounted hideBackdrop />` reads as clear instructions. MUI's Modal uses all three of these exact props.",
+    explanationWrong:
+      "`is*` works for state booleans, but `isMounted` is confusing - is it a read-only status or a setting? `isBackdropHidden` is a double description (is + hidden). `isScrollLocked` reverses the default mental model. Intent-specific prefixes (`keep*`, `hide*`, `disable*`) make each prop's purpose unambiguous without reading the docs.",
+    sourceUrl: "https://mui.com/material-ui/api/modal/",
+    sourceLabel: "MUI: Modal API",
   },
   {
     id: "bl-003",
@@ -76,9 +138,9 @@ export const booleanNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Full marks! Three patterns at once: `is` for state booleans, `has` for feature booleans, and JSDoc with `@default` for every optional prop. `<Navigation hasIcons isMobile />` reads like English.",
+      "Three prefixes, three meanings: `is` for current state (`isCollapsed`), `has` for feature presence (`hasIcons`), and JSDoc `@default` so consumers know the baseline. At the call site, `<Navigation hasIcons isMobile />` reads like a sentence. Each prefix tells you the *kind* of boolean without reading the type.",
     explanationWrong:
-      "`collapsed` - is this a verb or adjective? `icons` - a boolean or an array of icons? `mobile` - a phone number? Each prop is ambiguous. Prefix booleans with `is`/`has`/`should` and document defaults.",
+      "`collapsed` - is this a past-tense verb ('it was collapsed') or a boolean? `icons` - a boolean or an array of Icon objects? `mobile` - a boolean, a phone number, or a breakpoint? Without prefixes, every prop requires reading the type definition to understand. `is`/`has`/`should` prefixes make the intent obvious at the call site.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props to a Component",
   },

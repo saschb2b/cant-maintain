@@ -130,7 +130,7 @@ export function Game() {
           size="small"
           sx={{
             mb: 1,
-            bgcolor: "rgba(255,255,255,0.06)",
+            bgcolor: "rgba(0,0,0,0.05)",
             color: "text.secondary",
             fontSize: "0.7rem",
             height: 22,
@@ -175,7 +175,7 @@ export function Game() {
             fontFamily="var(--font-geist-mono), monospace"
             sx={{
               color: "text.secondary",
-              bgcolor: "rgba(255,255,255,0.05)",
+              bgcolor: "rgba(0,0,0,0.04)",
               px: 1,
               py: 0.5,
               borderRadius: 1,

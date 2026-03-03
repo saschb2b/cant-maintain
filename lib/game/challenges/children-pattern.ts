@@ -5,7 +5,7 @@ export const childrenPatternChallenges: Challenge[] = [
     id: "cp-001",
     category: "children-pattern",
     difficulty: "hard",
-    title: "Render prop typing",
+    title: "Generic list component",
     badCode: `interface ListProps {
   data: any[];
   render: (item: any) => any;
@@ -28,9 +28,9 @@ export const childrenPatternChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Generics (`<T>`) preserve type safety through the render function. `renderItem` is more specific than `render`, and `emptyState` is clearer than `empty`. No `any` in sight!",
+      "Generics (`<T>`) make `renderItem` type-safe: if `data` is `User[]`, the callback receives `User` - no casting needed. `renderItem` is specific (not vague `render`), `emptyState` is a `ReactNode` slot (not mystery `any`), and `React.ReactNode` is the correct return type for anything renderable.",
     explanationWrong:
-      "`any` destroys all type safety. `render` is vague (render what?). `empty` could be a boolean, a string, or a component. Use generics, specific names, and proper React types.",
+      "Five uses of `any` means zero type safety. If `data` is `User[]`, `render` still receives `any` - you've lost the connection between input and output types. Generics preserve that link. Beyond types, `render` (of what?) and `empty` (boolean? string? component?) are ambiguously named.",
     sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
     sourceLabel: "TypeScript: Generics",
   },
@@ -77,6 +77,45 @@ interface SelectProps {
       "Config arrays like `options: Array<{...}>` are rigid. Every new feature (icons, descriptions, groups, custom rendering) means extending the config type. Compound components let consumers compose freely with JSX - the React way.",
     sourceUrl: "https://react.dev/learn/thinking-in-react",
     sourceLabel: "React Docs: Thinking in React",
+  },
+  {
+    id: "cp-004",
+    category: "children-pattern",
+    difficulty: "medium",
+    title: "Customizing sub-components",
+    badCode: `interface AutocompleteProps {
+  options: string[];
+  PaperComponent?: React.ElementType;
+  PaperProps?: Record<string, unknown>;
+  ListboxComponent?: React.ElementType;
+  ListboxProps?: Record<string, unknown>;
+  PopperComponent?: React.ElementType;
+  PopperProps?: Record<string, unknown>;
+}`,
+    goodCode: `interface AutocompleteProps {
+  options: string[];
+  /**
+   * Override internal sub-components and their props.
+   * Each slot maps to an internal element.
+   */
+  slots?: {
+    paper?: React.ElementType;
+    listbox?: React.ElementType;
+    popper?: React.ElementType;
+  };
+  slotProps?: {
+    paper?: Record<string, unknown>;
+    listbox?: Record<string, unknown>;
+    popper?: Record<string, unknown>;
+  };
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Grouping overrides into `slots` and `slotProps` objects scales cleanly. Adding a new customizable element means adding one key to each object - not two new top-level props. This is the pattern MUI adopted across all components, replacing the older `PaperComponent`/`PaperProps` pairs that cluttered the API.",
+    explanationWrong:
+      "Each sub-component needs two props (component + props), so three sub-components means six top-level props. A fourth sub-component adds two more. This doesn't scale. The `slots`/`slotProps` pattern groups all overrides into two structured objects, keeping the top-level API clean and discoverable.",
+    sourceUrl: "https://mui.com/material-ui/customization/creating-themed-components/",
+    sourceLabel: "MUI: Themed Components",
   },
   {
     id: "cp-003",

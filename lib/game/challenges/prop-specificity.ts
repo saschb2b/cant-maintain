@@ -53,6 +53,38 @@ interface ButtonProps {
     sourceLabel: "React Docs: Passing Props",
   },
   {
+    id: "ps-006",
+    category: "prop-specificity",
+    difficulty: "medium",
+    title: "Autocomplete prop naming",
+    badCode: `interface AutocompleteProps {
+  items: string[];
+  value: string;
+  onChange: (v: string) => void;
+  render: (item: string) => React.ReactNode;
+  noResults: React.ReactNode;
+}`,
+    goodCode: `interface AutocompleteProps {
+  /** Available suggestion items. */
+  items: string[];
+  /** The current input value. */
+  value: string;
+  /** Called when the input value changes. */
+  onValueChange: (value: string) => void;
+  /** Custom render function for each suggestion item. */
+  renderItem: (item: string) => React.ReactNode;
+  /** Content displayed when no items match. */
+  emptyContent: React.ReactNode;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Every prop is specific: `renderItem` (not vague `render`), `emptyContent` (not the double-negative `noResults`), `onValueChange` (not generic `onChange`), and parameter names spell out their meaning (`value` not `v`).",
+    explanationWrong:
+      "`render` renders what? `noResults` is a confusing name - does `false` mean 'there are results' or 'don't show the no-results state'? `onChange` with `v` forces you to read the type to understand the callback. Specific names eliminate this guesswork.",
+    sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
+    sourceLabel: "React Docs: Passing Props",
+  },
+  {
     id: "ps-001",
     category: "prop-specificity",
     difficulty: "medium",
@@ -95,6 +127,41 @@ interface ButtonProps {
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types",
     sourceLabel: "TypeScript: Union Types",
+  },
+  {
+    id: "ps-007",
+    category: "prop-specificity",
+    difficulty: "medium",
+    title: "Accessible text props",
+    badCode: `interface AutocompleteProps<T> {
+  options: T[];
+  value: T | null;
+  onChange: (value: T | null) => void;
+  placeholder?: string;
+}`,
+    goodCode: `interface AutocompleteProps<T> {
+  options: T[];
+  value: T | null;
+  onChange: (value: T | null) => void;
+  placeholder?: string;
+  /** Label for the clear button. @default "Clear" */
+  clearText?: string;
+  /** Label for the open popup button. @default "Open" */
+  openText?: string;
+  /** Label for the close popup button. @default "Close" */
+  closeText?: string;
+  /** Text shown when no options match. @default "No options" */
+  noOptionsText?: React.ReactNode;
+  /** Text shown while loading. @default "Loading…" */
+  loadingText?: React.ReactNode;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Interactive elements need accessible labels, and those labels need to be translatable. The `*Text` props provide screen-reader labels for icon buttons (`clearText`, `openText`) and user-facing messages (`noOptionsText`, `loadingText`). MUI's Autocomplete exposes all five. Without them, non-English users get hardcoded English strings and screen readers announce nothing useful.",
+    explanationWrong:
+      "This API looks clean but it's missing accessibility and i18n. The clear button has no label for screen readers. The 'no results' and 'loading' states have no customizable messages. Every interactive element and user-facing string should have a `*Text` prop with a sensible default - this is how components become production-ready across languages.",
+    sourceUrl: "https://mui.com/material-ui/api/autocomplete/",
+    sourceLabel: "MUI: Autocomplete API",
   },
   {
     id: "ps-003",

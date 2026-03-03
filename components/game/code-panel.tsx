@@ -73,23 +73,23 @@ export function CodePanel({
 
   const ringColor =
     result === "correct"
-      ? "rgba(43,217,123,0.3)"
+      ? "rgba(91,138,114,0.3)"
       : result === "wrong"
-        ? "rgba(224,64,64,0.3)"
+        ? "rgba(196,87,58,0.3)"
         : undefined;
 
   const headerBg =
     result === "correct"
-      ? "rgba(43,217,123,0.1)"
+      ? "rgba(91,138,114,0.1)"
       : result === "wrong"
-        ? "rgba(224,64,64,0.1)"
+        ? "rgba(196,87,58,0.1)"
         : "secondary.main";
 
   const headerBorderColor =
     result === "correct"
-      ? "rgba(43,217,123,0.3)"
+      ? "rgba(91,138,114,0.3)"
       : result === "wrong"
-        ? "rgba(224,64,64,0.3)"
+        ? "rgba(196,87,58,0.3)"
         : "divider";
 
   return (
@@ -117,14 +117,14 @@ export function CodePanel({
           ? {
               borderColor: "text.secondary",
               transform: "translateY(-2px)",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
             }
           : undefined,
         "&:focus-visible": isSelectable
           ? {
               borderColor: "primary.main",
               outline: "none",
-              boxShadow: "0 0 0 3px rgba(43,217,123,0.3)",
+              boxShadow: "0 0 0 3px rgba(43,76,126,0.3)",
             }
           : undefined,
       }}
@@ -174,7 +174,7 @@ export function CodePanel({
           height={editorHeight}
           defaultLanguage="typescript"
           value={code}
-          theme="vs-dark"
+          theme="vs"
           onMount={handleEditorMount}
           options={{
             readOnly: true,

@@ -1,10 +1,12 @@
 "use client";
 
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import type { Difficulty } from "@/lib/game/types";
+import { Flame } from "lucide-react";
 
 type QuestionResult = "correct" | "wrong" | null;
 
@@ -23,15 +25,15 @@ const DIFFICULTY_CONFIG: Record<
 > = {
   easy: {
     label: "Easy",
-    color: "success.main",
-    bgcolor: "rgba(43,217,123,0.15)",
+    color: "#5B8A72",
+    bgcolor: "rgba(91,138,114,0.12)",
   },
   medium: {
     label: "Medium",
-    color: "warning.main",
-    bgcolor: "rgba(212,145,61,0.15)",
+    color: "#D4873C",
+    bgcolor: "rgba(212,135,60,0.12)",
   },
-  hard: { label: "Hard", color: "error.main", bgcolor: "rgba(224,64,64,0.15)" },
+  hard: { label: "Hard", color: "#C4573A", bgcolor: "rgba(196,87,58,0.12)" },
 };
 
 export function GameHeader({
@@ -45,114 +47,148 @@ export function GameHeader({
   const diffConfig = difficulty ? DIFFICULTY_CONFIG[difficulty] : null;
 
   return (
-    <Stack spacing={1.5}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Box>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              fontFamily="var(--font-geist-mono), monospace"
-              sx={{ textTransform: "uppercase", letterSpacing: "0.05em" }}
-            >
-              Score
-            </Typography>
-            <Typography
-              variant="h5"
-              fontWeight={700}
-              fontFamily="var(--font-geist-mono), monospace"
-            >
-              {score}
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
-                /{total}
-              </Typography>
-            </Typography>
-          </Box>
-
-          {streak >= 2 && (
+    <Paper
+      elevation={0}
+      sx={{
+        border: 1,
+        borderColor: "divider",
+        bgcolor: "background.paper",
+        borderRadius: 2.5,
+        px: 2.5,
+        py: 2,
+      }}
+    >
+      <Stack spacing={2}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Stack direction="row" alignItems="center" spacing={3}>
             <Box>
               <Typography
                 variant="caption"
-                color="text.secondary"
                 fontFamily="var(--font-geist-mono), monospace"
-                sx={{ textTransform: "uppercase", letterSpacing: "0.05em" }}
+                sx={{
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  fontSize: "0.65rem",
+                  color: "text.secondary",
+                }}
               >
-                Streak
+                Score
               </Typography>
               <Typography
                 variant="h5"
                 fontWeight={700}
                 fontFamily="var(--font-geist-mono), monospace"
-                color="warning.main"
+                sx={{ lineHeight: 1.1 }}
               >
-                {streak}x
+                {score}
+                <Typography
+                  component="span"
+                  variant="body2"
+                  color="text.secondary"
+                  fontWeight={500}
+                >
+                  /{total}
+                </Typography>
               </Typography>
             </Box>
-          )}
+
+            {streak >= 2 && (
+              <Stack direction="row" alignItems="center" spacing={0.75}>
+                <Flame size={20} color="#D4873C" />
+                <Box>
+                  <Typography
+                    variant="caption"
+                    fontFamily="var(--font-geist-mono), monospace"
+                    sx={{
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      fontSize: "0.65rem",
+                      color: "text.secondary",
+                    }}
+                  >
+                    Streak
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    fontWeight={700}
+                    fontFamily="var(--font-geist-mono), monospace"
+                    sx={{ lineHeight: 1.1, color: "#D4873C" }}
+                  >
+                    {streak}x
+                  </Typography>
+                </Box>
+              </Stack>
+            )}
+          </Stack>
+
+          <Stack direction="row" alignItems="center" spacing={1.5}>
+            {diffConfig && (
+              <Chip
+                label={diffConfig.label}
+                size="small"
+                sx={{
+                  color: diffConfig.color,
+                  bgcolor: diffConfig.bgcolor,
+                  borderColor: diffConfig.color,
+                  border: 1,
+                  fontWeight: 600,
+                }}
+              />
+            )}
+            <Typography
+              variant="body2"
+              fontWeight={600}
+              fontFamily="var(--font-geist-mono), monospace"
+              color="text.secondary"
+            >
+              {currentQuestion}/{total}
+            </Typography>
+          </Stack>
         </Stack>
 
-        <Stack direction="row" alignItems="center" spacing={1.5}>
-          {diffConfig && (
-            <Chip
-              label={diffConfig.label}
-              size="small"
-              variant="outlined"
-              sx={{
-                color: diffConfig.color,
-                bgcolor: diffConfig.bgcolor,
-                borderColor: diffConfig.color,
-              }}
-            />
-          )}
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            fontFamily="var(--font-geist-mono), monospace"
-          >
-            {currentQuestion}/{total}
-          </Typography>
-        </Stack>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "4px",
+            width: "100%",
+          }}
+        >
+          {questionResults.map((result, i) => {
+            const isCurrent = i === currentQuestion - 1;
+            let bgcolor: string;
+            let shadow: string | undefined;
+            if (result === "correct") {
+              bgcolor = "#3D9E6F";
+            } else if (result === "wrong") {
+              bgcolor = "#D4563A";
+            } else if (isCurrent) {
+              bgcolor = "var(--mui-palette-primary-main)";
+              shadow = "0 0 8px rgba(43,76,126,0.4)";
+            } else {
+              bgcolor = "#DDD6CA";
+            }
+
+            return (
+              <Box
+                key={i}
+                sx={{
+                  flex: 1,
+                  height: 10,
+                  borderRadius: 1.5,
+                  bgcolor,
+                  boxShadow: shadow,
+                  opacity: isCurrent && !result ? 0.7 : 1,
+                  transition: "all 0.3s ease",
+                }}
+              />
+            );
+          })}
+        </Box>
       </Stack>
-
-      <Box
-        sx={{
-          display: "flex",
-          gap: "3px",
-          width: "100%",
-        }}
-      >
-        {questionResults.map((result, i) => {
-          const isCurrent = i === currentQuestion - 1;
-          let bgcolor: string;
-          if (result === "correct") {
-            bgcolor = "var(--mui-palette-success-main)";
-          } else if (result === "wrong") {
-            bgcolor = "var(--mui-palette-error-main)";
-          } else if (isCurrent) {
-            bgcolor = "var(--mui-palette-primary-main)";
-          } else {
-            bgcolor = "rgba(255,255,255,0.08)";
-          }
-
-          return (
-            <Box
-              key={i}
-              sx={{
-                flex: 1,
-                height: 6,
-                borderRadius: 1,
-                bgcolor,
-                opacity: isCurrent && !result ? 0.6 : 1,
-                transition: "background-color 0.3s, opacity 0.3s",
-              }}
-            />
-          );
-        })}
-      </Box>
-    </Stack>
+    </Paper>
   );
 }

@@ -80,12 +80,68 @@ export const callbackNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Nice! `onItemSelect` is more specific than `onChange`. It tells you exactly what event occurred - an item was selected. `onChange` is vague and could mean anything changed.",
+      "`onItemSelect` tells you exactly what happened: the user selected an item. `onChange` is reserved for native `<input>` and `<select>` elements where it has established meaning. For custom components, specific names like `onItemSelect`, `onTabChange`, or `onColorPick` describe the actual user action - invaluable when a component has multiple things that can change.",
     explanationWrong:
-      "`onChange` is fine for native inputs, but for custom components it's too generic. `onItemSelect` describes the exact event: the user selected an item. Be specific about what changed.",
+      "`onChange` is the right name for native form elements, but a Dropdown isn't an `<input>`. When a parent uses `<Dropdown onChange={...} />` alongside `<TextField onChange={...} />`, both callbacks look identical but mean different things. `onItemSelect` makes the Dropdown's event self-documenting, especially in components with multiple callbacks.",
     sourceUrl:
       "https://react.dev/learn/responding-to-events#naming-event-handler-props",
     sourceLabel: "React Docs: Naming event handler props",
+  },
+  {
+    id: "cb-006",
+    category: "callback-naming",
+    difficulty: "hard",
+    title: "Close callback with reason",
+    badCode: `interface DialogProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+}`,
+    goodCode: `type CloseReason =
+  | 'backdropClick'
+  | 'escapeKeyDown'
+  | 'closeButton';
+
+interface DialogProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: (reason: CloseReason) => void;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "A `reason` parameter lets the parent decide *how* to respond to each close trigger. For example, you might ignore backdrop clicks on a confirmation dialog but allow Escape. MUI's Dialog, Snackbar, and Modal all follow this pattern. Without a reason, you'd need separate `onBackdropClick`, `onEscapeKeyDown` props for each trigger.",
+    explanationWrong:
+      "A bare `onClose: () => void` tells you *that* close was requested but not *why*. Should a click outside a confirmation dialog actually close it? With no reason, you can't distinguish between 'user pressed Escape' and 'user clicked the backdrop' - both fire the same void callback. The reason parameter is one extra argument that unlocks fine-grained control.",
+    sourceUrl: "https://mui.com/material-ui/api/dialog/",
+    sourceLabel: "MUI: Dialog API",
+  },
+  {
+    id: "cb-007",
+    category: "callback-naming",
+    difficulty: "hard",
+    title: "Dual-level event callbacks",
+    badCode: `interface SliderProps {
+  min: number;
+  max: number;
+  value: number;
+  onChange: (value: number) => void;
+}`,
+    goodCode: `interface SliderProps {
+  min: number;
+  max: number;
+  value: number;
+  /** Fires continuously as the thumb moves. */
+  onChange: (value: number) => void;
+  /** Fires once when the user releases the thumb. */
+  onChangeCommitted: (value: number) => void;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Some interactions have two meaningful moments: the live update and the final commit. A slider fires `onChange` on every pixel of drag (for live preview) and `onChangeCommitted` on mouse-up (for saving to the server). MUI's Slider uses exactly this pattern. Without both, you either spam API calls on every drag pixel or miss live feedback entirely.",
+    explanationWrong:
+      "A single `onChange` forces a tough choice: call the API on every drag movement (wasteful, may cause flicker) or debounce it (loses real-time preview). Two callbacks solve this cleanly: `onChange` for UI updates, `onChangeCommitted` for expensive operations like network requests. The naming convention `on*Committed` clearly signals 'this is the final value.'",
+    sourceUrl: "https://mui.com/material-ui/api/slider/",
+    sourceLabel: "MUI: Slider API",
   },
   {
     id: "cb-005",

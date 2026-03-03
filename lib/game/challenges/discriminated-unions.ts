@@ -2,6 +2,68 @@ import type { Challenge } from "../types";
 
 export const discriminatedUnionsChallenges: Challenge[] = [
   {
+    id: "du-003",
+    category: "discriminated-unions",
+    difficulty: "easy",
+    title: "Status-specific message props",
+    badCode: `interface StatusProps {
+  status: 'loading' | 'error' | 'success';
+  errorMessage?: string;
+  successData?: string;
+}`,
+    goodCode: `type StatusProps =
+  | { status: 'loading' }
+  | { status: 'error'; errorMessage: string }
+  | { status: 'success'; data: string };`,
+    correctSide: "right",
+    explanationCorrect:
+      "A union type ties each status to exactly the props it needs. When `status` is `'loading'`, there's no `errorMessage` to accidentally render. When `status` is `'error'`, `errorMessage` is required - not optional. TypeScript narrows the type automatically when you check `status`.",
+    explanationWrong:
+      "With optional props, nothing stops `{ status: 'loading', errorMessage: 'oops' }` - a combination that makes no sense. Worse, `errorMessage` is optional even when `status` is `'error'`, so you could forget it entirely. Union types make impossible states impossible.",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
+    sourceLabel: "TypeScript: Discriminated Unions",
+  },
+  {
+    id: "du-004",
+    category: "discriminated-unions",
+    difficulty: "medium",
+    title: "Button action variants",
+    badCode: `interface ButtonProps {
+  children: React.ReactNode;
+  href?: string;
+  onClick?: () => void;
+  target?: '_blank' | '_self';
+  type?: 'button' | 'submit';
+}`,
+    goodCode: `type ButtonProps = {
+  children: React.ReactNode;
+} & (
+  | {
+      /** Renders as an anchor element. */
+      href: string;
+      target?: '_blank' | '_self';
+      onClick?: never;
+      type?: never;
+    }
+  | {
+      /** Renders as a button element. */
+      onClick?: () => void;
+      type?: 'button' | 'submit';
+      href?: never;
+      target?: never;
+    }
+);`,
+    correctSide: "right",
+    explanationCorrect:
+      "A button with an `href` is a link; a button with `onClick` is a button. Mixing both (`<Button href=\"/about\" onClick={fn}>`) leads to confusing behavior. The union ensures `target` only appears with `href` and `type` only appears without it. The `never` type blocks invalid combinations at compile time.",
+    explanationWrong:
+      "Making everything optional allows `<Button href=\"/page\" onClick={fn} type=\"submit\" target=\"_blank\" />` - should this navigate or call the handler? Submit a form or open a link? Union types force the consumer to pick one behavior, making the component predictable.",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
+    sourceLabel: "TypeScript: Discriminated Unions",
+  },
+  {
     id: "du-001",
     category: "discriminated-unions",
     difficulty: "hard",

@@ -13,42 +13,42 @@ declare module "@mui/material/styles" {
 
 const theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
     background: {
-      default: "#161625",
-      paper: "#1e1e30",
+      default: "#F5F0EB",
+      paper: "#FFFFFF",
     },
     primary: {
-      main: "#2bd97b",
-      contrastText: "#161625",
+      main: "#2B4C7E",
+      contrastText: "#FFFFFF",
     },
     secondary: {
-      main: "#2a2a40",
-      contrastText: "#c8c8c8",
+      main: "#E8E0D4",
+      contrastText: "#1A2332",
     },
     error: {
-      main: "#e04040",
-      contrastText: "#f0f0f0",
+      main: "#C4573A",
+      contrastText: "#FFFFFF",
     },
     warning: {
-      main: "#d4913d",
-      contrastText: "#161625",
+      main: "#D4873C",
+      contrastText: "#FFFFFF",
     },
     success: {
-      main: "#2bd97b",
-      contrastText: "#161625",
+      main: "#5B8A72",
+      contrastText: "#FFFFFF",
     },
     accent: {
-      main: "#d4913d",
-      light: "#e0a85a",
-      dark: "#b07830",
-      contrastText: "#161625",
+      main: "#D4873C",
+      light: "#E09B56",
+      dark: "#B87230",
+      contrastText: "#FFFFFF",
     },
     text: {
-      primary: "#f0f0f0",
-      secondary: "#888888",
+      primary: "#1A2332",
+      secondary: "#6B7B8D",
     },
-    divider: "#383850",
+    divider: "#DDD6CA",
   },
   typography: {
     fontFamily: "var(--font-geist-sans), sans-serif",
@@ -70,7 +70,7 @@ const theme = createTheme({
       styleOverrides: {
         body: {
           backgroundImage:
-            "radial-gradient(ellipse at 50% 0%, #1e1e35 0%, #161625 60%)",
+            "radial-gradient(ellipse at 50% 0%, #EDE6DB 0%, #F5F0EB 60%)",
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
           minHeight: "100vh",
