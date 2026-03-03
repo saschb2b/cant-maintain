@@ -16,6 +16,8 @@ import {
   Zap,
   Clock,
   ExternalLink,
+  Coffee,
+  GitPullRequestArrow,
 } from "lucide-react";
 
 const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
@@ -335,6 +337,60 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
           Perfect run — every convention nailed. Play again for new challenges!
         </Typography>
       )}
+
+      {/* Contribute / Support CTA */}
+      <Paper
+        elevation={0}
+        sx={{
+          border: 1,
+          borderColor: "divider",
+          p: 2.5,
+        }}
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          alignItems="center"
+          justifyContent="center"
+          spacing={{ xs: 2, sm: 4 }}
+        >
+          <Link
+            href="https://github.com/saschb2b/cant-maintain"
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              color: "text.secondary",
+              fontWeight: 500,
+              fontSize: "0.85rem",
+              "&:hover": { color: "text.primary" },
+            }}
+          >
+            <GitPullRequestArrow size={16} />
+            Contribute challenges or fixes
+          </Link>
+          <Link
+            href="https://buymeacoffee.com/qohreuukw"
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              color: "text.secondary",
+              fontWeight: 500,
+              fontSize: "0.85rem",
+              "&:hover": { color: "text.primary" },
+            }}
+          >
+            <Coffee size={16} />
+            Buy me a coffee
+          </Link>
+        </Stack>
+      </Paper>
 
     </Stack>
   );
