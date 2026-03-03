@@ -1,19 +1,23 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
-import Editor, { type OnMount } from "@monaco-editor/react";
+import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
+import { getHighlighter } from "@/lib/shiki";
 
 interface CodePanelProps {
+  /** TypeScript/TSX source code to display in the editor. */
   code: string;
+  /** Short label shown in the panel header (e.g. "A" or "B"). */
   label: string;
+  /** Whether the panel can be clicked to select this option. */
   isSelectable: boolean;
+  /** Called when the user picks this panel as their answer. */
   onSelect: () => void;
+  /** Answer result after the user picks; drives color and animation. */
   result?: "correct" | "wrong" | null;
-  fixedHeight?: number;
 }
 
 export function CodePanel({
@@ -22,48 +26,22 @@ export function CodePanel({
   isSelectable,
   onSelect,
   result,
-  fixedHeight,
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mountHeight, setMountHeight] = useState<number | null>(null);
+  const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
 
-  const calculatedHeight = useMemo(() => {
-    const lineCount = code.split("\n").length;
-    const lineHeight = 20;
-    const padding = 32;
-    return Math.max(lineCount * lineHeight + padding, 120);
-  }, [code]);
-
-  const editorHeight = fixedHeight ?? mountHeight ?? calculatedHeight;
-
-  const handleEditorMount: OnMount = useCallback((editor) => {
-    const lineCount = editor.getModel()?.getLineCount() ?? 10;
-    const lineHeight = 20;
-    const padding = 32;
-    setMountHeight(Math.max(lineCount * lineHeight + padding, 120));
-
-    editor.updateOptions({
-      readOnly: true,
-      domReadOnly: true,
-      cursorStyle: "line",
-      renderLineHighlight: "none",
-      scrollBeyondLastLine: false,
-      minimap: { enabled: false },
-      scrollbar: { vertical: "hidden", horizontal: "hidden" },
-      overviewRulerLanes: 0,
-      hideCursorInOverviewRuler: true,
-      overviewRulerBorder: false,
-      folding: false,
-      lineNumbers: "on",
-      lineDecorationsWidth: 0,
-      lineNumbersMinChars: 3,
-      glyphMargin: false,
-      contextmenu: false,
-      fontSize: 14,
-      fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
-      padding: { top: 16, bottom: 16 },
+  useEffect(() => {
+    let cancelled = false;
+    void getHighlighter().then((hl) => {
+      if (cancelled) return;
+      setHighlightedHtml(
+        hl.codeToHtml(code, { lang: "typescript", theme: "github-light" }),
+      );
     });
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [code]);
 
   const borderColor =
     result === "correct"
@@ -108,6 +86,8 @@ export function CodePanel({
       }}
       elevation={0}
       sx={{
+        display: "flex",
+        flexDirection: "column",
         border: 2,
         borderColor,
         overflow: "hidden",
@@ -188,51 +168,39 @@ export function CodePanel({
         </Fade>
       </Box>
 
-      <Box sx={{ height: editorHeight, position: "relative" }}>
-        {isSelectable && (
-          <Box
-            sx={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 1,
-              cursor: "pointer",
+      <Box
+        sx={{
+          flex: 1,
+          bgcolor: "#FAF8F5",
+          "& pre": {
+            m: 0,
+            p: 2,
+            fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
+            fontSize: "0.85rem",
+            lineHeight: 1.7,
+            overflowX: "auto",
+            bgcolor: "transparent !important",
+          },
+          "& code": {
+            fontFamily: "inherit",
+          },
+        }}
+      >
+        {highlightedHtml ? (
+          <div dangerouslySetInnerHTML={{ __html: highlightedHtml }} />
+        ) : (
+          <pre
+            style={{
+              margin: 0,
+              padding: 16,
+              fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
+              fontSize: "0.85rem",
+              lineHeight: 1.7,
             }}
-          />
+          >
+            {code}
+          </pre>
         )}
-        <Editor
-          height={editorHeight}
-          defaultLanguage="typescript"
-          value={code}
-          theme="vs"
-          onMount={handleEditorMount}
-          options={{
-            readOnly: true,
-            domReadOnly: true,
-            minimap: { enabled: false },
-            scrollbar: { vertical: "hidden", horizontal: "hidden" },
-            scrollBeyondLastLine: false,
-            fontSize: 14,
-            lineNumbers: "on",
-            folding: false,
-            contextmenu: false,
-            renderLineHighlight: "none",
-            padding: { top: 16, bottom: 16 },
-          }}
-          loading={
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
-              }}
-            >
-              <Typography variant="body2" color="text.secondary">
-                Loading editor...
-              </Typography>
-            </Box>
-          }
-        />
       </Box>
     </Paper>
   );

@@ -9,9 +9,13 @@ import Paper from "@mui/material/Paper";
 import { ExternalLink } from "lucide-react";
 
 interface ExplanationPanelProps {
+  /** Whether the user answered correctly; controls color scheme. */
   isCorrect: boolean;
+  /** Explanation text shown after answering. */
   text: string;
+  /** URL to an authoritative reference for this convention. */
   sourceUrl: string;
+  /** Display label for the source link. */
   sourceLabel: string;
 }
 

@@ -34,7 +34,9 @@ const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
 };
 
 interface ResultsScreenProps {
+  /** Complete game state with all challenges and answers. */
   state: GameState;
+  /** Called when the user clicks "Play Again" to start a fresh game. */
   onRestart: () => void;
 }
 

@@ -40,16 +40,15 @@ export function Game() {
     isReviewing,
     displayChallenge,
     displayAnswer,
-    answer,
-    next,
-    restart,
+    submitAnswer,
+    goToNext,
+    restartGame,
     reviewQuestion,
     exitReview,
   } = useGame();
 
-  const { leftCode, rightCode, editorHeight } = useMemo(() => {
-    if (!displayChallenge)
-      return { leftCode: "", rightCode: "", editorHeight: 120 };
+  const { leftCode, rightCode } = useMemo(() => {
+    if (!displayChallenge) return { leftCode: "", rightCode: "" };
     const left =
       displayChallenge.correctSide === "left"
         ? displayChallenge.goodCode
@@ -58,14 +57,7 @@ export function Game() {
       displayChallenge.correctSide === "left"
         ? displayChallenge.badCode
         : displayChallenge.goodCode;
-    const maxLines = Math.max(
-      left.split("\n").length,
-      right.split("\n").length,
-    );
-    const lineHeight = 20;
-    const padding = 32;
-    const height = Math.max(maxLines * lineHeight + padding, 120);
-    return { leftCode: left, rightCode: right, editorHeight: height };
+    return { leftCode: left, rightCode: right };
   }, [displayChallenge]);
 
   const getResult = (side: "left" | "right"): "correct" | "wrong" | null => {
@@ -95,7 +87,7 @@ export function Game() {
       if (currentAnswer) {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          next();
+          goToNext();
         }
         return;
       }
@@ -107,17 +99,24 @@ export function Game() {
         e.key === "1" ||
         e.key === "ArrowLeft"
       ) {
-        answer("left");
+        submitAnswer("left");
       } else if (
         e.key === "b" ||
         e.key === "B" ||
         e.key === "2" ||
         e.key === "ArrowRight"
       ) {
-        answer("right");
+        submitAnswer("right");
       }
     },
-    [currentAnswer, currentChallenge, answer, next, isReviewing, exitReview],
+    [
+      currentAnswer,
+      currentChallenge,
+      submitAnswer,
+      goToNext,
+      isReviewing,
+      exitReview,
+    ],
   );
 
   useEffect(() => {
@@ -145,7 +144,7 @@ export function Game() {
   if (state.isFinished) {
     return (
       <Box sx={{ maxWidth: 700, mx: "auto" }}>
-        <ResultsScreen state={state} onRestart={restart} />
+        <ResultsScreen state={state} onRestart={restartGame} />
       </Box>
     );
   }
@@ -237,9 +236,8 @@ export function Game() {
           code={leftCode}
           label="A"
           isSelectable={!isReviewing && !currentAnswer}
-          onSelect={() => answer("left")}
+          onSelect={() => submitAnswer("left")}
           result={getResult("left")}
-          fixedHeight={editorHeight}
         />
 
         <Box
@@ -272,9 +270,8 @@ export function Game() {
           code={rightCode}
           label="B"
           isSelectable={!isReviewing && !currentAnswer}
-          onSelect={() => answer("right")}
+          onSelect={() => submitAnswer("right")}
           result={getResult("right")}
-          fixedHeight={editorHeight}
         />
       </Box>
 
@@ -317,7 +314,7 @@ export function Game() {
               <Button
                 variant="contained"
                 size="large"
-                onClick={next}
+                onClick={goToNext}
                 tabIndex={currentAnswer ? 0 : -1}
                 endIcon={
                   state.currentIndex + 1 < totalChallenges ? (

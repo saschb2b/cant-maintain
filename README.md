@@ -5,28 +5,46 @@ A "Can't Unsee"-style training game that teaches React/TypeScript developers pro
 ## Architecture
 
 ```
-lib/game/
-  types.ts              # All game types (Challenge, GameState, etc.)
-  use-game.ts           # Core game state hook (shuffle, score, progression)
-  challenges/
-    index.ts            # Combines all per-category arrays
-    callback-naming.ts  # cb-* challenges
-    boolean-naming.ts   # bl-* challenges
-    jsdoc.ts            # jd-* challenges
-    prop-specificity.ts # ps-* challenges
-    render-props.ts     # rp-* challenges
-    children-pattern.ts # cp-* challenges
-    discriminated-unions.ts # du-* challenges
-    extending-html.ts   # eh-* challenges
-    default-values.ts   # dv-* challenges
-    prop-organization.ts # po-* challenges
+app/
+  layout.tsx             # Root layout with fonts, theme, analytics
+  page.tsx               # Landing page
+  play/page.tsx          # Game page
+  opengraph-image.tsx    # Dynamic OG image generation
+  robots.ts              # Robots metadata
+  sitemap.ts             # Sitemap metadata
+  manifest.ts            # Web app manifest
 
-components/game/
-  game.tsx             # Main game orchestrator
-  code-panel.tsx       # Monaco Editor-based clickable code panel
-  explanation-panel.tsx # Post-answer explanation with source link
-  game-header.tsx      # Score, streak, difficulty, progress bar
-  results-screen.tsx   # End-of-game results with challenge review
+lib/
+  theme.ts               # MUI theme (warm cream palette)
+  shiki.ts               # Singleton Shiki highlighter (TypeScript + github-light)
+  game/
+    types.ts             # All game types (Challenge, GameState, etc.)
+    use-game.ts          # Core game state hook (shuffle, score, progression, review)
+    challenges/
+      index.ts           # Combines all per-category arrays
+      callback-naming.ts # cb-* challenges
+      boolean-naming.ts  # bl-* challenges
+      jsdoc.ts           # jd-* challenges
+      prop-specificity.ts # ps-* challenges
+      render-props.ts    # rp-* challenges
+      children-pattern.ts # cp-* challenges
+      discriminated-unions.ts # du-* challenges
+      extending-html.ts  # eh-* challenges
+      default-values.ts  # dv-* challenges
+      prop-organization.ts # po-* challenges
+
+components/
+  theme-provider.tsx     # MUI ThemeProvider + CssBaseline
+  emotion-registry.tsx   # Emotion cache for SSR streaming
+  site-header.tsx        # Shared header with logo and GitHub link
+  site-footer.tsx        # Shared footer with links
+  mesh-gradient.tsx      # Decorative background gradient
+  game/
+    game.tsx             # Main game orchestrator
+    code-panel.tsx       # Shiki-highlighted clickable code panel
+    explanation-panel.tsx # Post-answer explanation with source link
+    game-header.tsx      # Score, streak, difficulty, clickable progress dots
+    results-screen.tsx   # End-of-game results with per-question breakdown
 ```
 
 ## Adding New Challenges
@@ -68,6 +86,6 @@ Each session picks 3 easy, 4 medium, and 3 hard challenges, shuffled within tier
 
 - Next.js 16 (App Router)
 - Material UI 7 (`@mui/material`)
-- Monaco Editor (`@monaco-editor/react`)
+- Shiki (`shiki`) for syntax highlighting
 - TypeScript strict mode
 - pnpm

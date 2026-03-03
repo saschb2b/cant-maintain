@@ -12,13 +12,21 @@ import { Flame } from "lucide-react";
 type QuestionResult = "correct" | "wrong" | null;
 
 interface GameHeaderProps {
+  /** Running score of correct answers. */
   score: number;
+  /** Total number of challenges in the session. */
   total: number;
+  /** 1-based index of the current question. */
   currentQuestion: number;
+  /** Current consecutive-correct streak. */
   streak: number;
+  /** Difficulty of the current challenge, or null while loading. */
   difficulty: Difficulty | null;
+  /** Per-question results array for the progress indicator. */
   questionResults: QuestionResult[];
+  /** Index of the question being reviewed, or null. */
   reviewIndex: number | null;
+  /** Called when the user clicks an answered progress dot. */
   onQuestionClick: (index: number) => void;
 }
 

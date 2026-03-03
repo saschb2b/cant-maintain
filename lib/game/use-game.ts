@@ -117,7 +117,7 @@ export function useGame() {
   }, [displayChallenge, state]);
 
   /** Submit an answer for the current challenge. */
-  const answer = useCallback(
+  const submitAnswer = useCallback(
     (side: "left" | "right") => {
       if (!currentChallenge) return;
 
@@ -144,7 +144,7 @@ export function useGame() {
   );
 
   /** Move to the next challenge. */
-  const next = useCallback(() => {
+  const goToNext = useCallback(() => {
     setState((prev) => {
       if (!prev) return prev;
       const nextIndex = prev.currentIndex + 1;
@@ -161,7 +161,7 @@ export function useGame() {
   }, []);
 
   /** Restart the game with freshly shuffled challenges. */
-  const restart = useCallback(() => {
+  const restartGame = useCallback(() => {
     setState(createInitialState());
   }, []);
 
@@ -192,9 +192,9 @@ export function useGame() {
     isReviewing,
     displayChallenge,
     displayAnswer,
-    answer,
-    next,
-    restart,
+    submitAnswer,
+    goToNext,
+    restartGame,
     reviewQuestion,
     exitReview,
   };
