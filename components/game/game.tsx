@@ -153,8 +153,8 @@ export function Game() {
           size="small"
           sx={{
             mb: 1,
-            bgcolor: "rgba(0,0,0,0.05)",
-            color: "text.secondary",
+            bgcolor: "rgba(0,0,0,0.08)",
+            color: "text.primary",
             fontSize: "0.7rem",
             height: 22,
           }}
@@ -197,8 +197,8 @@ export function Game() {
             fontWeight={700}
             fontFamily="var(--font-geist-mono), monospace"
             sx={{
-              color: "text.secondary",
-              bgcolor: "rgba(0,0,0,0.04)",
+              color: "text.primary",
+              bgcolor: "rgba(0,0,0,0.07)",
               px: 1,
               py: 0.5,
               borderRadius: 1,
@@ -271,7 +271,7 @@ export function Game() {
         fontFamily="var(--font-geist-mono), monospace"
         sx={{
           textAlign: "center",
-          opacity: 0.5,
+          opacity: 0.9,
           transition: "opacity 0.2s",
           fontSize: "0.7rem",
         }}

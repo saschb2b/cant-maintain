@@ -6,15 +6,11 @@ import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import Chip from "@mui/material/Chip";
 import {
   Code2,
   ArrowRight,
   Check,
   X,
-  Zap,
-  Target,
-  Trophy,
   Heart,
   Coffee,
   ExternalLink,
@@ -22,9 +18,26 @@ import {
 
 export default function LandingPage() {
   return (
-    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative" }}>
+      {/* Mesh gradient background */}
+      <Box
+        sx={{
+          position: "fixed",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 0,
+          background: [
+            "radial-gradient(ellipse 80% 60% at 10% 20%, rgba(43,76,126,0.18) 0%, transparent 100%)",
+            "radial-gradient(ellipse 70% 50% at 90% 15%, rgba(91,138,114,0.16) 0%, transparent 100%)",
+            "radial-gradient(ellipse 60% 50% at 5% 70%, rgba(212,135,60,0.13) 0%, transparent 100%)",
+            "radial-gradient(ellipse 70% 60% at 85% 75%, rgba(43,76,126,0.10) 0%, transparent 100%)",
+            "radial-gradient(circle at 50% 50%, rgba(196,87,58,0.05) 0%, transparent 70%)",
+          ].join(", "),
+        }}
+      />
+
       {/* Header */}
-      <Box component="header">
+      <Box component="header" sx={{ position: "relative", zIndex: 1 }}>
         <Container maxWidth="lg">
           <Stack direction="row" alignItems="center" sx={{ py: 2 }}>
             <Stack direction="row" alignItems="center" spacing={1.5}>
@@ -52,19 +65,8 @@ export default function LandingPage() {
       </Box>
 
       {/* Hero */}
-      <Container maxWidth="md" sx={{ pt: { xs: 6, md: 10 }, pb: { xs: 4, md: 6 } }}>
+      <Container maxWidth="md" sx={{ pt: { xs: 6, md: 10 }, pb: { xs: 4, md: 6 }, position: "relative", zIndex: 1 }}>
         <Stack alignItems="center" spacing={1} sx={{ mb: { xs: 4, md: 6 } }}>
-          <Chip
-            label="React prop naming trainer"
-            size="small"
-            sx={{
-              bgcolor: "rgba(43,76,126,0.08)",
-              color: "primary.main",
-              fontWeight: 600,
-              fontSize: "0.7rem",
-              mb: 1,
-            }}
-          />
           <Typography
             variant="h3"
             component="h1"
@@ -256,11 +258,14 @@ export default function LandingPage() {
       {/* What you'll learn */}
       <Box
         sx={{
-          bgcolor: "secondary.main",
+          bgcolor: "rgba(232,224,212,0.6)",
+          backdropFilter: "blur(40px)",
           borderTop: 1,
           borderBottom: 1,
           borderColor: "divider",
           py: { xs: 5, md: 6 },
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <Container maxWidth="md">
@@ -473,109 +478,8 @@ export default function LandingPage() {
         </Container>
       </Box>
 
-      {/* How It Works */}
-      <Container maxWidth="sm" sx={{ py: { xs: 5, md: 6 } }}>
-        <Stack spacing={3}>
-          <Stack direction="row" spacing={2} alignItems="flex-start">
-            <Box
-              sx={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                bgcolor: "rgba(43,76,126,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                mt: 0.25,
-              }}
-            >
-              <Zap size={18} color="#2B4C7E" />
-            </Box>
-            <Box>
-              <Typography variant="body1" fontWeight={600}>
-                Two snippets, one choice
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Read real interface code side by side. Pick the one with better
-                prop naming. No trick questions.
-              </Typography>
-            </Box>
-          </Stack>
-
-          <Stack direction="row" spacing={2} alignItems="flex-start">
-            <Box
-              sx={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                bgcolor: "rgba(91,138,114,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                mt: 0.25,
-              }}
-            >
-              <Target size={18} color="#5B8A72" />
-            </Box>
-            <Box>
-              <Typography variant="body1" fontWeight={600}>
-                Instant feedback
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Every answer comes with a clear explanation and a link to the
-                source convention. Learn the &ldquo;why&rdquo;, not just the
-                rule.
-              </Typography>
-            </Box>
-          </Stack>
-
-          <Stack direction="row" spacing={2} alignItems="flex-start">
-            <Box
-              sx={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                bgcolor: "rgba(212,135,60,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                mt: 0.25,
-              }}
-            >
-              <Trophy size={18} color="#D4873C" />
-            </Box>
-            <Box>
-              <Typography variant="body1" fontWeight={600}>
-                Adaptive difficulty
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Start easy, get harder. Challenges scale from basic naming to
-                advanced MUI and discriminated union patterns.
-              </Typography>
-            </Box>
-          </Stack>
-        </Stack>
-      </Container>
-
-      {/* Bottom CTA */}
-      <Box sx={{ textAlign: "center", pb: { xs: 6, md: 8 } }}>
-        <NextLink href="/play" style={{ textDecoration: "none" }}>
-          <Button
-            variant="contained"
-            size="large"
-            endIcon={<ArrowRight size={18} />}
-            sx={{ px: 5, py: 1.5, fontSize: "1.05rem" }}
-          >
-            Start Playing
-          </Button>
-        </NextLink>
-      </Box>
-
       {/* Footer */}
-      <Box component="footer" sx={{ mt: "auto" }}>
+      <Box component="footer" sx={{ mt: "auto", position: "relative", zIndex: 1 }}>
         <Divider />
         <Container maxWidth="lg">
           <Stack

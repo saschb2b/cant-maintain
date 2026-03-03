@@ -4,10 +4,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import MuiLink from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import { Game } from "@/components/game/game";
-import { Code2, ExternalLink, Heart, Coffee } from "lucide-react";
+import { Code2, Heart, Coffee, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Play — Can't Maintain",
@@ -15,13 +14,29 @@ export const metadata: Metadata = {
 
 export default function PlayPage() {
   return (
-    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <Box component="header">
-        <Container maxWidth="lg">
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative" }}>
+      {/* Mesh gradient background */}
+      <Box
+        sx={{
+          position: "fixed",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 0,
+          background: [
+            "radial-gradient(ellipse 80% 60% at 10% 20%, rgba(43,76,126,0.18) 0%, transparent 100%)",
+            "radial-gradient(ellipse 70% 50% at 90% 15%, rgba(91,138,114,0.16) 0%, transparent 100%)",
+            "radial-gradient(ellipse 60% 50% at 5% 70%, rgba(212,135,60,0.13) 0%, transparent 100%)",
+            "radial-gradient(ellipse 70% 60% at 85% 75%, rgba(43,76,126,0.10) 0%, transparent 100%)",
+            "radial-gradient(circle at 50% 50%, rgba(196,87,58,0.05) 0%, transparent 70%)",
+          ].join(", "),
+        }}
+      />
+
+      <Box component="header" sx={{ position: "relative", zIndex: 1 }}>
+        <Container maxWidth="md">
           <Stack
             direction="row"
             alignItems="center"
-            justifyContent="space-between"
             sx={{ py: 2 }}
           >
             <NextLink
@@ -52,27 +67,6 @@ export default function PlayPage() {
                 </Typography>
               </Box>
             </NextLink>
-            <MuiLink
-              href="https://react.dev/learn/passing-props-to-a-component"
-              target="_blank"
-              rel="noopener noreferrer"
-              color="text.secondary"
-              underline="hover"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 0.5,
-                fontSize: "0.75rem",
-              }}
-            >
-              <ExternalLink size={14} />
-              <Box
-                component="span"
-                sx={{ display: { xs: "none", sm: "inline" } }}
-              >
-                React Docs
-              </Box>
-            </MuiLink>
           </Stack>
         </Container>
         <Divider />
@@ -81,14 +75,14 @@ export default function PlayPage() {
       <Container
         maxWidth="lg"
         component="section"
-        sx={{ py: 4, flex: 1 }}
+        sx={{ py: 4, flex: 1, position: "relative", zIndex: 1 }}
       >
         <Game />
       </Container>
 
-      <Box component="footer">
+      <Box component="footer" sx={{ position: "relative", zIndex: 1 }}>
         <Divider />
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
           <Stack
             direction={{ xs: "column", sm: "row" }}
             alignItems="center"
