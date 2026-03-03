@@ -10,8 +10,45 @@ import { ArrowRight, Check, X } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
+import { getHighlighter } from "@/lib/shiki";
 
-export default function LandingPage() {
+const BAD_CODE = `interface TodoItemProps {
+  todo: Todo;
+  loading: boolean;
+  delete: () => void;
+}`;
+
+const GOOD_CODE = `interface TodoItemProps {
+  todo: Todo;
+  isLoading: boolean;
+  onDelete: () => void;
+}`;
+
+const codeBlockStyles = {
+  "& pre": {
+    m: 0,
+    p: 2,
+    fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
+    fontSize: "0.8rem",
+    lineHeight: 1.7,
+    overflowX: "auto",
+    bgcolor: "transparent !important",
+  },
+  "& code": {
+    fontFamily: "inherit",
+  },
+};
+
+export default async function LandingPage() {
+  const highlighter = await getHighlighter();
+  const badCodeHtml = highlighter.codeToHtml(BAD_CODE, {
+    lang: "typescript",
+    theme: "github-light",
+  });
+  const goodCodeHtml = highlighter.codeToHtml(GOOD_CODE, {
+    lang: "typescript",
+    theme: "github-light",
+  });
   return (
     <Box
       sx={{
@@ -98,12 +135,12 @@ export default function LandingPage() {
             }
           >
             {/* Bad code */}
-            <Box sx={{ flex: 1, p: 2.5 }}>
+            <Box sx={{ flex: 1 }}>
               <Stack
                 direction="row"
                 alignItems="center"
                 spacing={0.75}
-                sx={{ mb: 1.5 }}
+                sx={{ px: 2, pt: 1.5 }}
               >
                 <Box
                   sx={{
@@ -129,44 +166,21 @@ export default function LandingPage() {
                 </Typography>
               </Stack>
               <Box
-                component="pre"
-                sx={{
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  fontSize: "0.8rem",
-                  lineHeight: 1.7,
-                  m: 0,
-                  color: "text.secondary",
-                  whiteSpace: "pre-wrap",
-                }}
-              >
-                {`interface TodoItemProps {\n  todo: Todo;\n  `}
-                <Box
-                  component="span"
-                  sx={{ color: "error.main", fontWeight: 600 }}
-                >
-                  loading
-                </Box>
-                {`: boolean;\n  `}
-                <Box
-                  component="span"
-                  sx={{ color: "error.main", fontWeight: 600 }}
-                >
-                  delete
-                </Box>
-                {`: () => void;\n}`}
-              </Box>
+                sx={codeBlockStyles}
+                dangerouslySetInnerHTML={{ __html: badCodeHtml }}
+              />
             </Box>
 
             {/* Divider on mobile */}
             <Divider sx={{ display: { sm: "none" } }} />
 
             {/* Good code */}
-            <Box sx={{ flex: 1, p: 2.5 }}>
+            <Box sx={{ flex: 1 }}>
               <Stack
                 direction="row"
                 alignItems="center"
                 spacing={0.75}
-                sx={{ mb: 1.5 }}
+                sx={{ px: 2, pt: 1.5 }}
               >
                 <Box
                   sx={{
@@ -192,32 +206,9 @@ export default function LandingPage() {
                 </Typography>
               </Stack>
               <Box
-                component="pre"
-                sx={{
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  fontSize: "0.8rem",
-                  lineHeight: 1.7,
-                  m: 0,
-                  color: "text.secondary",
-                  whiteSpace: "pre-wrap",
-                }}
-              >
-                {`interface TodoItemProps {\n  todo: Todo;\n  `}
-                <Box
-                  component="span"
-                  sx={{ color: "success.main", fontWeight: 600 }}
-                >
-                  isLoading
-                </Box>
-                {`: boolean;\n  `}
-                <Box
-                  component="span"
-                  sx={{ color: "success.main", fontWeight: 600 }}
-                >
-                  onDelete
-                </Box>
-                {`: () => void;\n}`}
-              </Box>
+                sx={codeBlockStyles}
+                dangerouslySetInnerHTML={{ __html: goodCodeHtml }}
+              />
             </Box>
           </Stack>
         </Paper>
