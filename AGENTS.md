@@ -77,31 +77,31 @@ All game logic is in `lib/game/use-game.ts`. The `prepareChallenges()` function 
 
 ## File Map
 
-| File                                    | Purpose                                |
-| --------------------------------------- | -------------------------------------- |
-| `lib/game/types.ts`                     | All TypeScript types                   |
-| `lib/game/challenges/index.ts`          | Combines per-category challenge arrays |
-| `lib/game/challenges/*.ts`              | Per-category challenge content         |
-| `lib/game/use-game.ts`                  | Game state machine hook                |
-| `lib/game/categories.ts`                | Category order, labels, descriptions   |
-| `lib/code-styles.ts`                    | Shared Shiki code block styles         |
-| `lib/theme.ts`                          | MUI dark theme configuration           |
-| `components/game/game.tsx`              | Main game orchestrator                 |
-| `components/game/code-panel.tsx`        | Shiki-powered code display             |
-| `components/game/explanation-panel.tsx` | Post-answer explanation                |
-| `components/game/game-header.tsx`       | Score/progress UI                      |
-| `components/game/results-screen.tsx`    | End screen with challenge review       |
-| `components/theme-provider.tsx`         | MUI ThemeProvider wrapper              |
-| `components/learn-sidebar.tsx`          | Sidebar navigation for /learn (desktop)|
-| `components/learn-mobile-nav.tsx`       | Horizontal scroll nav for /learn (mobile)|
-| `components/formatted-text.tsx`         | Inline markdown rendering              |
-| `app/layout.tsx`                        | Root layout with fonts, theme, analytics|
-| `app/template.tsx`                      | View transition CSS (fade on navigate) |
-| `app/page.tsx`                          | Landing page                           |
-| `app/play/page.tsx`                     | Game page                              |
-| `app/learn/layout.tsx`                  | Learn section layout with sidebar      |
-| `app/learn/page.tsx`                    | Learn overview page                    |
-| `app/learn/[category]/page.tsx`         | Per-category learn page                |
+| File                                    | Purpose                                   |
+| --------------------------------------- | ----------------------------------------- |
+| `lib/game/types.ts`                     | All TypeScript types                      |
+| `lib/game/challenges/index.ts`          | Combines per-category challenge arrays    |
+| `lib/game/challenges/*.ts`              | Per-category challenge content            |
+| `lib/game/use-game.ts`                  | Game state machine hook                   |
+| `lib/game/categories.ts`                | Category order, labels, descriptions      |
+| `lib/code-styles.ts`                    | Shared Shiki code block styles            |
+| `lib/theme.ts`                          | MUI dark theme configuration              |
+| `components/game/game.tsx`              | Main game orchestrator                    |
+| `components/game/code-panel.tsx`        | Shiki-powered code display                |
+| `components/game/explanation-panel.tsx` | Post-answer explanation                   |
+| `components/game/game-header.tsx`       | Score/progress UI                         |
+| `components/game/results-screen.tsx`    | End screen with challenge review          |
+| `components/theme-provider.tsx`         | MUI ThemeProvider wrapper                 |
+| `components/learn-sidebar.tsx`          | Sidebar navigation for /learn (desktop)   |
+| `components/learn-mobile-nav.tsx`       | Horizontal scroll nav for /learn (mobile) |
+| `components/formatted-text.tsx`         | Inline markdown rendering                 |
+| `app/layout.tsx`                        | Root layout with fonts, theme, analytics  |
+| `app/template.tsx`                      | View transition CSS (fade on navigate)    |
+| `app/page.tsx`                          | Landing page                              |
+| `app/play/page.tsx`                     | Game page                                 |
+| `app/learn/layout.tsx`                  | Learn section layout with sidebar         |
+| `app/learn/page.tsx`                    | Learn overview page                       |
+| `app/learn/[category]/page.tsx`         | Per-category learn page                   |
 
 ## Conventions
 
