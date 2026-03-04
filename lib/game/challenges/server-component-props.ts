@@ -7,23 +7,29 @@ export const serverComponentPropsChallenges: Challenge[] = [
     difficulty: "easy",
     title: "Serializable callback props",
     badCode: `// ServerPage.tsx (Server Component)
+import { saveToDatabase } from './db';
 
 <ClientForm
   onSubmit={(data: FormData) => {
     saveToDatabase(data);
   }}
 />`,
-    goodCode: `// ServerPage.tsx (Server Component)
-import { saveFormAction } from './actions';
+    goodCode: `// actions.ts
+'use server';
 
-<ClientForm
-  action={saveFormAction}
-/>`,
+export async function saveForm(data: FormData) {
+  await saveToDatabase(data);
+}
+
+// ServerPage.tsx (Server Component)
+import { saveForm } from './actions';
+
+<ClientForm action={saveForm} />`,
     correctSide: "right",
     explanationCorrect:
-      "Functions can't be passed from Server Components to Client Components — they aren't serializable. Server Actions (declared with `'use server'`) are the exception: they get a serializable reference that the client can invoke.\n\nUsing `action` instead of `onSubmit` follows React 19's form action convention.",
+      "Props from Server Components to Client Components are serialized over the network. Regular functions can't survive this — they crash at runtime.\n\n`'use server'` is the key: it turns the function into a serializable reference (essentially a URL). The actual code stays on the server; the client gets a reference it can call over the network.",
     explanationWrong:
-      "Inline functions aren't serializable. When a Server Component renders a Client Component, all props are serialized and sent over the network. Regular functions, class instances, and Symbols can't survive this serialization.\n\nServer Actions solve this by generating a serializable reference. The `action` prop name follows React 19's `<form action={...}>` convention.",
+      "Inline functions aren't serializable. When a Server Component renders a Client Component, all props must survive network serialization. Regular functions, class instances, and Symbols cannot.\n\nThe fix is `'use server'` — it replaces the function with a serializable network reference. The function body never leaves the server; the client just gets an ID it can invoke via an HTTP round-trip.",
     sourceUrl:
       "https://react.dev/reference/rsc/server-actions",
     sourceLabel: "React Docs: Server Actions",
