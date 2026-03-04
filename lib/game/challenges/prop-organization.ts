@@ -257,4 +257,37 @@ function Dashboard() {
       "https://react.dev/reference/react/memo#minimizing-props-changes",
     sourceLabel: "React Docs: Minimizing Props Changes",
   },
+  {
+    id: "po-008",
+    category: "prop-organization",
+    difficulty: "medium",
+    title: "Cross-cutting concern in display component",
+    badCode: `interface ProductCardProps {
+  product: Product;
+  onSelect: (id: string) => void;
+  // Impression tracking
+  trackImpressions?: boolean;
+  /** Visibility ratio to trigger. @default 0.5 */
+  impressionThreshold?: number;
+  onImpression?: () => void;
+  impressionId?: string;
+}`,
+    goodCode: `interface ProductCardProps {
+  product: Product;
+  onSelect: (id: string) => void;
+}
+
+// Tracking is a reusable hook, not a card prop:
+// const ref = useImpressionTracker(product.id);
+// <div ref={ref}>
+//   <ProductCard product={p} onSelect={...} />
+// </div>`,
+    correctSide: "right",
+    explanationCorrect:
+      "Impression tracking is a cross-cutting concern: it could apply to any visible element (ads, articles, images), not just product cards. A custom hook like `useImpressionTracker` (built on IntersectionObserver) is reusable across every tracked element without changing any component's props.\n\nThe React docs list `useImpressionLog` as an example of a well-named custom hook for exactly this pattern.",
+    explanationWrong:
+      "Four tracking props landed on a display component that has nothing to do with analytics. The signal: these new props share no relationship with the existing ones (`product`, `onSelect`), and they could apply to any visible element.\n\nWhen new props are unrelated to the component's core purpose, they belong in a separate hook or component. A reusable `useImpressionTracker` hook keeps the display component focused and avoids duplicating the same four props on every tracked component.",
+    sourceUrl: "https://react.dev/learn/reusing-logic-with-custom-hooks",
+    sourceLabel: "React Docs: Reusing Logic with Custom Hooks",
+  },
 ];
