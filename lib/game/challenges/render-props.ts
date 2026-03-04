@@ -6,36 +6,44 @@ export const renderPropsChallenges: Challenge[] = [
     category: "render-props",
     difficulty: "medium",
     title: "Render function vs ReactNode slot",
-    badCode: `interface TooltipProps {
-  children: React.ReactNode;
-  content: React.ReactNode;
+    badCode: `interface ComboboxProps<T> {
+  options: T[];
+  value: T | null;
+  onChange: (value: T) => void;
+  /** Custom option display. */
+  optionContent?: React.ReactNode;
 }
 
 // Usage:
-// <Tooltip content={<span>{data.label}</span>}>
-//   <Button />
-// </Tooltip>`,
-    goodCode: `interface TooltipProps {
-  children: React.ReactNode;
-  /** Receives the anchor rect for positioning. */
-  renderContent: (anchorRect: DOMRect) => React.ReactNode;
+// <Combobox
+//   options={users}
+//   optionContent={<UserCard />}
+// />`,
+    goodCode: `interface ComboboxProps<T> {
+  options: T[];
+  value: T | null;
+  onChange: (value: T) => void;
+  /** Custom option rendering with state. */
+  renderOption?: (
+    option: T,
+    state: { isHighlighted: boolean; isSelected: boolean },
+  ) => React.ReactNode;
 }
 
 // Usage:
-// <Tooltip renderContent={(rect) => (
-//   <Popover style={{ top: rect.bottom }}>
-//     {data.label}
-//   </Popover>
-// )}>
-//   <Button />
-// </Tooltip>`,
+// <Combobox
+//   options={users}
+//   renderOption={(user, { isHighlighted }) => (
+//     <UserCard user={user} highlighted={isHighlighted} />
+//   )}
+// />`,
     correctSide: "right",
     explanationCorrect:
-      "A render function (`renderContent`) gives the consumer access to runtime data: here, the anchor's position. A static `ReactNode` slot can't receive arguments. Use the `render*` prefix when the consumer needs data from the component to decide what to render.",
+      "A render function gives the consumer access to runtime data the component owns. Here, the Combobox knows which option is highlighted and selected. A static `ReactNode` can't receive these states, so custom options can't react to keyboard navigation or selection.\n\nThis is exactly how MUI's Autocomplete `renderOption` works.",
     explanationWrong:
-      "A `ReactNode` slot works for static content, but the tooltip needs to position itself relative to the trigger. With `content: ReactNode`, the consumer can't access the anchor's bounding rect. A render function solves this by passing runtime data to the consumer.",
-    sourceUrl: "https://react.dev/reference/react/cloneElement#alternatives",
-    sourceLabel: "React Docs: Alternatives to cloneElement",
+      "A `ReactNode` slot works for static content, but each option in a Combobox has runtime state: is it highlighted? Selected? With `optionContent: ReactNode`, every option renders identically. A render function passes per-option data so the consumer can style highlighted and selected states differently.",
+    sourceUrl: "https://mui.com/material-ui/api/autocomplete/",
+    sourceLabel: "MUI: Autocomplete API",
   },
   {
     id: "rp-002",
@@ -148,36 +156,49 @@ export const renderPropsChallenges: Challenge[] = [
     id: "rp-005",
     category: "render-props",
     difficulty: "hard",
-    title: "Headless component with state callback",
-    badCode: `interface ToggleProps {
-  isOn: boolean;
-  onToggle: () => void;
-  onLabel?: string;
-  offLabel?: string;
-  size?: 'sm' | 'md' | 'lg';
-  color?: string;
-  children?: React.ReactNode;
-}`,
-    goodCode: `interface ToggleState {
-  isOn: boolean;
-  toggle: () => void;
-}
-
-interface ToggleProps {
-  isOn: boolean;
-  onToggle: () => void;
+    title: "Scoped render props vs broad state exposure",
+    badCode: `interface DataTableProps<T> {
+  data: T[];
+  columns: ColumnDef<T>[];
   /**
-   * Full control over rendering.
-   * Receives the toggle state.
+   * Full render control. Receives all
+   * internal table state.
    */
-  children: (state: ToggleState) => React.ReactNode;
+  children: (state: {
+    rows: T[];
+    sortedBy: keyof T | null;
+    sortDir: 'asc' | 'desc';
+    page: number;
+    pageCount: number;
+    selectedRows: Set<string>;
+    toggleSort: (col: keyof T) => void;
+    setPage: (p: number) => void;
+    toggleRow: (id: string) => void;
+  }) => React.ReactNode;
+}`,
+    goodCode: `interface DataTableProps<T> {
+  data: T[];
+  columns: ColumnDef<T>[];
+  /** Custom row rendering with row-level state. */
+  renderRow?: (
+    row: T,
+    state: { isSelected: boolean; index: number },
+  ) => React.ReactNode;
+  /** Custom empty state when data is empty. */
+  renderEmpty?: () => React.ReactNode;
+  /** Custom pagination controls. */
+  renderPagination?: (state: {
+    page: number;
+    pageCount: number;
+    setPage: (p: number) => void;
+  }) => React.ReactNode;
 }`,
     correctSide: "right",
     explanationCorrect:
-      "A headless component exposes state and behavior through a render callback, leaving all visual decisions to the consumer. Instead of adding `size`, `color`, `onLabel`, and `offLabel` props to handle every use case, the consumer gets **full control**.\n\nThis is the pattern behind libraries like Downshift and React Aria.",
+      "Scoped render props expose only what each customization point needs. `renderRow` gets row-level state, `renderPagination` gets page state. The broad `children` callback dumps all internal state into one bag, coupling the consumer to every implementation detail.\n\nIf the table adds filtering or column resizing internally, the scoped render props don't change. The broad callback's type signature breaks.",
     explanationWrong:
-      "Adding visual props (`size`, `color`, `onLabel`) makes the component increasingly rigid. Want a toggle that looks like a checkbox? A switch? An icon button? Each new design requires new props. A render callback hands control to the consumer; they render whatever they want using the toggle state.",
-    sourceUrl: "https://react.dev/reference/react/cloneElement#alternatives",
-    sourceLabel: "React Docs: Alternatives to cloneElement",
+      "Exposing all internal state through a single `children` callback seems flexible, but it couples consumers to every detail. If the table refactors sorting or adds virtual scrolling, the callback signature changes and every consumer breaks.\n\nScoped render props (`renderRow`, `renderPagination`, `renderEmpty`) are stable contracts. Each one exposes only the state relevant to that customization point.",
+    sourceUrl: "https://tanstack.com/table/latest/docs/guide/introduction",
+    sourceLabel: "TanStack Table: Introduction",
   },
 ];
