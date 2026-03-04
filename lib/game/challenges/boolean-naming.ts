@@ -195,7 +195,7 @@ export const booleanNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Props that map directly to HTML attributes should use the native name: `disabled` (not `isDisabled`), `required` (not `isRequired`). These are universally understood and are already in `ComponentProps<'input'>`.\n\n`hasError` gets a prefix because it's a custom boolean that doesn't exist in HTML, so the prefix removes ambiguity. Rule: **native HTML booleans stay bare, custom booleans get prefixes.**",
+      "Props that map directly to HTML attributes should use the native name: `disabled` (not `isDisabled`), `required` (not `isRequired`). These are universally understood and are already in `ComponentProps<'input'>`.\n\n`hasError` gets a prefix because it's a custom boolean that doesn't exist in HTML, so the prefix removes ambiguity. General guideline: native HTML booleans stay bare, custom booleans get prefixes.",
     explanationWrong:
       "Adding `is` prefix to well-known HTML attributes like `disabled` and `required` creates inconsistency with native elements and re-declares props already inherited from `ComponentProps<'input'>`. It also means `<Input isDisabled />` doesn't set the native `disabled` attribute without manual mapping.\n\nReserve prefixes for **custom** booleans like `hasError` where the type isn't obvious from the name alone.",
     sourceUrl: "https://react.dev/reference/react-dom/components/input",

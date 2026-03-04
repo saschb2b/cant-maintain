@@ -190,9 +190,9 @@ export const discriminatedUnionsChallenges: Challenge[] = [
 );`,
     correctSide: "right",
     explanationCorrect:
-      'The `never` type is the key difference. Without it, both `value` and `defaultValue` are allowed in both variants, so the union doesn\'t actually prevent mixing.\n\n`defaultValue?: never` in controlled mode and `value?: never` in uncontrolled mode make TypeScript reject `<Input value="hi" defaultValue="there" />` at compile time.',
+      'The `never` type is the key difference. Without it, both `value` and `defaultValue` are allowed in both variants, so the union doesn\'t actually prevent mixing.\n\n`defaultValue?: never` in controlled mode and `value?: never` in uncontrolled mode make TypeScript reject `<Input value="hi" defaultValue="there" />` at compile time. Tradeoff: `never` types make prop spreading and delegation harder, so this pattern works best for leaf components rather than intermediate wrappers.',
     explanationWrong:
-      'Both use union types, but without `never` to exclude cross-variant props, nothing stops `<Input value="hello" defaultValue="world" />`.\n\nTypeScript sees that `value` exists in both variants and allows it everywhere. The `never` type turns a union from documentation into an **actual compile-time constraint**.',
+      'Both use union types, but without `never` to exclude cross-variant props, nothing stops `<Input value="hello" defaultValue="world" />`.\n\nTypeScript sees that `value` exists in both variants and allows it everywhere. The `never` type turns a union from documentation into a compile-time constraint. Note that React itself uses a runtime warning for this instead, which is simpler to work with when delegating props.',
     sourceUrl:
       "https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable",
     sourceLabel: "React Docs: Controlling an Input",

@@ -30,7 +30,7 @@ export const extendingHtmlChallenges: Challenge[] = [
     explanationCorrect:
       "When you extend `ComponentProps<'button'>`, `onClick`, `disabled`, and `type` are already included with correct types. Only add props that the native element doesn't have. `label`, `variant`, and `size` are genuine additions. Re-declaring inherited props clutters the API.",
     explanationWrong:
-      "Re-declaring `onClick`, `disabled`, and `type` after extending `ComponentProps<'button'>` is redundant. Worse, it can narrow the types. `onClick?: () => void` drops the `React.MouseEvent` parameter, and `type` limits to 3 values when the native type is more permissive.\n\n**Extend once and only declare what's truly new.**",
+      "Re-declaring `onClick`, `disabled`, and `type` after extending `ComponentProps<'button'>` is redundant. Worse, it can narrow the types. `onClick?: () => void` drops the `React.MouseEvent` parameter, and `type` limits to 3 values when the native type is more permissive.\n\nExtend once and only declare what's truly new.",
     sourceUrl: "https://react.dev/reference/react-dom/components/common",
     sourceLabel: "React Docs: Common Components",
   },
@@ -64,9 +64,9 @@ export const extendingHtmlChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "`Omit` should only remove props you actually need to redefine. The native `value` on `<input>` already works fine, so omitting and re-declaring it as `string` is unnecessary.\n\nThe real win is simplifying `onChange` to pass just the string value, so consumers write `onChange={setValue}` instead of `onChange={(e) => setValue(e.target.value)}`.",
+      "`Omit` should only remove props you actually need to redefine. The native `value` on `<input>` already works fine, so omitting and re-declaring it as `string` is unnecessary.\n\nSimplifying `onChange` to pass just the string value lets consumers write `onChange={setValue}` instead of `onChange={(e) => setValue(e.target.value)}`. Tradeoff: if consumers need the full event (e.g., `event.target.name` in multi-field forms), keep the native signature.",
     explanationWrong:
-      "Omitting `value` just to re-declare it as `string` is redundant; the native input already accepts `string`. The `onChange` still passes the raw event, forcing every consumer to extract `e.target.value`. **Omit only what you're genuinely changing**, and simplify the callback signature to pass just the data consumers need.",
+      "Omitting `value` just to re-declare it as `string` is redundant; the native input already accepts `string`. The `onChange` still passes the raw event, forcing every consumer to extract `e.target.value`.\n\nSimplifying the callback is often worth it for single-purpose wrappers. For generic form inputs where consumers may need `event.target.name` or other event properties, keeping the native signature can be the better choice.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
     sourceLabel: "TypeScript: Omit Utility Type",

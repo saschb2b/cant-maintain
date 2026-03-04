@@ -91,7 +91,7 @@ interface ProfileCardProps {
     explanationCorrect:
       "Seven booleans collapsed into three union props. Unions enforce mutual exclusivity; a button can't be both `primary` and `danger`. Booleans allow impossible combos like `<Button isPrimary isDanger isOutlined isGhost />`. Each union prop represents one independent design axis.",
     explanationWrong:
-      "Mutually exclusive options should never be separate booleans. `isPrimary` and `isDanger` can't both be true, but nothing prevents `<Button isPrimary isDanger />`. Union types like `variant: 'primary' | 'danger'` enforce exactly one choice. Seven boolean props become three self-documenting unions.",
+      "Mutually exclusive options are better expressed as unions than separate booleans. `isPrimary` and `isDanger` can't both be true, but nothing prevents `<Button isPrimary isDanger />`. Union types like `variant: 'primary' | 'danger'` enforce exactly one choice. Seven boolean props become three self-documenting unions.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types",
     sourceLabel: "TypeScript: Union Types",
