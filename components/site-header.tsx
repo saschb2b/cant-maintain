@@ -48,7 +48,6 @@ export function SiteHeader() {
                 sx={{
                   color: "text.secondary",
                   "&:hover": { color: "text.primary" },
-                  fontSize: "0.85rem",
                 }}
               >
                 Learn

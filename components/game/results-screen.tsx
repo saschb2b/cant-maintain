@@ -246,7 +246,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                       variant="body2"
                       color="text.secondary"
                       fontFamily="var(--font-geist-mono), monospace"
-                      sx={{ mr: 1, fontSize: "0.75rem" }}
+                      sx={{ mr: 1 }}
                     >
                       {i + 1}.
                     </Typography>
@@ -276,7 +276,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                   >
                     <Box
                       sx={{
-                        fontSize: "0.875rem",
+                        typography: "body2",
                         lineHeight: 1.6,
                         color: "text.primary",
                         mb: 1,
@@ -293,7 +293,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                         display: "inline-flex",
                         alignItems: "center",
                         gap: 0.5,
-                        fontSize: "0.75rem",
+                        typography: "caption",
                         fontWeight: 500,
                         color: "primary.main",
                       }}
@@ -343,7 +343,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
           gap: 1,
           color: "text.secondary",
           fontWeight: 500,
-          fontSize: "0.85rem",
+          typography: "body2",
           "&:hover": { color: "text.primary" },
         }}
       >
@@ -377,7 +377,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
               gap: 1,
               color: "text.secondary",
               fontWeight: 500,
-              fontSize: "0.85rem",
+              typography: "body2",
               "&:hover": { color: "text.primary" },
             }}
           >
@@ -395,7 +395,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
               gap: 1,
               color: "text.secondary",
               fontWeight: 500,
-              fontSize: "0.85rem",
+              typography: "body2",
               "&:hover": { color: "text.primary" },
             }}
           >

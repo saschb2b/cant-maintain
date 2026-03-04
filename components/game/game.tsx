@@ -172,7 +172,6 @@ export function Game() {
               fontWeight={500}
               color="primary.main"
               fontFamily="var(--font-geist-mono), monospace"
-              sx={{ fontSize: "0.8rem" }}
             >
               Reviewing question {(state.reviewIndex ?? 0) + 1}
             </Typography>
@@ -266,7 +265,6 @@ export function Game() {
               px: 1,
               py: 0.5,
               borderRadius: 1,
-              fontSize: "0.65rem",
               letterSpacing: "0.1em",
             }}
           >
@@ -348,7 +346,6 @@ export function Game() {
           textAlign: "center",
           opacity: 0.9,
           transition: "opacity 0.2s",
-          fontSize: "0.7rem",
         }}
       >
         {isReviewing

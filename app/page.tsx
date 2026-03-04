@@ -130,7 +130,6 @@ export default async function LandingPage() {
               color="text.secondary"
               fontFamily="var(--font-geist-mono), monospace"
               sx={{
-                fontSize: "0.7rem",
                 mt: 1.5,
                 textAlign: { xs: "center", md: "left" },
               }}
@@ -163,7 +162,7 @@ export default async function LandingPage() {
                   fontWeight={600}
                   color="text.secondary"
                   fontFamily="var(--font-geist-mono), monospace"
-                  sx={{ fontSize: "0.7rem", letterSpacing: "0.05em" }}
+                  sx={{ letterSpacing: "0.05em" }}
                 >
                   WHICH IS BETTER?
                 </Typography>
@@ -204,7 +203,6 @@ export default async function LandingPage() {
                       fontWeight={600}
                       fontFamily="var(--font-geist-mono), monospace"
                       color="error.main"
-                      sx={{ fontSize: "0.7rem" }}
                     >
                       Worse
                     </Typography>
@@ -244,7 +242,6 @@ export default async function LandingPage() {
                       fontWeight={600}
                       fontFamily="var(--font-geist-mono), monospace"
                       color="success.main"
-                      sx={{ fontSize: "0.7rem" }}
                     >
                       Better
                     </Typography>
@@ -320,7 +317,7 @@ export default async function LandingPage() {
                 sx={{
                   mx: 1,
                   color: "text.secondary",
-                  fontSize: "0.85rem",
+                  typography: "body2",
                 }}
               >
                 vs
@@ -351,7 +348,6 @@ export default async function LandingPage() {
                   sx={{
                     fontFamily: "var(--font-geist-mono), monospace",
                     fontWeight: 600,
-                    fontSize: "0.8rem",
                   }}
                 >
                   on
@@ -389,7 +385,7 @@ export default async function LandingPage() {
                 sx={{
                   mx: 1,
                   color: "text.secondary",
-                  fontSize: "0.85rem",
+                  typography: "body2",
                 }}
               >
                 vs
@@ -448,7 +444,7 @@ export default async function LandingPage() {
                 sx={{
                   mx: 1,
                   color: "text.secondary",
-                  fontSize: "0.85rem",
+                  typography: "body2",
                 }}
               >
                 vs
@@ -559,7 +555,7 @@ export default async function LandingPage() {
                   <Typography
                     variant="caption"
                     color="text.secondary"
-                    sx={{ fontSize: "0.72rem", whiteSpace: "nowrap" }}
+                    sx={{ whiteSpace: "nowrap" }}
                   >
                     {item.label}
                   </Typography>
@@ -582,7 +578,6 @@ export default async function LandingPage() {
                   borderColor: "divider",
                   color: "text.primary",
                   fontWeight: 600,
-                  fontSize: "0.85rem",
                   "&:hover": {
                     borderColor: "text.secondary",
                     bgcolor: "rgba(0,0,0,0.03)",

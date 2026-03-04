@@ -55,7 +55,7 @@ export function SiteFooter() {
                 gap: 0.5,
                 color: "text.secondary",
                 textDecoration: "none",
-                fontSize: "0.75rem",
+                typography: "caption",
                 "&:hover": { color: "text.primary" },
               }}
             >
@@ -86,7 +86,7 @@ export function SiteFooter() {
               gap: 0.75,
               color: "text.secondary",
               textDecoration: "none",
-              fontSize: "0.75rem",
+              typography: "caption",
               "&:hover": { color: "text.primary" },
             }}
           >

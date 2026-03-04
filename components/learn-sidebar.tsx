@@ -33,7 +33,6 @@ export function LearnSidebar() {
           sx={{
             mb: 2.5,
             px: 1.5,
-            fontSize: "0.85rem",
             color: pathname === "/learn" ? "text.primary" : "text.secondary",
             "&:hover": { color: "text.primary" },
           }}
@@ -51,9 +50,7 @@ export function LearnSidebar() {
                 display: "block",
                 px: 1.5,
                 mb: 0.5,
-                fontSize: "0.65rem",
                 fontWeight: 700,
-                letterSpacing: "0.08em",
                 color: "text.secondary",
               }}
             >
@@ -74,7 +71,6 @@ export function LearnSidebar() {
                       sx={{
                         px: 1.5,
                         py: 0.75,
-                        fontSize: "0.84rem",
                         fontWeight: isActive ? 600 : 400,
                         color: isActive ? "text.primary" : "text.secondary",
                         borderLeft: 2,

@@ -80,12 +80,9 @@ export function GameHeader({
           <Stack direction="row" alignItems="center" spacing={3}>
             <Box>
               <Typography
-                variant="caption"
+                variant="overline"
                 fontFamily="var(--font-geist-mono), monospace"
                 sx={{
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  fontSize: "0.65rem",
                   color: "text.secondary",
                 }}
               >
@@ -114,12 +111,9 @@ export function GameHeader({
                 <Flame size={20} color="#D4873C" />
                 <Box>
                   <Typography
-                    variant="caption"
+                    variant="overline"
                     fontFamily="var(--font-geist-mono), monospace"
                     sx={{
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      fontSize: "0.65rem",
                       color: "text.secondary",
                     }}
                   >

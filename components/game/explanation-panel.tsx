@@ -57,7 +57,7 @@ export function ExplanationPanel({
           {isCorrect ? "+" : "-"}
         </Avatar>
         <Box sx={{ flex: 1 }}>
-          <Box sx={{ fontSize: "0.875rem", lineHeight: 1.6, mb: 1 }}>
+          <Box sx={{ typography: "body2", lineHeight: 1.6, mb: 1 }}>
             <FormattedText text={text} />
           </Box>
           <Link
@@ -69,7 +69,7 @@ export function ExplanationPanel({
               display: "inline-flex",
               alignItems: "center",
               gap: 0.75,
-              fontSize: "0.75rem",
+              typography: "caption",
               fontWeight: 500,
               color: `${color}.main`,
             }}
@@ -84,7 +84,7 @@ export function ExplanationPanel({
               display: "inline-flex",
               alignItems: "center",
               gap: 0.75,
-              fontSize: "0.75rem",
+              typography: "caption",
               fontWeight: 500,
               color: "text.secondary",
               ml: 2,

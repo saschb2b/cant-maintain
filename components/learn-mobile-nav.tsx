@@ -63,7 +63,6 @@ export function LearnMobileNav() {
                 <Typography
                   variant="caption"
                   fontWeight={isActive ? 600 : 500}
-                  sx={{ fontSize: "0.75rem" }}
                 >
                   {CATEGORY_LABELS[category]}
                 </Typography>

@@ -152,7 +152,6 @@ export function CodePanel({
                 : result === "wrong"
                   ? "error.main"
                   : "text.primary",
-            fontSize: "0.9rem",
           }}
         >
           {label}
@@ -184,7 +183,7 @@ export function CodePanel({
               margin: 0,
               padding: 16,
               fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
-              fontSize: "0.85rem",
+              fontSize: "0.875rem",
               lineHeight: 1.7,
             }}
           >

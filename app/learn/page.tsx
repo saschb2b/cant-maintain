@@ -160,7 +160,6 @@ export default async function LearnPage() {
                         fontWeight={600}
                         fontFamily="var(--font-geist-mono), monospace"
                         color="error.main"
-                        sx={{ fontSize: "0.65rem" }}
                       >
                         Avoid
                       </Typography>
@@ -207,7 +206,6 @@ export default async function LearnPage() {
                         fontWeight={600}
                         fontFamily="var(--font-geist-mono), monospace"
                         color="success.main"
-                        sx={{ fontSize: "0.65rem" }}
                       >
                         Prefer
                       </Typography>

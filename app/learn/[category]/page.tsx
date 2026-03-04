@@ -93,26 +93,22 @@ export default async function CategoryPage({ params }: PageProps) {
           href="/learn"
           style={{
             textDecoration: "none",
-            fontSize: "0.85rem",
             fontFamily: "var(--font-geist-mono), monospace",
             fontWeight: 500,
             color: "#6B7B8D",
           }}
         >
-          Learn
+          <Typography variant="body2" component="span">
+            Learn
+          </Typography>
         </NextLink>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ fontSize: "0.85rem" }}
-        >
+        <Typography variant="body2" color="text.secondary">
           /
         </Typography>
         <Typography
           variant="body2"
           fontFamily="var(--font-geist-mono), monospace"
           fontWeight={600}
-          sx={{ fontSize: "0.85rem" }}
         >
           {label}
         </Typography>
@@ -206,7 +202,6 @@ export default async function CategoryPage({ params }: PageProps) {
                     fontWeight={600}
                     fontFamily="var(--font-geist-mono), monospace"
                     color="error.main"
-                    sx={{ fontSize: "0.7rem" }}
                   >
                     Avoid
                   </Typography>
@@ -246,7 +241,6 @@ export default async function CategoryPage({ params }: PageProps) {
                     fontWeight={600}
                     fontFamily="var(--font-geist-mono), monospace"
                     color="success.main"
-                    sx={{ fontSize: "0.7rem" }}
                   >
                     Prefer
                   </Typography>
@@ -264,7 +258,7 @@ export default async function CategoryPage({ params }: PageProps) {
             <Box sx={{ px: 2.5, py: 2 }}>
               <Box
                 sx={{
-                  fontSize: "0.925rem",
+                  typography: "body2",
                   lineHeight: 1.75,
                   color: "text.primary",
                 }}
@@ -281,7 +275,7 @@ export default async function CategoryPage({ params }: PageProps) {
                   alignItems: "center",
                   gap: 0.5,
                   mt: 1.5,
-                  fontSize: "0.8rem",
+                  typography: "caption",
                   fontFamily: "var(--font-geist-mono), monospace",
                   fontWeight: 500,
                 }}
@@ -326,7 +320,6 @@ export default async function CategoryPage({ params }: PageProps) {
                     variant="caption"
                     color="text.secondary"
                     fontFamily="var(--font-geist-mono), monospace"
-                    sx={{ fontSize: "0.7rem" }}
                   >
                     Previous
                   </Typography>
@@ -364,7 +357,6 @@ export default async function CategoryPage({ params }: PageProps) {
                     variant="caption"
                     color="text.secondary"
                     fontFamily="var(--font-geist-mono), monospace"
-                    sx={{ fontSize: "0.7rem" }}
                   >
                     Next
                   </Typography>
