@@ -53,23 +53,23 @@ export function CodePanel({
 
   const ringColor =
     result === "correct"
-      ? "rgba(91,138,114,0.3)"
+      ? "rgba(var(--mui-palette-success-mainChannel) / 0.3)"
       : result === "wrong"
-        ? "rgba(196,87,58,0.3)"
+        ? "rgba(var(--mui-palette-error-mainChannel) / 0.3)"
         : undefined;
 
   const headerBg =
     result === "correct"
-      ? "rgba(91,138,114,0.1)"
+      ? "rgba(var(--mui-palette-success-mainChannel) / 0.1)"
       : result === "wrong"
-        ? "rgba(196,87,58,0.1)"
+        ? "rgba(var(--mui-palette-error-mainChannel) / 0.1)"
         : "secondary.main";
 
   const headerBorderColor =
     result === "correct"
-      ? "rgba(91,138,114,0.3)"
+      ? "rgba(var(--mui-palette-success-mainChannel) / 0.3)"
       : result === "wrong"
-        ? "rgba(196,87,58,0.3)"
+        ? "rgba(var(--mui-palette-error-mainChannel) / 0.3)"
         : "divider";
 
   return (
@@ -124,7 +124,8 @@ export function CodePanel({
           ? {
               borderColor: "primary.main",
               outline: "none",
-              boxShadow: "0 0 0 3px rgba(43,76,126,0.3)",
+              boxShadow:
+                "0 0 0 3px rgba(var(--mui-palette-primary-mainChannel) / 0.3)",
             }
           : undefined,
       }}

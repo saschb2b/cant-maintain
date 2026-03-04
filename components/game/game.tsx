@@ -163,7 +163,7 @@ export function Game() {
               py: 1,
               border: 1,
               borderColor: "primary.main",
-              bgcolor: "rgba(43,76,126,0.06)",
+              bgcolor: "rgba(var(--mui-palette-primary-mainChannel) / 0.06)",
               borderRadius: 2,
             }}
           >

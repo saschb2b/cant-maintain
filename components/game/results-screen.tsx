@@ -199,10 +199,12 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                 elevation={0}
                 sx={{
                   border: 1,
-                  borderColor: isCorrect ? "divider" : "rgba(196,87,58,0.3)",
+                  borderColor: isCorrect
+                    ? "divider"
+                    : "rgba(var(--mui-palette-error-mainChannel) / 0.3)",
                   bgcolor: isCorrect
                     ? "background.paper"
-                    : "rgba(196,87,58,0.04)",
+                    : "rgba(var(--mui-palette-error-mainChannel) / 0.04)",
                   overflow: "hidden",
                 }}
               >
@@ -219,18 +221,19 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                       height: 22,
                       borderRadius: "50%",
                       bgcolor: isCorrect
-                        ? "rgba(91,138,114,0.12)"
-                        : "rgba(196,87,58,0.12)",
+                        ? "rgba(var(--mui-palette-success-mainChannel) / 0.12)"
+                        : "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
+                      color: isCorrect ? "success.main" : "error.main",
                     }}
                   >
                     {isCorrect ? (
-                      <Check size={12} color="#5B8A72" strokeWidth={3} />
+                      <Check size={12} strokeWidth={3} />
                     ) : (
-                      <X size={12} color="#C4573A" strokeWidth={3} />
+                      <X size={12} strokeWidth={3} />
                     )}
                   </Box>
                   <Typography

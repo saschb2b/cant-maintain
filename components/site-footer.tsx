@@ -27,7 +27,12 @@ export function SiteFooter() {
               sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
             >
               Made with
-              <Heart size={12} color="#C4573A" fill="#C4573A" />
+              <Box
+                component="span"
+                sx={{ color: "error.main", display: "inline-flex" }}
+              >
+                <Heart size={12} fill="currentColor" />
+              </Box>
               by{" "}
               <Box
                 component="a"

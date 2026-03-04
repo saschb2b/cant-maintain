@@ -190,13 +190,15 @@ export default async function LandingPage() {
                         width: 18,
                         height: 18,
                         borderRadius: "50%",
-                        bgcolor: "rgba(196,87,58,0.12)",
+                        bgcolor:
+                          "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        color: "error.main",
                       }}
                     >
-                      <X size={11} color="#C4573A" strokeWidth={3} />
+                      <X size={11} strokeWidth={3} />
                     </Box>
                     <Typography
                       variant="caption"
@@ -229,13 +231,15 @@ export default async function LandingPage() {
                         width: 18,
                         height: 18,
                         borderRadius: "50%",
-                        bgcolor: "rgba(91,138,114,0.12)",
+                        bgcolor:
+                          "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        color: "success.main",
                       }}
                     >
-                      <Check size={11} color="#5B8A72" strokeWidth={3} />
+                      <Check size={11} strokeWidth={3} />
                     </Box>
                     <Typography
                       variant="caption"
@@ -260,7 +264,7 @@ export default async function LandingPage() {
       {/* What you'll learn */}
       <Box
         sx={{
-          bgcolor: "rgba(232,224,212,0.6)",
+          bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.6)",
           backdropFilter: "blur(40px)",
           borderTop: 1,
           borderBottom: 1,
@@ -304,7 +308,7 @@ export default async function LandingPage() {
                   fontSize: "0.75rem",
                   fontWeight: 600,
                   color: "error.main",
-                  bgcolor: "rgba(196,87,58,0.08)",
+                  bgcolor: "rgba(var(--mui-palette-error-mainChannel) / 0.08)",
                   px: 1,
                   py: 0.25,
                   borderRadius: 1,
@@ -329,7 +333,8 @@ export default async function LandingPage() {
                   fontSize: "0.75rem",
                   fontWeight: 600,
                   color: "success.main",
-                  bgcolor: "rgba(91,138,114,0.08)",
+                  bgcolor:
+                    "rgba(var(--mui-palette-success-mainChannel) / 0.08)",
                   px: 1,
                   py: 0.25,
                   borderRadius: 1,
@@ -372,7 +377,7 @@ export default async function LandingPage() {
                   fontSize: "0.75rem",
                   fontWeight: 600,
                   color: "error.main",
-                  bgcolor: "rgba(196,87,58,0.08)",
+                  bgcolor: "rgba(var(--mui-palette-error-mainChannel) / 0.08)",
                   px: 1,
                   py: 0.25,
                   borderRadius: 1,
@@ -397,7 +402,8 @@ export default async function LandingPage() {
                   fontSize: "0.75rem",
                   fontWeight: 600,
                   color: "success.main",
-                  bgcolor: "rgba(91,138,114,0.08)",
+                  bgcolor:
+                    "rgba(var(--mui-palette-success-mainChannel) / 0.08)",
                   px: 1,
                   py: 0.25,
                   borderRadius: 1,
@@ -431,7 +437,7 @@ export default async function LandingPage() {
                   fontSize: "0.75rem",
                   fontWeight: 600,
                   color: "error.main",
-                  bgcolor: "rgba(196,87,58,0.08)",
+                  bgcolor: "rgba(var(--mui-palette-error-mainChannel) / 0.08)",
                   px: 1,
                   py: 0.25,
                   borderRadius: 1,
@@ -456,7 +462,8 @@ export default async function LandingPage() {
                   fontSize: "0.75rem",
                   fontWeight: 600,
                   color: "success.main",
-                  bgcolor: "rgba(91,138,114,0.08)",
+                  bgcolor:
+                    "rgba(var(--mui-palette-success-mainChannel) / 0.08)",
                   px: 1,
                   py: 0.25,
                   borderRadius: 1,
@@ -521,8 +528,8 @@ export default async function LandingPage() {
                 {
                   icon: <GitPullRequest size={18} />,
                   label: "Contribute",
-                  color: "#5B8A72",
-                  bg: "rgba(91,138,114,0.10)",
+                  color: "success.main",
+                  bg: "rgba(var(--mui-palette-success-mainChannel) / 0.10)",
                 },
                 {
                   icon: <Code2 size={18} />,
@@ -533,8 +540,8 @@ export default async function LandingPage() {
                 {
                   icon: <Heart size={18} />,
                   label: "Sponsor",
-                  color: "#C4573A",
-                  bg: "rgba(196,87,58,0.10)",
+                  color: "error.main",
+                  bg: "rgba(var(--mui-palette-error-mainChannel) / 0.10)",
                 },
               ].map((item) => (
                 <Stack key={item.label} alignItems="center" spacing={0.75}>

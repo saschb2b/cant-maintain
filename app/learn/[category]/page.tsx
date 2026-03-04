@@ -46,11 +46,11 @@ export async function generateMetadata({
 function difficultyColor(difficulty: Difficulty): string {
   switch (difficulty) {
     case "easy":
-      return "rgba(91,138,114,0.15)";
+      return "rgba(var(--mui-palette-success-mainChannel) / 0.15)";
     case "medium":
-      return "rgba(212,135,60,0.15)";
+      return "rgba(var(--mui-palette-warning-mainChannel) / 0.15)";
     case "hard":
-      return "rgba(196,87,58,0.15)";
+      return "rgba(var(--mui-palette-error-mainChannel) / 0.15)";
   }
 }
 
@@ -189,13 +189,15 @@ export default async function CategoryPage({ params }: PageProps) {
                       width: 18,
                       height: 18,
                       borderRadius: "50%",
-                      bgcolor: "rgba(196,87,58,0.12)",
+                      bgcolor:
+                        "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      color: "error.main",
                     }}
                   >
-                    <X size={11} color="#C4573A" strokeWidth={3} />
+                    <X size={11} strokeWidth={3} />
                   </Box>
                   <Typography
                     variant="caption"
@@ -228,13 +230,15 @@ export default async function CategoryPage({ params }: PageProps) {
                       width: 18,
                       height: 18,
                       borderRadius: "50%",
-                      bgcolor: "rgba(91,138,114,0.12)",
+                      bgcolor:
+                        "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      color: "success.main",
                     }}
                   >
-                    <Check size={11} color="#5B8A72" strokeWidth={3} />
+                    <Check size={11} strokeWidth={3} />
                   </Box>
                   <Typography
                     variant="caption"

@@ -12,6 +12,7 @@ declare module "@mui/material/styles" {
 }
 
 const theme = createTheme({
+  cssVariables: true,
   palette: {
     mode: "light",
     background: {
@@ -27,21 +28,21 @@ const theme = createTheme({
       contrastText: "#1A2332",
     },
     error: {
-      main: "#C4573A",
+      main: "#B5432A",
       contrastText: "#FFFFFF",
     },
     warning: {
-      main: "#D4873C",
+      main: "#9F6625",
       contrastText: "#FFFFFF",
     },
     success: {
-      main: "#5B8A72",
+      main: "#4A7A62",
       contrastText: "#FFFFFF",
     },
     accent: {
-      main: "#D4873C",
-      light: "#E09B56",
-      dark: "#B87230",
+      main: "#9F6625",
+      light: "#B87230",
+      dark: "#8A5720",
       contrastText: "#FFFFFF",
     },
     text: {

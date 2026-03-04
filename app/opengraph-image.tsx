@@ -39,7 +39,7 @@ export default function OgImage() {
           />
           <path
             d="M100 34 L144 90 L100 146"
-            stroke="#D4873C"
+            stroke="#9F6625"
             strokeWidth="16"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -86,11 +86,11 @@ export default function OgImage() {
             gap: 8,
             padding: "10px 20px",
             borderRadius: 8,
-            background: "rgba(196,87,58,0.15)",
-            border: "1px solid rgba(196,87,58,0.3)",
+            background: "rgba(181,67,42,0.15)",
+            border: "1px solid rgba(181,67,42,0.3)",
           }}
         >
-          <span style={{ color: "#C4573A", fontSize: 22, fontWeight: 600 }}>
+          <span style={{ color: "#B5432A", fontSize: 22, fontWeight: 600 }}>
             delete
           </span>
         </div>
@@ -111,11 +111,11 @@ export default function OgImage() {
             gap: 8,
             padding: "10px 20px",
             borderRadius: 8,
-            background: "rgba(91,138,114,0.15)",
-            border: "1px solid rgba(91,138,114,0.3)",
+            background: "rgba(74,122,98,0.15)",
+            border: "1px solid rgba(74,122,98,0.3)",
           }}
         >
-          <span style={{ color: "#5B8A72", fontSize: 22, fontWeight: 600 }}>
+          <span style={{ color: "#4A7A62", fontSize: 22, fontWeight: 600 }}>
             onDelete
           </span>
         </div>

@@ -37,8 +37,12 @@ export function ExplanationPanel({
       elevation={0}
       sx={{
         border: 1,
-        borderColor: isCorrect ? "rgba(91,138,114,0.3)" : "rgba(196,87,58,0.3)",
-        bgcolor: isCorrect ? "rgba(91,138,114,0.08)" : "rgba(196,87,58,0.08)",
+        borderColor: isCorrect
+          ? "rgba(var(--mui-palette-success-mainChannel) / 0.3)"
+          : "rgba(var(--mui-palette-error-mainChannel) / 0.3)",
+        bgcolor: isCorrect
+          ? "rgba(var(--mui-palette-success-mainChannel) / 0.08)"
+          : "rgba(var(--mui-palette-error-mainChannel) / 0.08)",
         p: 2,
       }}
     >

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { Link as LinkIcon, Check } from "lucide-react";
@@ -42,7 +43,9 @@ export function ChallengeAnchor({ id, title }: ChallengeAnchorProps) {
         {title}
       </Typography>
       {copied ? (
-        <Check size={14} color="#5B8A72" strokeWidth={2.5} />
+        <Box component="span" sx={{ color: "success.main", display: "flex" }}>
+          <Check size={14} strokeWidth={2.5} />
+        </Box>
       ) : (
         <LinkIcon className="anchor-icon" size={14} />
       )}

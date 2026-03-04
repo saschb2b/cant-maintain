@@ -149,13 +149,15 @@ export default async function LearnPage() {
                           width: 16,
                           height: 16,
                           borderRadius: "50%",
-                          bgcolor: "rgba(196,87,58,0.12)",
+                          bgcolor:
+                            "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
+                          color: "error.main",
                         }}
                       >
-                        <X size={9} color="#C4573A" strokeWidth={3} />
+                        <X size={9} strokeWidth={3} />
                       </Box>
                       <Typography
                         variant="caption"
@@ -195,13 +197,15 @@ export default async function LearnPage() {
                           width: 16,
                           height: 16,
                           borderRadius: "50%",
-                          bgcolor: "rgba(91,138,114,0.12)",
+                          bgcolor:
+                            "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
+                          color: "success.main",
                         }}
                       >
-                        <Check size={9} color="#5B8A72" strokeWidth={3} />
+                        <Check size={9} strokeWidth={3} />
                       </Box>
                       <Typography
                         variant="caption"

@@ -36,15 +36,19 @@ const DIFFICULTY_CONFIG: Record<
 > = {
   easy: {
     label: "Easy",
-    color: "#5B8A72",
-    bgcolor: "rgba(91,138,114,0.12)",
+    color: "success.main",
+    bgcolor: "rgba(var(--mui-palette-success-mainChannel) / 0.12)",
   },
   medium: {
     label: "Medium",
-    color: "#D4873C",
-    bgcolor: "rgba(212,135,60,0.12)",
+    color: "warning.main",
+    bgcolor: "rgba(var(--mui-palette-warning-mainChannel) / 0.12)",
   },
-  hard: { label: "Hard", color: "#C4573A", bgcolor: "rgba(196,87,58,0.12)" },
+  hard: {
+    label: "Hard",
+    color: "error.main",
+    bgcolor: "rgba(var(--mui-palette-error-mainChannel) / 0.12)",
+  },
 };
 
 export function GameHeader({
@@ -108,7 +112,9 @@ export function GameHeader({
 
             {streak >= 2 && (
               <Stack direction="row" alignItems="center" spacing={0.75}>
-                <Flame size={20} color="#D4873C" />
+                <Box sx={{ color: "warning.main", display: "flex" }}>
+                  <Flame size={20} />
+                </Box>
                 <Box>
                   <Typography
                     variant="overline"
@@ -123,7 +129,7 @@ export function GameHeader({
                     variant="h5"
                     fontWeight={700}
                     fontFamily="var(--font-geist-mono), monospace"
-                    sx={{ lineHeight: 1.1, color: "#D4873C" }}
+                    sx={{ lineHeight: 1.1, color: "warning.main" }}
                   >
                     {streak}x
                   </Typography>
@@ -172,14 +178,15 @@ export function GameHeader({
             let bgcolor: string;
             let shadow: string | undefined;
             if (result === "correct") {
-              bgcolor = "#3D9E6F";
+              bgcolor = "success.main";
             } else if (result === "wrong") {
-              bgcolor = "#D4563A";
+              bgcolor = "error.main";
             } else if (isCurrent) {
-              bgcolor = "var(--mui-palette-primary-main)";
-              shadow = "0 0 8px rgba(43,76,126,0.4)";
+              bgcolor = "primary.main";
+              shadow =
+                "0 0 8px rgba(var(--mui-palette-primary-mainChannel) / 0.4)";
             } else {
-              bgcolor = "#DDD6CA";
+              bgcolor = "divider";
             }
 
             if (isReviewed) {
