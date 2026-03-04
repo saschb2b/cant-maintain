@@ -213,4 +213,86 @@ interface SelectProps {
       "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
     sourceLabel: "React Docs: Passing JSX as children",
   },
+  {
+    id: "cp-007",
+    category: "children-pattern",
+    difficulty: "medium",
+    title: "asChild composition pattern",
+    badCode: `interface TooltipTriggerProps {
+  /** The element to render as. */
+  as?: React.ElementType;
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+// Usage:
+// <TooltipTrigger as="button"
+//   className="my-btn">
+//   Hover me
+// </TooltipTrigger>`,
+    goodCode: `interface TooltipTriggerProps {
+  /**
+   * Merge trigger behavior onto the child element
+   * instead of wrapping in a <span>.
+   * @default false
+   */
+  asChild?: boolean;
+  children: React.ReactNode;
+}
+
+// Usage:
+// <TooltipTrigger asChild>
+//   <Button className="my-btn">
+//     Hover me
+//   </Button>
+// </TooltipTrigger>`,
+    correctSide: "right",
+    explanationCorrect:
+      "The `asChild` pattern (popularized by Radix UI) merges the component's behavior onto its child element rather than creating a wrapper. This avoids the DOM nesting issues and TypeScript complexity of the `as` prop.\n\nWith `as`, you lose the child component's own props and types. With `asChild`, the child keeps full control of its props, styling, and ref.",
+    explanationWrong:
+      "The `as` prop has two problems: TypeScript struggles to infer the correct props for the rendered element (is `onClick` from the trigger or from the button?), and it creates ambiguity about which component controls styling.\n\n`asChild` is simpler: the component merges its behavior (event handlers, ARIA attributes) onto whatever child you provide, keeping the child in full control of its own rendering.",
+    sourceUrl:
+      "https://www.radix-ui.com/primitives/docs/guides/composition",
+    sourceLabel: "Radix UI: Composition",
+  },
+  {
+    id: "cp-008",
+    category: "children-pattern",
+    difficulty: "hard",
+    title: "Server Component children in client wrapper",
+    badCode: `'use client';
+
+interface TabPanelProps {
+  /** Product data to render in each tab. */
+  productData: {
+    id: string;
+    name: string;
+    specs: Record<string, string>;
+    reviews: Review[];
+  };
+  /** Tab labels for navigation. */
+  labels: string[];
+  /** @default 0 */
+  defaultIndex?: number;
+}`,
+    goodCode: `'use client';
+
+interface TabPanelProps {
+  /** Each child is rendered as a tab panel. */
+  children: React.ReactNode;
+  /** Tab labels for navigation. */
+  labels: string[];
+  /** @default 0 */
+  defaultIndex?: number;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "The Client Component (`TabPanel`) only handles tab switching logic — the actual content stays as Server Components passed through `children`. Product data never crosses the serialization boundary.\n\nThe bad version forces all product data into the Client Component, making every spec, review, and related product part of the client bundle.",
+    explanationWrong:
+      "Passing the entire `productData` object to a Client Component means serializing every field and shipping it to the client. The tab panel only needs to show/hide children — it doesn't need to know about product data.\n\nUsing `children` as Server Component slots keeps data-heavy rendering on the server while the client handles only the interactive tab switching.",
+    sourceUrl:
+      "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+    sourceLabel: "Next.js: Server and Client Components",
+  },
 ];

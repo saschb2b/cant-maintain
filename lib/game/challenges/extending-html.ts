@@ -158,4 +158,86 @@ export const extendingHtmlChallenges: Challenge[] = [
     sourceUrl: "https://react.dev/reference/react-dom/components/common",
     sourceLabel: "React Docs: Common Components",
   },
+  {
+    id: "eh-006",
+    category: "extending-html",
+    difficulty: "medium",
+    title: "Form action prop pattern",
+    badCode: `interface FormProps extends Omit<
+  React.ComponentProps<'form'>,
+  'onSubmit'
+> {
+  /** Called on form submission with form data. */
+  onSubmit: (data: FormData) => Promise<void>;
+  /** Whether the form is currently submitting. */
+  isSubmitting?: boolean;
+}`,
+    goodCode: `interface FormProps extends Omit<
+  React.ComponentProps<'form'>,
+  'action'
+> {
+  /** Server Action or async submission handler. */
+  action: (data: FormData) => Promise<void>;
+  /** Pending state via useFormStatus() instead. */
+}
+
+// useFormStatus() inside child components
+// provides isPending automatically.`,
+    correctSide: "right",
+    explanationCorrect:
+      "React 19 added native `<form action={...}>` support. Passing an async function as `action` integrates with `useFormStatus` (for pending state) and `useActionState` (for return values) — no manual `isSubmitting` prop needed.\n\nThe form resets automatically on success for uncontrolled inputs. This is the modern replacement for `onSubmit` + `preventDefault()`.",
+    explanationWrong:
+      "`onSubmit` + `isSubmitting` is the pre-React 19 pattern. The parent must manually manage pending state, call `preventDefault()`, and reset the form. React 19's `action` prop handles all of this:\n\n- Pending state via `useFormStatus()`\n- Progressive enhancement (works without JS)\n- Automatic form reset on success\n- Server Action compatibility",
+    sourceUrl: "https://react.dev/reference/react-dom/components/form",
+    sourceLabel: "React Docs: form",
+  },
+  {
+    id: "eh-007",
+    category: "extending-html",
+    difficulty: "hard",
+    title: "Prop spreading with override protection",
+    badCode: `interface ChipProps
+  extends React.ComponentProps<'span'> {
+  label: string;
+  variant?: 'filled' | 'outlined';
+}
+
+function Chip({ label, variant, ...rest }: ChipProps) {
+  return (
+    <span
+      className={getChipClass(variant)}
+      {...rest}
+    >
+      {label}
+    </span>
+  );
+}`,
+    goodCode: `interface ChipProps
+  extends Omit<
+    React.ComponentProps<'span'>,
+    'className' | 'children'
+  > {
+  label: string;
+  variant?: 'filled' | 'outlined';
+}
+
+function Chip({ label, variant, ...rest }: ChipProps) {
+  return (
+    <span
+      {...rest}
+      className={getChipClass(variant)}
+    >
+      {label}
+    </span>
+  );
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Two fixes: `Omit` removes `className` and `children` from the spread so consumers can't accidentally override critical styling or content. The spread goes **before** explicit props so `className` always wins.\n\nIn the bad version, `{...rest}` comes after `className`, meaning `<Chip className=\"oops\" />` silently replaces the component's styling.",
+    explanationWrong:
+      "Spreading `{...rest}` **after** `className` lets consumers accidentally overwrite the component's styling with `<Chip className=\"custom\" />`. The component's own `className` is silently replaced.\n\nSpread first, then set explicit props. Use `Omit` to block props that consumers shouldn't override at the type level — `className` and `children` are managed internally.",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys",
+    sourceLabel: "TypeScript: Omit Utility Type",
+  },
 ];

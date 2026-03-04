@@ -8,12 +8,15 @@ export const CATEGORY_ORDER: ChallengeCategory[] = [
   "prop-specificity",
   "jsdoc",
   "prop-organization",
+  "controlled-uncontrolled",
   "children-pattern",
   "render-props",
+  "generic-props",
   "extending-html",
   "ref-forwarding",
   "accessibility-props",
   "discriminated-unions",
+  "server-component-props",
 ];
 
 /** Human-readable labels for each challenge category. */
@@ -30,6 +33,9 @@ export const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "accessibility-props": "Accessibility Props",
   "default-values": "Default Values",
   "prop-organization": "Prop Organization",
+  "controlled-uncontrolled": "Controlled & Uncontrolled",
+  "server-component-props": "Server Component Props",
+  "generic-props": "Generic Props",
 };
 
 /** Logical grouping of categories for sidebar navigation. */
@@ -45,7 +51,12 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
   },
   {
     label: "Prop Design",
-    categories: ["default-values", "prop-specificity", "prop-organization"],
+    categories: [
+      "default-values",
+      "prop-specificity",
+      "prop-organization",
+      "controlled-uncontrolled",
+    ],
   },
   {
     label: "Composition",
@@ -56,9 +67,14 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
     categories: [
       "extending-html",
       "ref-forwarding",
+      "generic-props",
       "accessibility-props",
       "discriminated-unions",
     ],
+  },
+  {
+    label: "React 19 & Server",
+    categories: ["server-component-props"],
   },
 ];
 
@@ -88,4 +104,10 @@ export const CATEGORY_DESCRIPTIONS: Record<ChallengeCategory, string> = {
     "Setting sensible defaults via destructuring, stable references, and default callbacks.",
   "prop-organization":
     "Grouping related props, removing redundancy, and knowing when to extract sub-components.",
+  "controlled-uncontrolled":
+    "The value/defaultValue/onChange contract, dual-mode APIs, and mirroring native HTML form patterns.",
+  "server-component-props":
+    "Serializable props across the server/client boundary, Server Actions, and the donut pattern.",
+  "generic-props":
+    "Using TypeScript generics to create type-safe, reusable component APIs that infer from props.",
 };

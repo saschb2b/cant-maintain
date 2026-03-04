@@ -162,4 +162,43 @@ export const booleanNamingChallenges: Challenge[] = [
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props to a Component",
   },
+  {
+    id: "bl-006",
+    category: "boolean-naming",
+    difficulty: "medium",
+    title: "Native HTML booleans vs custom booleans",
+    badCode: `interface InputProps
+  extends React.ComponentProps<'input'> {
+  /** Whether the field has a validation error. */
+  isError?: boolean;
+  /** Whether the field is mandatory. */
+  isRequired?: boolean;
+  /** Whether the field is disabled. */
+  isDisabled?: boolean;
+}`,
+    goodCode: `interface InputProps
+  extends React.ComponentProps<'input'> {
+  /** Whether the field has a validation error. */
+  hasError?: boolean;
+  /**
+   * Maps to the native required attribute.
+   * Uses the HTML name for consistency.
+   * @default false
+   */
+  required?: boolean;
+  /**
+   * Maps to the native disabled attribute.
+   * Uses the HTML name for consistency.
+   * @default false
+   */
+  disabled?: boolean;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Props that map directly to HTML attributes should use the native name: `disabled` (not `isDisabled`), `required` (not `isRequired`). These are universally understood and are already in `ComponentProps<'input'>`.\n\n`hasError` gets a prefix because it's a custom boolean that doesn't exist in HTML — the prefix removes ambiguity. Rule: **native HTML booleans stay bare, custom booleans get prefixes.**",
+    explanationWrong:
+      "Adding `is` prefix to well-known HTML attributes like `disabled` and `required` creates inconsistency with native elements and re-declares props already inherited from `ComponentProps<'input'>`. It also means `<Input isDisabled />` doesn't set the native `disabled` attribute without manual mapping.\n\nReserve prefixes for **custom** booleans like `hasError` where the type isn't obvious from the name alone.",
+    sourceUrl: "https://react.dev/reference/react-dom/components/input",
+    sourceLabel: "React Docs: input",
+  },
 ];

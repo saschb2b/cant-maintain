@@ -216,4 +216,45 @@ interface MapViewProps {
       "https://react.dev/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state",
     sourceLabel: "React Docs: Minimal UI State",
   },
+  {
+    id: "po-007",
+    category: "prop-organization",
+    difficulty: "medium",
+    title: "Inline objects create new references",
+    badCode: `function Dashboard() {
+  return (
+    <Chart
+      data={transactions}
+      margins={{ top: 20, right: 30, bottom: 20, left: 40 }}
+      colors={['#8884d8', '#82ca9d', '#ffc658']}
+      onPointClick={(point) => {
+        setSelected(point);
+      }}
+    />
+  );
+}`,
+    goodCode: `const CHART_MARGINS = {
+  top: 20, right: 30, bottom: 20, left: 40,
+};
+const CHART_COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
+
+function Dashboard() {
+  return (
+    <Chart
+      data={transactions}
+      margins={CHART_MARGINS}
+      colors={CHART_COLORS}
+      onPointClick={setSelected}
+    />
+  );
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Inline objects and arrays create new references on every render, causing unnecessary re-renders of memoized children and re-runs of effects that depend on them. Module-level constants have stable references.\n\nThe callback `(point) => setSelected(point)` is equivalent to `setSelected` — the wrapper adds nothing but a new function reference each render.",
+    explanationWrong:
+      "Every render creates a brand new `margins` object, `colors` array, and arrow function. If `Chart` uses `React.memo` or any internal effect depends on these props, it will re-run every render despite nothing changing.\n\nExtract static values to module-level constants and pass function references directly. This is one of the most common React performance pitfalls.",
+    sourceUrl:
+      "https://react.dev/reference/react/memo#minimizing-props-changes",
+    sourceLabel: "React Docs: Minimizing Props Changes",
+  },
 ];

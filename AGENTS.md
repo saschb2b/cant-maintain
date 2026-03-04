@@ -59,6 +59,9 @@ Both sides of a challenge **must have the same visual structure**. The differenc
    - `ap` = accessibility-props
    - `dv` = default-values
    - `po` = prop-organization
+   - `cu` = controlled-uncontrolled
+   - `sc` = server-component-props
+   - `gp` = generic-props
 4. Include both `explanationCorrect` and `explanationWrong`
 5. Always link to an authoritative source (React docs, TypeScript docs, MUI docs, MDN)
 6. The `correctSide` value is overridden at runtime (randomized), but conventionally set to `"right"`

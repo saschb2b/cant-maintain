@@ -14,7 +14,10 @@ export type ChallengeCategory =
   | "ref-forwarding"
   | "accessibility-props"
   | "default-values"
-  | "prop-organization";
+  | "prop-organization"
+  | "controlled-uncontrolled"
+  | "server-component-props"
+  | "generic-props";
 
 /**
  * A single challenge in the game.

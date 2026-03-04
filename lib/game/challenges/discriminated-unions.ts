@@ -223,4 +223,47 @@ export const discriminatedUnionsChallenges: Challenge[] = [
       "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
     sourceLabel: "TypeScript: Discriminated Unions",
   },
+  {
+    id: "du-006",
+    category: "discriminated-unions",
+    difficulty: "medium",
+    title: "Form field type unions",
+    badCode: `interface FormFieldProps {
+  type: 'text' | 'number' | 'select';
+  value: string | number;
+  onChange: (value: string | number) => void;
+  options?: Array<{ value: string; label: string }>;
+  min?: number;
+  max?: number;
+  placeholder?: string;
+}`,
+    goodCode: `type FormFieldProps =
+  | {
+      type: 'text';
+      value: string;
+      onChange: (value: string) => void;
+      placeholder?: string;
+    }
+  | {
+      type: 'number';
+      value: number;
+      onChange: (value: number) => void;
+      min?: number;
+      max?: number;
+    }
+  | {
+      type: 'select';
+      value: string;
+      onChange: (value: string) => void;
+      options: Array<{ value: string; label: string }>;
+    };`,
+    correctSide: "right",
+    explanationCorrect:
+      "Each field type gets exactly the props it needs: `options` is required (not optional) for select, `min`/`max` only exist on number, and `value`/`onChange` types match the field. The discriminant `type` lets TypeScript narrow the type in a switch statement.\n\nThe flat interface allows `<FormField type=\"text\" min={0} />` — min makes no sense on a text field.",
+    explanationWrong:
+      "A single interface with `value: string | number` means every `onChange` handler must deal with both types. `options` is optional even for select fields (forgetting it compiles fine). `min`/`max` appear on text fields where they're meaningless.\n\nDiscriminated unions tie each `type` to its specific props, making impossible combinations unrepresentable.",
+    sourceUrl:
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions",
+    sourceLabel: "TypeScript: Discriminated Unions",
+  },
 ];

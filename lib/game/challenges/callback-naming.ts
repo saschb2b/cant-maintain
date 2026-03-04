@@ -182,4 +182,79 @@ interface DialogProps {
     sourceUrl: "https://react.dev/learn/responding-to-events",
     sourceLabel: "React Docs: Responding to Events",
   },
+  {
+    id: "cb-008",
+    category: "callback-naming",
+    difficulty: "medium",
+    title: "Lifecycle callback pairs",
+    badCode: `interface DrawerProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+  /**
+   * Called after the open/close animation finishes.
+   * Use to clean up or update focus.
+   */
+  onAnimationDone?: () => void;
+}`,
+    goodCode: `interface DrawerProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+  /**
+   * Called when the open/close transition starts.
+   * Useful for disabling interaction during animation.
+   */
+  onTransitionStart?: () => void;
+  /**
+   * Called when the open/close transition ends.
+   * Useful for cleanup or focus management.
+   */
+  onTransitionEnd?: () => void;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "Processes with duration deserve callback **pairs**: `onTransitionStart` / `onTransitionEnd`. This lets the parent disable interactions during animation and clean up afterward. A single `onAnimationDone` only covers the end — what if you need to lock scrolling during the transition?\n\nThe `on` + noun + lifecycle suffix pattern (`onTransitionStart`) is self-documenting.",
+    explanationWrong:
+      "A single `onAnimationDone` callback covers only half the lifecycle. What happens at the start of the animation? The parent might need to disable buttons, lock scroll, or trigger another animation in sync.\n\n**Lifecycle callback pairs** (`onTransitionStart`/`onTransitionEnd`, `onDragStart`/`onDragEnd`) let consumers respond to both moments. The naming convention makes the temporal relationship obvious.",
+    sourceUrl:
+      "https://developer.mozilla.org/en-US/docs/Web/API/Element/transitionend_event",
+    sourceLabel: "MDN: transitionend event",
+  },
+  {
+    id: "cb-009",
+    category: "callback-naming",
+    difficulty: "hard",
+    title: "Promise-returning action callback",
+    badCode: `interface SubmitButtonProps {
+  children: React.ReactNode;
+  /** Called when the button is clicked. */
+  onClick: () => void;
+  /** Whether to show a loading spinner. */
+  isLoading?: boolean;
+  /** Error message to display below the button. */
+  errorMessage?: string;
+  /** Whether the button is disabled. */
+  isDisabled?: boolean;
+}`,
+    goodCode: `interface SubmitButtonProps {
+  children: React.ReactNode;
+  /**
+   * Called on click. Return a Promise to
+   * automatically show loading and error states.
+   */
+  onAction: () => Promise<void>;
+  /** Whether the button is disabled. */
+  isDisabled?: boolean;
+  /** Additional CSS class for the button. */
+  className?: string;
+}`,
+    correctSide: "right",
+    explanationCorrect:
+      "A Promise-returning callback lets the component derive loading and error states from the Promise lifecycle — no manual `isLoading` or `errorMessage` props needed.\n\nNaming it `onAction` (not `onClick`) signals it's async and the component will manage pending state. This is the pattern behind React 19's `useActionState` and `useTransition`.",
+    explanationWrong:
+      "Manually passing `isLoading` and `errorMessage` means the parent must track three pieces of state (`loading`, `error`, `idle`) and keep them in sync. Forgetting to reset `isLoading` after an error leaves the button stuck.\n\nA Promise-returning `onAction` lets the component derive these states automatically: pending while the Promise is unsettled, error if it rejects, idle on resolve.",
+    sourceUrl: "https://react.dev/reference/react/useTransition",
+    sourceLabel: "React Docs: useTransition",
+  },
 ];
