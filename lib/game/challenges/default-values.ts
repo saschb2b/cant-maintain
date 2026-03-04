@@ -125,13 +125,12 @@ function Badge({
     title: "Stable default object references",
     badCode: `function DataGrid({
   columns,
-  data,
   filters = {},
   sortOrder = [],
   pagination = { page: 1, pageSize: 20 },
 }: DataGridProps) {
   useEffect(() => {
-    fetchData({ filters, sortOrder, pagination });
+    loadData({ filters, sortOrder, pagination });
   }, [filters, sortOrder, pagination]);
 }`,
     goodCode: `const EMPTY_FILTERS: Filters = {};
@@ -143,20 +142,19 @@ const DEFAULT_PAGINATION: Pagination = {
 
 function DataGrid({
   columns,
-  data,
   filters = EMPTY_FILTERS,
   sortOrder = EMPTY_SORT,
   pagination = DEFAULT_PAGINATION,
 }: DataGridProps) {
   useEffect(() => {
-    fetchData({ filters, sortOrder, pagination });
+    loadData({ filters, sortOrder, pagination });
   }, [filters, sortOrder, pagination]);
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Inline `= {}`, `= []`, and `= { ... }` create **new object references on every render**. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time.\n\nModule-level constants are created once and have stable references.",
+      "Inline `= {}`, `= []`, and `= { ... }` create **new object references on every render**. If these defaults are passed to `useEffect` or `useMemo` dependency arrays, they'll trigger re-runs every time.\n\nModule-level constants are created once and have stable references.\n\n**Caveat:** Shared constants can be mutated by code that receives them. If that's a concern, `Object.freeze()` the defaults or create per-instance stable references with `useRef`.",
     explanationWrong:
-      "Every render where `filters` isn't passed creates a brand new `{}`. That new object fails `===` checks in dependency arrays, causing `useEffect(() => fetch(filters), [filters])` to re-fetch on every render. Hoisting defaults to module scope gives them stable identity.",
+      "Every render where `filters` isn't passed creates a brand new `{}`. That new object fails `===` checks in dependency arrays, causing the effect to re-run on every render. Hoisting defaults to module scope gives them stable identity.\n\n**Caveat:** Shared module-level constants could be mutated by consumers, causing collateral damage across all component instances. `Object.freeze()` guards against this.",
     sourceUrl:
       "https://react.dev/reference/react/useMemo#every-time-my-component-renders-the-calculation-in-usememo-re-runs",
     sourceLabel: "React Docs: useMemo troubleshooting",
