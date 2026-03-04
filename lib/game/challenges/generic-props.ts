@@ -21,8 +21,7 @@ export const genericPropsChallenges: Challenge[] = [
       "Generics let TypeScript infer the item type from the `items` array and enforce it across all related props. When you pass `items={users}`, TypeScript knows `onSelect` receives a `User` and `renderItem` receives a `User`, with zero manual type annotations needed.\n\n`unknown` throws that away: every consumer must cast.",
     explanationWrong:
       "`unknown` is type-safe in that it prevents unsafe access, but it forces every consumer to narrow the type manually. With generics, `<List items={users} onSelect={handleUser} renderItem={...} />` automatically types everything from the `items` prop. The type flows through the entire API.",
-    sourceUrl:
-      "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+    sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
     sourceLabel: "TypeScript: Generics",
   },
   {
@@ -51,9 +50,9 @@ export const genericPropsChallenges: Challenge[] = [
 // Type error: "banana" is not assignable to Role`,
     correctSide: "right",
     explanationCorrect:
-      "A generic `V` parameter constrains `value`, `onChange`, and `options` to the same type. With `<Select<Role>>`, TypeScript ensures only valid roles are passed as `value`. Without generics, any string is accepted, so `value=\"banana\"` compiles fine even when your options are roles.\n\nThe `extends string` constraint ensures values are still string-based.",
+      'A generic `V` parameter constrains `value`, `onChange`, and `options` to the same type. With `<Select<Role>>`, TypeScript ensures only valid roles are passed as `value`. Without generics, any string is accepted, so `value="banana"` compiles fine even when your options are roles.\n\nThe `extends string` constraint ensures values are still string-based.',
     explanationWrong:
-      "When everything is `string`, there's no connection between `options` and `value`. You can pass `value=\"banana\"` with options that only contain `\"admin\"` and `\"user\"`. A generic `V` lets consumers specify the exact string literal union, so `<Select<Role>>` makes TypeScript reject anything that isn't a valid `Role`.",
+      'When everything is `string`, there\'s no connection between `options` and `value`. You can pass `value="banana"` with options that only contain `"admin"` and `"user"`. A generic `V` lets consumers specify the exact string literal union, so `<Select<Role>>` makes TypeScript reject anything that isn\'t a valid `Role`.',
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints",
     sourceLabel: "TypeScript: Generic Constraints",
@@ -159,7 +158,7 @@ export const genericPropsChallenges: Challenge[] = [
     explanationCorrect:
       "Two type parameters create a type-safe link between the form shape and the field. `K extends keyof TForm` means `name` must be an actual key of the form type. `TForm[K]` ensures `value` and `onChange` match that field's type, so a `number` field can't accidentally receive a `string`.\n\nThis is the pattern used by Formik, React Hook Form, and TanStack Form.",
     explanationWrong:
-      "A bare `string` for `name` means any string compiles, so typos like `\"emial\"` are invisible until runtime. A lone generic `V` for value has no connection to the form type, so a number field could receive a string with no error.\n\nTwo generics (`TForm` + `K`) tie every field to its form, catching name typos and type mismatches at compile time.",
+      'A bare `string` for `name` means any string compiles, so typos like `"emial"` are invisible until runtime. A lone generic `V` for value has no connection to the form type, so a number field could receive a string with no error.\n\nTwo generics (`TForm` + `K`) tie every field to its form, catching name typos and type mismatches at compile time.',
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html",
     sourceLabel: "TypeScript: Indexed Access Types",

@@ -37,7 +37,12 @@ export function SiteHeader() {
             </Box>
           </NextLink>
 
-          <Stack direction="row" spacing={2} alignItems="center" sx={{ ml: "auto" }}>
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            sx={{ ml: "auto" }}
+          >
             <NextLink
               href="/learn"
               style={{ textDecoration: "none", color: "inherit" }}

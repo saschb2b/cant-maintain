@@ -252,8 +252,7 @@ interface SelectProps {
       "The `asChild` pattern (popularized by Radix UI) merges the component's behavior onto its child element rather than creating a wrapper. This avoids the DOM nesting issues and TypeScript complexity of the `as` prop.\n\nWith `as`, you lose the child component's own props and types. With `asChild`, the child keeps full control of its props, styling, and ref.",
     explanationWrong:
       "The `as` prop has two problems: TypeScript struggles to infer the correct props for the rendered element (is `onClick` from the trigger or from the button?), and it creates ambiguity about which component controls styling.\n\n`asChild` is simpler: the component merges its behavior (event handlers, ARIA attributes) onto whatever child you provide, keeping the child in full control of its own rendering.",
-    sourceUrl:
-      "https://www.radix-ui.com/primitives/docs/guides/composition",
+    sourceUrl: "https://www.radix-ui.com/primitives/docs/guides/composition",
     sourceLabel: "Radix UI: Composition",
   },
   {

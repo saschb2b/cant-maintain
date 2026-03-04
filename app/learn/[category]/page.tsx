@@ -68,7 +68,9 @@ export default async function CategoryPage({ params }: PageProps) {
   };
   const categoryChallenges = challenges
     .filter((c) => c.category === cat)
-    .sort((a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+    .sort(
+      (a, b) => difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty],
+    );
 
   const currentIndex = CATEGORY_ORDER.indexOf(cat);
   const prev = currentIndex > 0 ? CATEGORY_ORDER[currentIndex - 1] : undefined;

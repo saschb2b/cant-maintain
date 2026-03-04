@@ -16,7 +16,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Custom toggle components should mirror the native `<input type=\"checkbox\">` API: `checked` + `onChange`. Consumers familiar with HTML form elements instantly understand the contract. `setToggled` implies the child owns the state; in React, data flows down and events flow up.",
+      'Custom toggle components should mirror the native `<input type="checkbox">` API: `checked` + `onChange`. Consumers familiar with HTML form elements instantly understand the contract. `setToggled` implies the child owns the state; in React, data flows down and events flow up.',
     explanationWrong:
       "`toggled` and `setToggled` invent a new naming convention. React already has an established pattern for boolean form controls: `checked` + `onChange`. Following native HTML conventions reduces learning curve and enables interoperability with form libraries like React Hook Form.",
     sourceUrl:
@@ -77,8 +77,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
       "The `value` / `defaultValue` / `onChange` trio is React's universal contract for dual-mode (controlled + uncontrolled) components. `expanded` + `startExpanded` + `onToggle` invents custom names for the same concept. Consumers immediately know: pass `value` + `onChange` for controlled, or `defaultValue` for uncontrolled.",
     explanationWrong:
       "`expanded`, `startExpanded`, and `onToggle` are three custom names for a pattern React already has conventions for. With `value`/`defaultValue`/`onChange`, any React developer knows the contract without reading docs. This is the same API used by Radix's Accordion, Headless UI's Disclosure, and native `<select>`.",
-    sourceUrl:
-      "https://www.radix-ui.com/primitives/docs/components/accordion",
+    sourceUrl: "https://www.radix-ui.com/primitives/docs/components/accordion",
     sourceLabel: "Radix UI: Accordion",
   },
   {

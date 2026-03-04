@@ -63,9 +63,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
     (c) => state.answers[c.id] === "wrong",
   );
 
-  const missedCategories = [
-    ...new Set(wrongChallenges.map((c) => c.category)),
-  ];
+  const missedCategories = [...new Set(wrongChallenges.map((c) => c.category))];
 
   useEffect(() => {
     window.history.replaceState(null, "", "/play/results");

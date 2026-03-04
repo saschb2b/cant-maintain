@@ -30,8 +30,7 @@ import { saveForm } from './actions';
       "Props from Server Components to Client Components are serialized over the network. Regular functions can't survive this, and they crash at runtime.\n\n`'use server'` is the key: it turns the function into a serializable reference (essentially a URL). The actual code stays on the server; the client gets a reference it can call over the network.",
     explanationWrong:
       "Inline functions aren't serializable. When a Server Component renders a Client Component, all props must survive network serialization. Regular functions, class instances, and Symbols cannot.\n\nThe fix is `'use server'`: it replaces the function with a serializable network reference. The function body never leaves the server; the client just gets an ID it can invoke via an HTTP round-trip.",
-    sourceUrl:
-      "https://react.dev/reference/rsc/server-actions",
+    sourceUrl: "https://react.dev/reference/rsc/server-actions",
     sourceLabel: "React Docs: Server Actions",
   },
   {
@@ -54,7 +53,7 @@ import { saveForm } from './actions';
 </AnimatedContainer>`,
     correctSide: "right",
     explanationCorrect:
-      "This is called the \"donut pattern\": the Client Component is the outer ring (handles animation), and Server Component `children` pass through the hole in the middle. `AnimatedContainer` never touches the article data, it just renders `{children}`.\n\n`ArticleContent` stays a Server Component: all article data is rendered on the server and never serialized to the client. The client only ships the animation JavaScript.",
+      'This is called the "donut pattern": the Client Component is the outer ring (handles animation), and Server Component `children` pass through the hole in the middle. `AnimatedContainer` never touches the article data, it just renders `{children}`.\n\n`ArticleContent` stays a Server Component: all article data is rendered on the server and never serialized to the client. The client only ships the animation JavaScript.',
     explanationWrong:
       "Passing every article field as props means all that data must be serialized and sent to the client. Now `AnimatedContainer` is responsible for both animation AND rendering article content, and the entire article ends up in the client bundle.\n\nWith `children`, `ArticleContent` renders on the server and passes through the Client Component untouched. The client only handles animation, no article data crosses the network boundary.",
     sourceUrl:
@@ -130,8 +129,7 @@ interface ClientEditorProps {
       "`RegExp` and class instances are not serializable across the server/client boundary. Convert to serializable equivalents: `RegExp` → its `.source` string, class instances → plain objects with only the needed fields.\n\nSerializable types include: primitives, `Date`, `Map`, `Set`, `BigInt`, typed arrays, plain objects, and arrays. NOT serializable: `RegExp`, class instances, `WeakMap`, `Symbol`, and functions.",
     explanationWrong:
       "Props crossing the server/client boundary must be serializable by React's RSC protocol. `RegExp` and custom class instances can't survive serialization. TypeScript compiles fine but the runtime throws.\n\nConvert to plain serializable equivalents: extract `.source` from RegExp, destructure class instances into plain objects. Reconstruct on the client if needed.",
-    sourceUrl:
-      "https://react.dev/reference/rsc/use-client#serializable-types",
+    sourceUrl: "https://react.dev/reference/rsc/use-client#serializable-types",
     sourceLabel: "React Docs: Serializable Types",
   },
   {

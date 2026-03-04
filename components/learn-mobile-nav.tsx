@@ -60,10 +60,7 @@ export function LearnMobileNav() {
                   },
                 }}
               >
-                <Typography
-                  variant="caption"
-                  fontWeight={isActive ? 600 : 500}
-                >
+                <Typography variant="caption" fontWeight={isActive ? 600 : 500}>
                   {CATEGORY_LABELS[category]}
                 </Typography>
               </Box>
