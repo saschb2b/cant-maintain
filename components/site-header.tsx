@@ -1,6 +1,7 @@
 import NextLink from "next/link";
 import Image from "next/image";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -36,7 +37,7 @@ export function SiteHeader() {
             </Box>
           </NextLink>
 
-          <Stack direction="row" spacing={2} sx={{ ml: "auto" }}>
+          <Stack direction="row" spacing={2} alignItems="center" sx={{ ml: "auto" }}>
             <NextLink
               href="/learn"
               style={{ textDecoration: "none", color: "inherit" }}
@@ -52,6 +53,11 @@ export function SiteHeader() {
               >
                 Learn
               </Typography>
+            </NextLink>
+            <NextLink href="/play" style={{ textDecoration: "none" }}>
+              <Button variant="contained" size="small">
+                Play
+              </Button>
             </NextLink>
           </Stack>
         </Stack>

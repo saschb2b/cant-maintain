@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -61,6 +62,15 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   const wrongChallenges = state.challenges.filter(
     (c) => state.answers[c.id] === "wrong",
   );
+
+  const missedCategories = [
+    ...new Set(wrongChallenges.map((c) => c.category)),
+  ];
+
+  useEffect(() => {
+    window.history.replaceState(null, "", "/play/results");
+    return () => window.history.replaceState(null, "", "/play");
+  }, []);
 
   return (
     <Stack spacing={4} sx={{ py: 4 }}>
@@ -335,24 +345,48 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
         </Typography>
       )}
 
-      {/* Learn link */}
-      <Link
-        href="/learn"
-        underline="hover"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 1,
-          color: "text.secondary",
-          fontWeight: 500,
-          typography: "body2",
-          "&:hover": { color: "text.primary" },
-        }}
-      >
-        <BookOpen size={16} />
-        Review all patterns
-      </Link>
+      {/* Learn links */}
+      {missedCategories.length > 0 ? (
+        <Stack spacing={1} alignItems="center">
+          {missedCategories.map((category) => (
+            <Link
+              key={category}
+              href={`/learn/${category}`}
+              underline="hover"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                color: "text.secondary",
+                fontWeight: 500,
+                typography: "body2",
+                "&:hover": { color: "text.primary" },
+              }}
+            >
+              <BookOpen size={16} />
+              Review {CATEGORY_LABELS[category]}
+            </Link>
+          ))}
+        </Stack>
+      ) : (
+        <Link
+          href="/learn"
+          underline="hover"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1,
+            color: "text.secondary",
+            fontWeight: 500,
+            typography: "body2",
+            "&:hover": { color: "text.primary" },
+          }}
+        >
+          <BookOpen size={16} />
+          Review all patterns
+        </Link>
+      )}
 
       {/* Contribute / Support CTA */}
       <Paper
