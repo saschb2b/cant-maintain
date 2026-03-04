@@ -1,4 +1,5 @@
 import NextLink from "next/link";
+import Image from "next/image";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -20,8 +21,7 @@ export function SiteHeader() {
               gap: 12,
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon.svg" alt="" width={28} height={28} />
+            <Image src="/icon.svg" alt="" width={28} height={28} />
             <Box>
               <Typography variant="subtitle1" fontWeight={700} lineHeight={1.2}>
                 {"Can't Maintain"}
