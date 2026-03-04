@@ -36,7 +36,6 @@ export default function LearnLayout({ children }: { children: ReactNode }) {
             sx={{
               flex: 1,
               minWidth: 0,
-              maxWidth: 750,
               py: { xs: 4, md: 5 },
             }}
           >

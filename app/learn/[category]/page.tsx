@@ -268,7 +268,7 @@ export default async function CategoryPage({ params }: PageProps) {
             </Stack>
 
             {/* Explanation + source */}
-            <Box sx={{ px: 2.5, py: 2 }}>
+            <Box sx={{ px: 2.5, py: 2, maxWidth: 720 }}>
               <Box
                 sx={{
                   typography: "body2",
