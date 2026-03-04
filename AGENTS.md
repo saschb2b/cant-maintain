@@ -113,4 +113,5 @@ All game logic is in `lib/game/use-game.ts`. The `prepareChallenges()` function 
 - Use `is*`/`has*` prefix for boolean props
 - Keep the `Challenge` interface as the single source of truth
 - Conventional commits: `feat:`, `fix:`, `chore:`
+- No em dashes in challenge explanation text (use commas, periods, semicolons, colons instead)
 - Run `pnpm typecheck && pnpm lint && pnpm build` before committing

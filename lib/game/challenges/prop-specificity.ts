@@ -48,7 +48,7 @@ interface ButtonProps {
     explanationCorrect:
       "Every prop is specific: `users` (not generic `data`), `selectedUserId` (not ambiguous `selected`), and `onUserSelect` (specifies what event occurred). Specific names eliminate guesswork.",
     explanationWrong:
-      "`data` could be anything — users, products, orders. `selected` could be an ID, an index, a boolean, or a full object. `onClick` is too generic for item selection. Name each prop after what it actually contains.",
+      "`data` could be anything: users, products, orders. `selected` could be an ID, an index, a boolean, or a full object. `onClick` is too generic for item selection. Name each prop after what it actually contains.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },
@@ -85,7 +85,7 @@ interface ButtonProps {
     explanationCorrect:
       "Every prop is specific: `renderItem` (not vague `render`), `emptyContent` (not the double-negative `noResults`), `onValueChange` (not generic `onChange`), and parameter names spell out their meaning (`value` not `v`).",
     explanationWrong:
-      '`render` renders what? `noResults` is a confusing name — does `false` mean "there are results" or "don\'t show the no-results state"? `onChange` with `v` forces you to read the type to understand the callback. Specific names eliminate this guesswork.',
+      '`render` renders what? `noResults` is a confusing name: does `false` mean "there are results" or "don\'t show the no-results state"? `onChange` with `v` forces you to read the type to understand the callback. Specific names eliminate this guesswork.',
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props",
   },
@@ -106,7 +106,7 @@ interface ButtonProps {
     explanationCorrect:
       "Two improvements: `backgroundColor` specifies **which** color (not text, not border), and the template literal type narrows valid inputs to hex strings at compile time. Even just the rename from `color` to `backgroundColor` is a big clarity win.",
     explanationWrong:
-      "`color` could mean text color, background color, or border color — it's ambiguous. Rename to be specific (`backgroundColor`). The template literal type is a bonus — it narrows `string` to only accept hex color values.",
+      "`color` could mean text color, background color, or border color; it's ambiguous. Rename to be specific (`backgroundColor`). The template literal type is a bonus; it narrows `string` to only accept hex color values.",
     sourceUrl:
       "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html",
     sourceLabel: "TypeScript: Template Literal Types",
@@ -126,7 +126,7 @@ interface ButtonProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Union types for size are predictable and discoverable in IDE autocomplete. A raw `number` could be anything — pixels? rem? percentage?",
+      "Union types for size are predictable and discoverable in IDE autocomplete. A raw `number` could be anything: pixels? rem? percentage?",
     explanationWrong:
       "`size: number` has no units, no bounds, and no discoverability. A union like `'sm' | 'md' | 'lg' | 'xl'` constrains valid values and lights up autocomplete.",
     sourceUrl:
@@ -170,9 +170,9 @@ interface ButtonProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Consistent `*Text` suffixes make the API predictable. Separate `openText`/`closeText` props (not a single `toggleLabel`) match the actual UI states. `React.ReactNode` for displayed messages allows rich formatting.\n\nMUI's Autocomplete uses this exact pattern — every interactive element and user-facing string gets a `*Text` prop with a sensible default.",
+      "Consistent `*Text` suffixes make the API predictable. Separate `openText`/`closeText` props (not a single `toggleLabel`) match the actual UI states. `React.ReactNode` for displayed messages allows rich formatting.\n\nMUI's Autocomplete uses this exact pattern: every interactive element and user-facing string gets a `*Text` prop with a sensible default.",
     explanationWrong:
-      'Inconsistent suffixes (`*Label` vs `*Message`) make the API confusing. A single `toggleLabel` for both open and close states means the label can\'t say "Open" when closed and "Close" when open. `emptyMessage` and `pendingMessage` use non-standard naming — MUI\'s convention is `noOptionsText` and `loadingText`, matching what the user actually sees.',
+      'Inconsistent suffixes (`*Label` vs `*Message`) make the API confusing. A single `toggleLabel` for both open and close states means the label can\'t say "Open" when closed and "Close" when open. `emptyMessage` and `pendingMessage` use non-standard naming; MUI\'s convention is `noOptionsText` and `loadingText`, matching what the user actually sees.',
     sourceUrl: "https://mui.com/material-ui/api/autocomplete/",
     sourceLabel: "MUI: Autocomplete API",
   },
@@ -233,9 +233,9 @@ interface TableProps<T extends Record<string, unknown>> {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Generics make `columns` and callbacks type-safe: `key: keyof T` ensures column keys match the data shape, and callbacks receive typed values instead of `Function`.\n\n`isSortable` lives on each column (not the whole table), and selection/pagination use typed event callbacks — not a mix of state props and untyped setters.",
+      "Generics make `columns` and callbacks type-safe: `key: keyof T` ensures column keys match the data shape, and callbacks receive typed values instead of `Function`.\n\n`isSortable` lives on each column (not the whole table), and selection/pagination use typed event callbacks, not a mix of state props and untyped setters.",
     explanationWrong:
-      "`object[]` loses all type information — TypeScript can't check if column `name` values match data properties. `Function` is effectively `any` for callbacks — no parameter or return type checking.\n\nMixing state props (`page`, `filter`) with callbacks leaks internal state management. **Generics and typed callbacks fix all three issues.**",
+      "`object[]` loses all type information; TypeScript can't check if column `name` values match data properties. `Function` is effectively `any` for callbacks; no parameter or return type checking.\n\nMixing state props (`page`, `filter`) with callbacks leaks internal state management. **Generics and typed callbacks fix all three issues.**",
     sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
     sourceLabel: "TypeScript: Generics",
   },

@@ -33,7 +33,7 @@ export const childrenPatternChallenges: Challenge[] = [
     explanationCorrect:
       "`renderItem` is specific (render what? an item), the callback includes `index` for `key` assignment and alternating styles, and `emptyState` clearly describes the slot's purpose.\n\nThe `@example` in JSDoc shows the expected usage pattern. Compare `render` (of what?) and `empty` (a boolean? a message?).",
     explanationWrong:
-      "`render` could mean anything — render the list? render an item? render a header? `empty` is equally ambiguous — is it a boolean, a string, or JSX? Specific names like `renderItem` and `emptyState` make the API self-documenting. The callback also misses the `index` parameter, which is needed for `key` props and alternating row styles.",
+      "`render` could mean anything: render the list? render an item? render a header? `empty` is equally ambiguous: is it a boolean, a string, or JSX? Specific names like `renderItem` and `emptyState` make the API self-documenting. The callback also misses the `index` parameter, which is needed for `key` props and alternating row styles.",
     sourceUrl: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
     sourceLabel: "TypeScript: Generics",
   },
@@ -77,7 +77,7 @@ interface SelectProps {
     explanationCorrect:
       "Compound components (`Select` + `SelectOption`) are more flexible than config objects. They support nesting, conditional rendering, custom content, and compose naturally with JSX. Adding icons or groups doesn't require changing the config type.",
     explanationWrong:
-      "Config arrays like `options: Array<{...}>` are rigid. Every new feature (icons, descriptions, groups, custom rendering) means extending the config type. Compound components let consumers compose freely with JSX — the React way.",
+      "Config arrays like `options: Array<{...}>` are rigid. Every new feature (icons, descriptions, groups, custom rendering) means extending the config type. Compound components let consumers compose freely with JSX, the React way.",
     sourceUrl: "https://react.dev/learn/thinking-in-react",
     sourceLabel: "React Docs: Thinking in React",
   },
@@ -114,7 +114,7 @@ interface SelectProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Grouping overrides into `slots` and `slotProps` objects scales cleanly. Adding a new customizable element means adding one key to each object — not two new top-level props.\n\nThis is the pattern MUI adopted across all components, replacing the older `PaperComponent`/`PaperProps` pairs that cluttered the API.",
+      "Grouping overrides into `slots` and `slotProps` objects scales cleanly. Adding a new customizable element means adding one key to each object, not two new top-level props.\n\nThis is the pattern MUI adopted across all components, replacing the older `PaperComponent`/`PaperProps` pairs that cluttered the API.",
     explanationWrong:
       "Each sub-component needs two props (component + props), so three sub-components means six top-level props. A fourth sub-component adds two more. This doesn't scale. The `slots`/`slotProps` pattern groups all overrides into two structured objects, keeping the top-level API clean and discoverable.",
     sourceUrl:
@@ -145,7 +145,7 @@ interface SelectProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Slot props (`header`, `footer`, `icon` as `ReactNode`) let consumers pass anything — text, icons, buttons, or custom components. String-typed slots restrict you to plain text; `ReactNode` slots enable full composition.",
+      "Slot props (`header`, `footer`, `icon` as `ReactNode`) let consumers pass anything: text, icons, buttons, or custom components. String-typed slots restrict you to plain text; `ReactNode` slots enable full composition.",
     explanationWrong:
       "String-typed props like `title: string` and `iconName?: string` limit what consumers can render. What if you need a bold title, an SVG icon, or action buttons in the footer? `ReactNode` slots give consumers full control over content and layout.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
@@ -179,7 +179,7 @@ interface SelectProps {
     explanationCorrect:
       "The primary content of a component should use `children`, not a named prop. This follows JSX composition conventions and lets consumers nest content naturally. Named slots like `header` or `footer` are for secondary content areas.",
     explanationWrong:
-      "A `content` prop works, but it fights JSX conventions. `children` is the default slot for primary content — it enables natural nesting `<Panel>...</Panel>` instead of the awkward `<Panel content={...} />`. Reserve named props for secondary content areas.",
+      "A `content` prop works, but it fights JSX conventions. `children` is the default slot for primary content, and it enables natural nesting `<Panel>...</Panel>` instead of the awkward `<Panel content={...} />`. Reserve named props for secondary content areas.",
     sourceUrl:
       "https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children",
     sourceLabel: "React Docs: Passing JSX as children",
@@ -206,7 +206,7 @@ interface SelectProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Passing pre-rendered `ReactNode` slots avoids prop drilling. The Layout doesn't need to know about user data or nav items — it just renders whatever components the parent composes. If the sidebar design changes, only the parent's JSX changes, not the Layout props.",
+      "Passing pre-rendered `ReactNode` slots avoids prop drilling. The Layout doesn't need to know about user data or nav items; it just renders whatever components the parent composes. If the sidebar design changes, only the parent's JSX changes, not the Layout props.",
     explanationWrong:
       "Passing raw data props forces the Layout to render user info and navigation internally. If you want a different avatar style or nav layout, you'd need to add more props or a `renderSidebar` function. `ReactNode` slots let the parent compose freely, keeping the Layout a pure layout shell.",
     sourceUrl:
@@ -288,9 +288,9 @@ interface TabPanelProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "The Client Component (`TabPanel`) only handles tab switching logic — the actual content stays as Server Components passed through `children`. Product data never crosses the serialization boundary.\n\nThe bad version forces all product data into the Client Component, making every spec, review, and related product part of the client bundle.",
+      "The Client Component (`TabPanel`) only handles tab switching logic, and the actual content stays as Server Components passed through `children`. Product data never crosses the serialization boundary.\n\nThe bad version forces all product data into the Client Component, making every spec, review, and related product part of the client bundle.",
     explanationWrong:
-      "Passing the entire `productData` object to a Client Component means serializing every field and shipping it to the client. The tab panel only needs to show/hide children — it doesn't need to know about product data.\n\nUsing `children` as Server Component slots keeps data-heavy rendering on the server while the client handles only the interactive tab switching.",
+      "Passing the entire `productData` object to a Client Component means serializing every field and shipping it to the client. The tab panel only needs to show/hide children, so it doesn't need to know about product data.\n\nUsing `children` as Server Component slots keeps data-heavy rendering on the server while the client handles only the interactive tab switching.",
     sourceUrl:
       "https://nextjs.org/docs/app/getting-started/server-and-client-components",
     sourceLabel: "Next.js: Server and Client Components",

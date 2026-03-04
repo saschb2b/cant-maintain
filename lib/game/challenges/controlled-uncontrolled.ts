@@ -16,7 +16,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Custom toggle components should mirror the native `<input type=\"checkbox\">` API: `checked` + `onChange`. Consumers familiar with HTML form elements instantly understand the contract. `setToggled` implies the child owns the state — in React, data flows down and events flow up.",
+      "Custom toggle components should mirror the native `<input type=\"checkbox\">` API: `checked` + `onChange`. Consumers familiar with HTML form elements instantly understand the contract. `setToggled` implies the child owns the state; in React, data flows down and events flow up.",
     explanationWrong:
       "`toggled` and `setToggled` invent a new naming convention. React already has an established pattern for boolean form controls: `checked` + `onChange`. Following native HTML conventions reduces learning curve and enables interoperability with form libraries like React Hook Form.",
     sourceUrl:
@@ -104,7 +104,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Following the `value`/`onChange` convention, the component reports the entire new state — not individual operations. The parent decides how to update: `onChange` receives the full array after any add or remove. This matches how `<select multiple>` works natively.\n\nSeparate `onAddTag`/`onRemoveTag` callbacks force the parent to know the component's internal operations instead of just receiving the result.",
+      "Following the `value`/`onChange` convention, the component reports the entire new state, not individual operations. The parent decides how to update: `onChange` receives the full array after any add or remove. This matches how `<select multiple>` works natively.\n\nSeparate `onAddTag`/`onRemoveTag` callbacks force the parent to know the component's internal operations instead of just receiving the result.",
     explanationWrong:
       "`selectedTags` + `onAddTag` + `onRemoveTag` splits a single state update into three props. What about reordering? Replacing? Clearing all? Each new operation needs another callback. The `value` + `onChange` pattern handles all mutations with one callback that reports the new state, matching React's established form control conventions.",
     sourceUrl:
@@ -146,7 +146,7 @@ export const controlledUncontrolledChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Complex components often have multiple independently controlled dimensions. Each dimension should follow the same `value`/`defaultValue`/`onChange` convention (or `open`/`defaultOpen`/`onOpenChange` for visibility).\n\nThe bad version invents custom names for each dimension (`selectedColor`, `startColor`, `isOpen`, `startsOpen`) — every dimension uses different conventions, forcing consumers to learn each one from scratch.",
+      "Complex components often have multiple independently controlled dimensions. Each dimension should follow the same `value`/`defaultValue`/`onChange` convention (or `open`/`defaultOpen`/`onOpenChange` for visibility).\n\nThe bad version invents custom names for each dimension (`selectedColor`, `startColor`, `isOpen`, `startsOpen`), and every dimension uses different conventions, forcing consumers to learn each one from scratch.",
     explanationWrong:
       "Six props with six different naming conventions: `selectedColor` (adjective+noun), `onColorPick` (on+noun+verb), `startColor` (verb+noun), `isOpen` (is+adjective), `onOpenChange` (consistent!), `startsOpen` (verb+adjective). The inconsistency makes the API unpredictable.\n\nApplying the same `value`/`defaultValue`/`onChange` pattern to each dimension makes the API predictable: learn the pattern once, apply it everywhere.",
     sourceUrl: "https://mui.com/material-ui/api/autocomplete/",

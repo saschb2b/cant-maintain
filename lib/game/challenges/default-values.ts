@@ -33,7 +33,7 @@ function Badge({
     explanationCorrect:
       "`defaultProps` is deprecated in React 19 and will be removed. ES6 destructuring defaults are type-safe, colocated with the function, and work with TypeScript out of the box. Bonus: `@default` JSDoc tags document the defaults in IDE hover tooltips.",
     explanationWrong:
-      "`defaultProps` is a legacy pattern from class components. It's deprecated in React 19, doesn't benefit from TypeScript inference, and separates defaults from where they're used. Use destructuring defaults instead — they're the modern standard.",
+      "`defaultProps` is a legacy pattern from class components. It's deprecated in React 19, doesn't benefit from TypeScript inference, and separates defaults from where they're used. Use destructuring defaults instead. They're the modern standard.",
     sourceUrl:
       "https://react.dev/blog/2024/04/25/react-19#removed-deprecated-react-apis",
     sourceLabel: "React 19: Removed Deprecated APIs",
@@ -65,9 +65,9 @@ function Badge({
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Destructuring defaults only apply when the value is `undefined` — which is exactly what "not passed" means in React.\n\nThe `||` operator also triggers on `0`, `""`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.',
+      'Destructuring defaults only apply when the value is `undefined`, which is exactly what "not passed" means in React.\n\nThe `||` operator also triggers on `0`, `""`, and `false`, which are legitimate values. `min={0}` would silently become `0 || 0` here, but `value={0}` would wrongly become `50`.',
     explanationWrong:
-      'The `||` operator treats `0`, `""`, and `false` as falsy — so `value || 50` overrides a legitimate `value={0}`. This is a subtle bug. Destructuring defaults (`value = 50`) only kick in for `undefined`, which is the correct behavior for missing props.',
+      'The `||` operator treats `0`, `""`, and `false` as falsy, so `value || 50` overrides a legitimate `value={0}`. This is a subtle bug. Destructuring defaults (`value = 50`) only kick in for `undefined`, which is the correct behavior for missing props.',
     sourceUrl:
       "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#default_value",
     sourceLabel: "MDN: Destructuring Default Values",
@@ -111,7 +111,7 @@ function Badge({
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Destructuring defaults apply when a prop is `undefined` — exactly what "not passed" means in React. This eliminates the intermediate variables and makes defaults visible in the function signature. Any developer reading the code instantly sees the fallback values.',
+      'Destructuring defaults apply when a prop is `undefined`, which is exactly what "not passed" means in React. This eliminates the intermediate variables and makes defaults visible in the function signature. Any developer reading the code instantly sees the fallback values.',
     explanationWrong:
       "Using `??` in the function body works correctly (unlike `||`), but it buries defaults inside the implementation. Destructuring defaults put them right in the signature where they're most discoverable. Compare: scanning one line vs reading through the function body to find each fallback.",
     sourceUrl:
@@ -204,13 +204,13 @@ function FormField({
   ...props
 }: FormFieldProps) {
   const error = validate(props.value);
-  // No null checks — defaults handle missing callbacks.
+  // No null checks needed. Defaults handle missing callbacks.
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Default callbacks eliminate `?.()` scattered throughout the component — especially valuable when a callback is used in multiple places. Module-level defaults also provide stable references for dependency arrays.\n\n**Tradeoff:** If you conditionally render UI based on whether a callback was passed (e.g., showing a delete button only when `onDelete` is provided), keep it `undefined` — a `noop` default would hide that signal. Use defaults for callbacks you always want to *call*, not ones you want to *check*.",
+      "Default callbacks eliminate `?.()` scattered throughout the component. This is especially valuable when a callback is used in multiple places. Module-level defaults also provide stable references for dependency arrays.\n\n**Tradeoff:** If you conditionally render UI based on whether a callback was passed (e.g., showing a delete button only when `onDelete` is provided), keep it `undefined`. A `noop` default would hide that signal. Use defaults for callbacks you always want to *call*, not ones you want to *check*.",
     explanationWrong:
-      "Optional chaining (`validate?.(value)`, `onBlur?.()`) is concise and perfectly fine for single call sites. But when multiple optional callbacks are used in several places, defaults reduce repetition and provide stable references for hooks.\n\n**Tradeoff:** Don't default callbacks you check to conditionally render UI — e.g., only showing a delete button when `onDelete` is passed. In that case, `undefined` is the right signal.",
+      "Optional chaining (`validate?.(value)`, `onBlur?.()`) is concise and perfectly fine for single call sites. But when multiple optional callbacks are used in several places, defaults reduce repetition and provide stable references for hooks.\n\n**Tradeoff:** Don't default callbacks you check to conditionally render UI, e.g., only showing a delete button when `onDelete` is passed. In that case, `undefined` is the right signal.",
     sourceUrl:
       "https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop",
     sourceLabel: "React Docs: Default Prop Values",
