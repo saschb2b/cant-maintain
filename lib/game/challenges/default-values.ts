@@ -181,8 +181,8 @@ function FormField({
   validate,
   ...props
 }: FormFieldProps) {
-  const error = validate ? validate(props.value) : null;
-  // Must null-check every callback before calling...
+  const error = validate?.(props.value) ?? null;
+  // Optional chaining at every call site
 }`,
     goodCode: `const noop = () => {};
 const noValidation = () => null;
@@ -210,9 +210,9 @@ function FormField({
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Default callbacks (`noop` for side effects, null-returning functions for transforms) eliminate `if (callback)` checks throughout the component. The code reads linearly instead of branching on every optional callback. Module-level defaults also provide stable references for dependency arrays.",
+      "Default callbacks eliminate `?.()` scattered throughout the component — especially valuable when a callback is used in multiple places. Module-level defaults also provide stable references for dependency arrays.\n\n**Tradeoff:** If you conditionally render UI based on whether a callback was passed (e.g., showing a delete button only when `onDelete` is provided), keep it `undefined` — a `noop` default would hide that signal. Use defaults for callbacks you always want to *call*, not ones you want to *check*.",
     explanationWrong:
-      "Without defaults, every usage site needs a null check: `validate ? validate(value) : null`, `onBlur && onBlur()`. With 3 optional callbacks that's 3+ conditional checks scattered through the component.\n\nDefault callbacks let you call them unconditionally, making the code simpler and the intent clearer.",
+      "Optional chaining (`validate?.(value)`, `onBlur?.()`) is concise and perfectly fine for single call sites. But when multiple optional callbacks are used in several places, defaults reduce repetition and provide stable references for hooks.\n\n**Tradeoff:** Don't default callbacks you check to conditionally render UI — e.g., only showing a delete button when `onDelete` is passed. In that case, `undefined` is the right signal.",
     sourceUrl:
       "https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop",
     sourceLabel: "React Docs: Default Prop Values",
