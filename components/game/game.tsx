@@ -282,60 +282,56 @@ export function Game() {
       </Box>
 
       <Stack spacing={2}>
-        <Grow
-          in={!!displayAnswer}
-          timeout={400}
-          style={{ transformOrigin: "top center" }}
-        >
-          <Box>
-            <ExplanationPanel
-              isCorrect={displayAnswer === "correct"}
-              text={
-                displayAnswer === "correct"
-                  ? displayChallenge.explanationCorrect
-                  : displayChallenge.explanationWrong
-              }
-              sourceUrl={displayChallenge.sourceUrl}
-              sourceLabel={displayChallenge.sourceLabel}
-              category={displayChallenge.category}
-            />
-          </Box>
-        </Grow>
-
-        <Fade
-          in={!!displayAnswer}
-          timeout={400}
-          style={{ transitionDelay: displayAnswer ? "200ms" : "0ms" }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            {isReviewing ? (
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={exitReview}
-                startIcon={<ArrowLeft size={18} />}
-              >
-                Back to Question {state.currentIndex + 1}
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                size="large"
-                onClick={goToNext}
-                tabIndex={currentAnswer ? 0 : -1}
-                endIcon={
-                  state.currentIndex + 1 < totalChallenges ? (
-                    <ArrowRight size={18} />
-                  ) : undefined
+        {displayAnswer && (
+          <Grow in timeout={400} style={{ transformOrigin: "top center" }}>
+            <Box>
+              <ExplanationPanel
+                isCorrect={displayAnswer === "correct"}
+                text={
+                  displayAnswer === "correct"
+                    ? displayChallenge.explanationCorrect
+                    : displayChallenge.explanationWrong
                 }
-              >
-                {state.currentIndex + 1 < totalChallenges
-                  ? "Next Challenge"
-                  : "See Results"}
-              </Button>
-            )}
-          </Box>
-        </Fade>
+                sourceUrl={displayChallenge.sourceUrl}
+                sourceLabel={displayChallenge.sourceLabel}
+                category={displayChallenge.category}
+              />
+            </Box>
+          </Grow>
+        )}
+
+        {displayAnswer && (
+          <Fade in timeout={400} style={{ transitionDelay: "200ms" }}>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              {isReviewing ? (
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={exitReview}
+                  startIcon={<ArrowLeft size={18} />}
+                >
+                  Back to Question {state.currentIndex + 1}
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={goToNext}
+                  tabIndex={currentAnswer ? 0 : -1}
+                  endIcon={
+                    state.currentIndex + 1 < totalChallenges ? (
+                      <ArrowRight size={18} />
+                    ) : undefined
+                  }
+                >
+                  {state.currentIndex + 1 < totalChallenges
+                    ? "Next Challenge"
+                    : "See Results"}
+                </Button>
+              )}
+            </Box>
+          </Fade>
+        )}
       </Stack>
 
       <Typography
