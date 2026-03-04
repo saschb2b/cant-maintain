@@ -131,21 +131,10 @@ interface ConfirmDialogProps {
   onCancel: () => void;
   /** The variant. */
   variant?: 'info' | 'danger';
-}`,
-    goodCode: `/**
- * A modal dialog that asks the user to confirm
- * or cancel a destructive action.
- *
- * @example
- * <ConfirmDialog
- *   title="Delete project?"
- *   message="This cannot be undone."
- *   variant="danger"
- *   onConfirm={handleDelete}
- *   onCancel={handleDismiss}
- * />
- */
-interface ConfirmDialogProps {
+}
+
+function ConfirmDialog(props: ConfirmDialogProps) {`,
+    goodCode: `interface ConfirmDialogProps {
   /** The heading text of the dialog. */
   title: string;
   /** The body message explaining the action. */
@@ -160,12 +149,27 @@ interface ConfirmDialogProps {
    * @default 'info'
    */
   variant?: 'info' | 'danger';
-}`,
+}
+
+/**
+ * A modal dialog that asks the user to confirm
+ * or cancel a destructive action.
+ *
+ * @example
+ * <ConfirmDialog
+ *   title="Delete project?"
+ *   message="This cannot be undone."
+ *   variant="danger"
+ *   onConfirm={handleDelete}
+ *   onCancel={handleDismiss}
+ * />
+ */
+function ConfirmDialog(props: ConfirmDialogProps) {`,
     correctSide: "right",
     explanationCorrect:
-      'A good `@example` uses realistic prop values that show how the component is **actually** used. `title="Delete project?"` and `variant="danger"` paint a real scenario.\n\nProp-level JSDoc explains purpose, not just the name: "The heading text of the dialog" vs "The title."',
+      'Two things to notice here:\n\n**Where each comment goes:** The component description and `@example` go on the **function**, because that\'s what your IDE shows when you hover `<ConfirmDialog`. Prop descriptions go on the **interface**, because that\'s what shows in prop autocomplete. The bad side puts everything on the interface, so `<ConfirmDialog` hover shows nothing useful.\n\n**Realistic examples:** `title="Delete project?"` and `variant="danger"` paint a real scenario. Generic `title="Title"` defeats the purpose.',
     explanationWrong:
-      'Both have `@example` blocks, but generic placeholders like `title="Title"` defeat the purpose. An example should teach by showing a real use case — what kind of message goes here, which variant to pick. Prop-level JSDoc like "The title" also just restates the name. Compare "The heading text of the dialog" which tells you it renders as a heading.',
+      'Two issues here:\n\n**Comment placement:** The component description and `@example` are on the **interface**, but IDEs show that when hovering `ConfirmDialogProps` — not when hovering `<ConfirmDialog` in JSX. Move them to the **function** so consumers see them. Prop docs stay on the interface.\n\n**Generic examples:** `title="Title"` and `message="Message"` teach nothing. Compare `title="Delete project?"` — it instantly shows what this component is for.',
     sourceUrl: "https://jsdoc.app/tags-example",
     sourceLabel: "JSDoc: @example tag",
   },
