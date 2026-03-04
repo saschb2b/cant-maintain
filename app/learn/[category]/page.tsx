@@ -19,6 +19,7 @@ import {
 } from "@/lib/game/categories";
 import type { ChallengeCategory, Difficulty } from "@/lib/game/types";
 import { FormattedText } from "@/components/formatted-text";
+import { ChallengeAnchor } from "@/components/challenge-anchor";
 
 const categorySet = new Set<string>(CATEGORY_ORDER);
 
@@ -147,15 +148,14 @@ export default async function CategoryPage({ params }: PageProps) {
         {categoryChallenges.map((challenge) => (
           <Paper
             key={challenge.id}
+            id={challenge.id}
             elevation={0}
             sx={{ border: 1, borderColor: "divider", overflow: "hidden" }}
           >
             {/* Header */}
             <Box sx={{ px: 2.5, pt: 2, pb: 1.5 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <Typography variant="subtitle1" fontWeight={600}>
-                  {challenge.title}
-                </Typography>
+                <ChallengeAnchor id={challenge.id} title={challenge.title} />
                 <Chip
                   label={challenge.difficulty}
                   size="small"
