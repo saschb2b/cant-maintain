@@ -16,7 +16,7 @@ export function ChallengeAnchor({ id, title }: ChallengeAnchorProps) {
   function handleClick(e: React.MouseEvent) {
     e.preventDefault();
     const url = `${window.location.origin}${window.location.pathname}#${id}`;
-    navigator.clipboard.writeText(url).then(() => {
+    void navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       window.history.replaceState(null, "", `#${id}`);
       setTimeout(() => setCopied(false), 1500);
