@@ -95,10 +95,10 @@ export default async function CategoryPage({ params }: PageProps) {
             textDecoration: "none",
             fontFamily: "var(--font-geist-mono), monospace",
             fontWeight: 500,
-            color: "#6B7B8D",
+            color: "inherit",
           }}
         >
-          <Typography variant="body2" component="span">
+          <Typography variant="body2" component="span" color="text.secondary">
             Learn
           </Typography>
         </NextLink>
@@ -314,7 +314,9 @@ export default async function CategoryPage({ params }: PageProps) {
               }}
             >
               <Stack direction="row" alignItems="center" spacing={1}>
-                <ArrowLeft size={16} color="#6B7B8D" />
+                <Box sx={{ color: "text.secondary", display: "flex" }}>
+                  <ArrowLeft size={16} />
+                </Box>
                 <Box>
                   <Typography
                     variant="caption"
@@ -364,7 +366,9 @@ export default async function CategoryPage({ params }: PageProps) {
                     {CATEGORY_LABELS[next]}
                   </Typography>
                 </Box>
-                <ArrowRight size={16} color="#6B7B8D" />
+                <Box sx={{ color: "text.secondary", display: "flex" }}>
+                  <ArrowRight size={16} />
+                </Box>
               </Stack>
             </Paper>
           </NextLink>

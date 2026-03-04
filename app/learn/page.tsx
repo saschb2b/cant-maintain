@@ -108,7 +108,9 @@ export default async function LearnPage() {
                       }}
                     />
                   </Stack>
-                  <ArrowRight size={18} color="#6B7B8D" />
+                  <Box sx={{ color: "text.secondary", display: "flex" }}>
+                    <ArrowRight size={18} />
+                  </Box>
                 </Stack>
                 <Typography
                   variant="body2"

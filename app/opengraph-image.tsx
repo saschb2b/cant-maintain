@@ -98,7 +98,7 @@ export default function OgImage() {
           style={{
             display: "flex",
             alignItems: "center",
-            color: "#6B7B8D",
+            color: "#536476",
             fontSize: 22,
           }}
         >
