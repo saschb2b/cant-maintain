@@ -75,9 +75,9 @@ interface SelectProps {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Compound components (`Select` + `SelectOption`) are more flexible than config objects. They support nesting, conditional rendering, custom content, and compose naturally with JSX. Adding icons or groups doesn't require changing the config type.",
+      "Compound components (`Select` + `SelectOption`) are more flexible than config objects. They support nesting, conditional rendering, custom content, and compose naturally with JSX. Adding icons or groups doesn't require changing the config type.\n\nThis is the pattern Radix UI, Headless UI, and React Aria all chose for Select. Note: for data-heavy, fixed-layout components (like data grids), config props can be the better choice.",
     explanationWrong:
-      "Config arrays like `options: Array<{...}>` are rigid. Every new feature (icons, descriptions, groups, custom rendering) means extending the config type. Compound components let consumers compose freely with JSX, the React way.",
+      "Config arrays like `options: Array<{...}>` are rigid. Every new feature (icons, descriptions, groups, custom rendering) means extending the config type. Compound components let consumers compose freely with JSX.\n\nThat said, config props shine for data-driven components with fixed layouts (like MUI's DataGrid). For Select, where styling and accessibility customization matter, compound components are the industry standard.",
     sourceUrl: "https://react.dev/learn/thinking-in-react",
     sourceLabel: "React Docs: Thinking in React",
   },
