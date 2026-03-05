@@ -6,12 +6,13 @@ export const alt = "Can't Maintain - Results";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage({
+export default async function OgImage({
   searchParams,
 }: {
-  searchParams: Record<string, string>;
+  searchParams: Promise<Record<string, string>>;
 }) {
-  const decoded = decodeResults(searchParams.r ?? "");
+  const params = await searchParams;
+  const decoded = decodeResults(params.r ?? "");
 
   if (!decoded) {
     return renderFallback();
