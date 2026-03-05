@@ -41,6 +41,9 @@ lib/
       accessibility-props.ts # ap-* challenges
       default-values.ts     # dv-* challenges
       prop-organization.ts  # po-* challenges
+      controlled-uncontrolled.ts # cu-* challenges
+      server-component-props.ts  # sc-* challenges
+      generic-props.ts      # gp-* challenges
 
 components/
   theme-provider.tsx     # MUI ThemeProvider + CssBaseline
@@ -81,7 +84,7 @@ Find the relevant category file in `lib/game/challenges/` (e.g. `callback-naming
 
 Each session picks 3 easy, 4 medium, and 3 hard challenges, shuffled within tiers. Side randomization happens automatically.
 
-## Topics Covered (12 categories, 71 challenges)
+## Topics Covered (15 categories, 108 challenges)
 
 - **Callback naming**: `on` prefix, descriptive event names, dual-level events
 - **Boolean naming**: `is`/`has`/`should`/`disable`/`keep`/`hide` prefixes
@@ -95,6 +98,9 @@ Each session picks 3 easy, 4 medium, and 3 hard challenges, shuffled within tier
 - **Accessibility props**: ARIA attributes, semantic HTML, screen reader support
 - **Default values**: destructuring defaults, stable references, default callbacks
 - **Prop organization**: grouping related props, removing redundancy, extracting sub-components
+- **Controlled & uncontrolled**: `value`/`defaultValue`/`onChange` trio, key resets, array patterns
+- **Server component props**: serializable props, avoiding functions in server components
+- **Generic props**: type inference, constrained generics, multi-generic form fields
 
 ## Tech Stack
 

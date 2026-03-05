@@ -71,6 +71,9 @@ lib/
       accessibility-props.ts # ap-* challenges
       default-values.ts     # dv-* challenges
       prop-organization.ts  # po-* challenges
+      controlled-uncontrolled.ts # cu-* challenges
+      server-component-props.ts  # sc-* challenges
+      generic-props.ts      # gp-* challenges
   theme.ts                  # MUI dark theme
   code-styles.ts            # Shared Shiki code block styles
 ```
@@ -85,20 +88,23 @@ This is the most common contribution. Each challenge shows two code snippets sid
 2. Append a `Challenge` object to the exported array
 3. Use the correct ID prefix for the category:
 
-| Prefix | Category             |
-| ------ | -------------------- |
-| `cb`   | callback-naming      |
-| `bl`   | boolean-naming       |
-| `jd`   | jsdoc                |
-| `ps`   | prop-specificity     |
-| `rp`   | render-props         |
-| `cp`   | children-pattern     |
-| `du`   | discriminated-unions |
-| `eh`   | extending-html       |
-| `rf`   | ref-forwarding       |
-| `ap`   | accessibility-props  |
-| `dv`   | default-values       |
-| `po`   | prop-organization    |
+| Prefix | Category                |
+| ------ | ----------------------- |
+| `cb`   | callback-naming         |
+| `bl`   | boolean-naming          |
+| `jd`   | jsdoc                   |
+| `ps`   | prop-specificity        |
+| `rp`   | render-props            |
+| `cp`   | children-pattern        |
+| `du`   | discriminated-unions    |
+| `eh`   | extending-html          |
+| `rf`   | ref-forwarding          |
+| `ap`   | accessibility-props     |
+| `dv`   | default-values          |
+| `po`   | prop-organization       |
+| `cu`   | controlled-uncontrolled |
+| `sc`   | server-component-props  |
+| `gp`   | generic-props           |
 
 4. Include both `explanationCorrect` and `explanationWrong`
 5. Link to an authoritative source (React docs, TypeScript docs, MUI docs, MDN)
