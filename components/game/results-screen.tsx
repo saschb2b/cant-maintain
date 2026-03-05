@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -11,6 +11,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Link from "@mui/material/Link";
 import type { GameState } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
+import {
+  getRank,
+  getShareUrl,
+  getMissedCategoryLabels,
+  encodeResults,
+} from "@/lib/game/share";
 import { FormattedText } from "@/components/formatted-text";
 import {
   RotateCcw,
@@ -22,6 +28,8 @@ import {
   BookOpen,
   Coffee,
   GitPullRequestArrow,
+  Share2,
+  ClipboardCheck,
 } from "lucide-react";
 
 interface ResultsScreenProps {
@@ -43,14 +51,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   const minutes = Math.floor(elapsed / 60);
   const seconds = elapsed % 60;
 
-  const rank =
-    percentage >= 90
-      ? "Prop Master"
-      : percentage >= 70
-        ? "Naming Ninja"
-        : percentage >= 50
-          ? "Getting There"
-          : "Keep Practicing";
+  const rank = getRank(percentage);
 
   const scoreColor =
     percentage >= 70
@@ -65,10 +66,74 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
 
   const missedCategories = [...new Set(wrongChallenges.map((c) => c.category))];
 
+  const [hasCopied, setHasCopied] = useState(false);
+
+  const buildShareText = useCallback(() => {
+    const dots = state.challenges
+      .map((c) =>
+        state.answers[c.id]?.result === "correct" ? "\u{1F7E2}" : "\u{1F534}",
+      )
+      .join("");
+    const shareUrl = getShareUrl(state);
+    const missedLabels = getMissedCategoryLabels(state);
+
+    const lines: string[] = [];
+
+    if (correct === total) {
+      lines.push(
+        `Perfect ${String(correct)}/${String(total)} on spotting better React prop naming!`,
+      );
+      lines.push("");
+      lines.push(dots);
+      lines.push("");
+      lines.push("Can you match a perfect score?");
+    } else {
+      lines.push(
+        `I scored ${String(correct)}/${String(total)} on spotting better React prop naming.`,
+      );
+      lines.push("");
+      lines.push(dots);
+      lines.push("");
+      lines.push(`Tripped up on ${missedLabels.join(" and ")}.`);
+      lines.push("Can you beat my score?");
+    }
+
+    lines.push("");
+    lines.push(shareUrl);
+
+    return lines.join("\n");
+  }, [state, correct, total]);
+
+  const handleShare = useCallback(() => {
+    const text = buildShareText();
+
+    if (typeof navigator.share === "function") {
+      void navigator.share({ text }).catch(() => {
+        // User cancelled or share failed, fall through to clipboard
+        void navigator.clipboard.writeText(text).then(() => {
+          setHasCopied(true);
+          setTimeout(() => setHasCopied(false), 2000);
+        });
+      });
+      return;
+    }
+
+    void navigator.clipboard.writeText(text).then(() => {
+      setHasCopied(true);
+      setTimeout(() => setHasCopied(false), 2000);
+    });
+  }, [buildShareText]);
+
+  const resultsParam = useMemo(() => encodeResults(state), [state]);
+
   useEffect(() => {
-    window.history.replaceState(null, "", "/play/results");
+    window.history.replaceState(
+      null,
+      "",
+      `/play/results?r=${resultsParam}`,
+    );
     return () => window.history.replaceState(null, "", "/play");
-  }, []);
+  }, [resultsParam]);
 
   return (
     <Stack spacing={4} sx={{ py: 4 }}>
@@ -173,16 +238,31 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
             </Stack>
           </Box>
 
-          {/* Play Again */}
-          <Button
-            variant="contained"
-            size="large"
-            onClick={onRestart}
-            startIcon={<RotateCcw size={18} />}
-            sx={{ flexShrink: 0 }}
-          >
-            Play Again
-          </Button>
+          {/* Actions */}
+          <Stack direction="row" spacing={1} sx={{ flexShrink: 0 }}>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={handleShare}
+              startIcon={
+                hasCopied ? (
+                  <ClipboardCheck size={18} />
+                ) : (
+                  <Share2 size={18} />
+                )
+              }
+            >
+              {hasCopied ? "Copied!" : "Share"}
+            </Button>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={onRestart}
+              startIcon={<RotateCcw size={18} />}
+            >
+              Play Again
+            </Button>
+          </Stack>
         </Stack>
       </Paper>
 
