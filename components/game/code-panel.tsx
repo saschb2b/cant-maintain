@@ -21,7 +21,7 @@ interface CodePanelProps {
   onSelect: () => void;
   /** Answer result after the user picks; drives color and animation. */
   result?: "correct" | "wrong" | null;
-  /** Whether this panel was the one the user isSelected. */
+  /** Whether this panel was the one the user selected. */
   isSelected?: boolean;
 }
 
