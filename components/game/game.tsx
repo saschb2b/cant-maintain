@@ -52,9 +52,17 @@ export function Game() {
     return side === displayChallenge.correctSide ? "correct" : "wrong";
   };
 
+  const isSelectedSide = (side: "left" | "right"): boolean => {
+    if (!displayAnswer) return false;
+    return displayAnswer.side === side;
+  };
+
   const questionResults = useMemo(() => {
     if (!state) return [];
-    return state.challenges.map((c) => state.answers[c.id] ?? null);
+    return state.challenges.map((c) => {
+      const answer = state.answers[c.id];
+      return answer ? answer.result : null;
+    });
   }, [state]);
 
   const handleKeyPress = useCallback(
@@ -245,6 +253,7 @@ export function Game() {
           isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => submitAnswer("left")}
           result={getResult("left")}
+          selected={isSelectedSide("left")}
         />
 
         <Box
@@ -278,6 +287,7 @@ export function Game() {
           isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => submitAnswer("right")}
           result={getResult("right")}
+          selected={isSelectedSide("right")}
         />
       </Box>
 
@@ -286,9 +296,9 @@ export function Game() {
           <Grow in timeout={400} style={{ transformOrigin: "top center" }}>
             <Box>
               <ExplanationPanel
-                isCorrect={displayAnswer === "correct"}
+                isCorrect={displayAnswer.result === "correct"}
                 text={
-                  displayAnswer === "correct"
+                  displayAnswer.result === "correct"
                     ? displayChallenge.explanationCorrect
                     : displayChallenge.explanationWrong
                 }

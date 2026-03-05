@@ -34,7 +34,7 @@ interface ResultsScreenProps {
 export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   const total = state.challenges.length;
   const correct = Object.values(state.answers).filter(
-    (a) => a === "correct",
+    (a) => a.result === "correct",
   ).length;
   const percentage = Math.round((correct / total) * 100);
   const elapsed = Math.round(
@@ -60,7 +60,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
         : "error.main";
 
   const wrongChallenges = state.challenges.filter(
-    (c) => state.answers[c.id] === "wrong",
+    (c) => state.answers[c.id]?.result === "wrong",
   );
 
   const missedCategories = [...new Set(wrongChallenges.map((c) => c.category))];
@@ -198,8 +198,8 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
 
         <Stack spacing={1}>
           {state.challenges.map((challenge, i) => {
-            const result = state.answers[challenge.id];
-            const isCorrect = result === "correct";
+            const answer = state.answers[challenge.id];
+            const isCorrect = answer?.result === "correct";
 
             return (
               <Paper

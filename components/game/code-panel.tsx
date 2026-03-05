@@ -5,8 +5,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
+import Lottie from "lottie-react";
 import { getHighlighter } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
+import checkmarkAnimation from "@/public/animations/Checkmark.json";
 
 interface CodePanelProps {
   /** TypeScript/TSX source code to display in the editor. */
@@ -19,6 +21,8 @@ interface CodePanelProps {
   onSelect: () => void;
   /** Answer result after the user picks; drives color and animation. */
   result?: "correct" | "wrong" | null;
+  /** Whether this panel was the one the user selected. */
+  selected?: boolean;
 }
 
 export function CodePanel({
@@ -27,9 +31,30 @@ export function CodePanel({
   isSelectable,
   onSelect,
   result,
+  selected,
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
+  const [showCheckmark, setShowCheckmark] = useState(false);
+  const [fadingOut, setFadingOut] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lottieRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (result === "correct" && selected) {
+      setShowCheckmark(true);
+      setFadingOut(false);
+    } else {
+      setShowCheckmark(false);
+      setFadingOut(false);
+    }
+  }, [result, selected]);
+
+  useEffect(() => {
+    if (lottieRef.current) {
+      lottieRef.current.setSpeed(0.5);
+    }
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -87,6 +112,7 @@ export function CodePanel({
       }}
       elevation={0}
       sx={{
+        position: "relative",
         display: "flex",
         flexDirection: "column",
         border: 2,
@@ -95,7 +121,7 @@ export function CodePanel({
         cursor: isSelectable ? "pointer" : "default",
         transition: "all 0.3s ease",
         boxShadow: ringColor ? `0 0 0 3px ${ringColor}` : undefined,
-        ...(result === "correct" && {
+        ...(result === "correct" && selected && {
           animation: "panelCorrect 0.4s ease",
           "@keyframes panelCorrect": {
             "0%": { transform: "scale(1)" },
@@ -103,7 +129,7 @@ export function CodePanel({
             "100%": { transform: "scale(1)" },
           },
         }),
-        ...(result === "wrong" && {
+        ...(result === "wrong" && selected && {
           animation: "panelWrong 0.3s ease",
           "@keyframes panelWrong": {
             "0%": { transform: "translateX(0)" },
@@ -192,6 +218,26 @@ export function CodePanel({
           </pre>
         )}
       </Box>
+      {showCheckmark && (
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={checkmarkAnimation}
+          loop={false}
+          onComplete={() => {
+            setFadingOut(true);
+            setTimeout(() => setShowCheckmark(false), 400);
+          }}
+          style={{
+            position: "absolute",
+            bottom: 8,
+            right: 8,
+            width: 48,
+            height: 48,
+            opacity: fadingOut ? 0 : 1,
+            transition: "opacity 0.4s ease",
+          }}
+        />
+      )}
     </Paper>
   );
 }

@@ -135,7 +135,10 @@ export function useGame() {
           bestStreak: Math.max(prev.bestStreak, newStreak),
           answers: {
             ...prev.answers,
-            [challengeId]: isCorrect ? "correct" : "wrong",
+            [challengeId]: {
+              result: isCorrect ? "correct" : "wrong",
+              side,
+            },
           },
         };
       });
