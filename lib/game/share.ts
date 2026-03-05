@@ -70,7 +70,7 @@ export function decodeResults(param: string): SharedResults | null {
 
 /** Build the full share URL for a game session. */
 export function getShareUrl(state: GameState): string {
-  return `https://cantmaintain.dev/play/results?r=${encodeResults(state)}`;
+  return `https://cant-maintain.saschb2b.com/play/results?r=${encodeResults(state)}`;
 }
 
 /** Get human-readable missed category names from game state. */

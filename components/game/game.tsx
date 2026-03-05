@@ -132,6 +132,10 @@ export function Game() {
     return () => clearTimeout(t);
   }, [displayAnswer, isReviewing]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [state?.currentIndex]);
+
   if (!state) {
     return (
       <Box
