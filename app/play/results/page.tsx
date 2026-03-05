@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { decodeResults, getRank } from "@/lib/game/share";
+import { ResultsRedirect } from "./results-redirect";
 
 interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -27,12 +27,10 @@ export async function generateMetadata({
   };
 }
 
-/** Redirects visitors to the game while preserving metadata for crawlers. */
-export default async function ResultsPage({ searchParams }: Props) {
-  const params = await searchParams;
-  if (!params.r) {
-    redirect("/play");
-  }
-
-  redirect("/play");
+/**
+ * Renders a minimal page so crawlers can read OG meta tags,
+ * then redirects browsers to /play via client-side navigation.
+ */
+export default function ResultsPage() {
+  return <ResultsRedirect />;
 }
