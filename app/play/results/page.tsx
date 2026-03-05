@@ -23,6 +23,7 @@ export async function generateMetadata({
 
   const title = `${rank} — ${String(score)}/${String(total)} | Can't Maintain`;
   const description = `I scored ${String(score)}/${String(total)} on spotting better React prop naming. Can you beat my score? Train your eye for clean React component APIs in under 5 minutes.`;
+  const ogImageUrl = `https://cant-maintain.saschb2b.com/play/results/opengraph-image?r=${r ?? ""}`;
 
   return {
     title,
@@ -32,11 +33,20 @@ export async function generateMetadata({
       description,
       type: "website",
       siteName: "Can't Maintain",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${rank} — scored ${String(score)}/${String(total)}`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [ogImageUrl],
     },
   };
 }
