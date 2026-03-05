@@ -59,8 +59,8 @@ export default async function LandingPage() {
       <Container
         maxWidth="lg"
         sx={{
-          pt: { xs: 6, md: 12 },
-          pb: { xs: 4, md: 8 },
+          pt: { xs: 3, md: 12 },
+          pb: { xs: 3, md: 8 },
           position: "relative",
           zIndex: 1,
         }}
@@ -68,7 +68,7 @@ export default async function LandingPage() {
         <Stack
           direction={{ xs: "column", md: "row" }}
           alignItems="center"
-          spacing={{ xs: 4, md: 8 }}
+          spacing={{ xs: 3, md: 8 }}
         >
           {/* Left — title, subtitle, CTA */}
           <Box
@@ -82,7 +82,11 @@ export default async function LandingPage() {
               variant="h3"
               component="h1"
               fontWeight={700}
-              sx={{ lineHeight: 1.15, mb: 2 }}
+              sx={{
+                lineHeight: 1.15,
+                mb: { xs: 1, md: 2 },
+                fontSize: { xs: "1.75rem", sm: "2.5rem", md: "3rem" },
+              }}
             >
               One prop name.
               <br />
@@ -93,7 +97,11 @@ export default async function LandingPage() {
             <Typography
               variant="body1"
               color="text.secondary"
-              sx={{ lineHeight: 1.7, mb: 4 }}
+              sx={{
+                lineHeight: 1.7,
+                mb: { xs: 2, md: 4 },
+                fontSize: { xs: "0.9rem", md: "1rem" },
+              }}
             >
               Can you tell which props your future self will thank you for?
               Train your eye in under 5 minutes.
@@ -110,7 +118,11 @@ export default async function LandingPage() {
                   variant="contained"
                   size="large"
                   endIcon={<ArrowRight size={18} />}
-                  sx={{ px: 5, py: 1.5, fontSize: "1.05rem" }}
+                  sx={{
+                    px: { xs: 3, md: 5 },
+                    py: { xs: 1, md: 1.5 },
+                    fontSize: { xs: "0.9rem", md: "1.05rem" },
+                  }}
                 >
                   Start Playing
                 </Button>
@@ -119,7 +131,11 @@ export default async function LandingPage() {
                 <Button
                   variant="text"
                   size="large"
-                  sx={{ px: 3, py: 1.5, fontSize: "1.05rem" }}
+                  sx={{
+                    px: { xs: 2, md: 3 },
+                    py: { xs: 1, md: 1.5 },
+                    fontSize: { xs: "0.9rem", md: "1.05rem" },
+                  }}
                 >
                   Browse Patterns
                 </Button>

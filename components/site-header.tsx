@@ -31,6 +31,7 @@ export function SiteHeader() {
                 variant="caption"
                 color="text.secondary"
                 fontFamily="var(--font-geist-mono), monospace"
+                sx={{ display: { xs: "none", sm: "block" } }}
               >
                 Can you spot the better props?
               </Typography>
