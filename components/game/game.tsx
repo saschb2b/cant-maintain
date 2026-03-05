@@ -138,9 +138,7 @@ export function Game() {
 
   if (state.isFinished) {
     return (
-      <Box sx={{ maxWidth: 700, mx: "auto" }}>
-        <ResultsScreen state={state} onRestart={restartGame} />
-      </Box>
+      <ResultsScreen state={state} onRestart={restartGame} />
     );
   }
 
