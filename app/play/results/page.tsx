@@ -21,9 +21,23 @@ export async function generateMetadata({
   const percentage = Math.round((score / total) * 100);
   const rank = getRank(percentage);
 
+  const title = `${rank} — ${String(score)}/${String(total)} | Can't Maintain`;
+  const description = `I scored ${String(score)}/${String(total)} on spotting better React prop naming. Can you beat my score? Train your eye for clean React component APIs in under 5 minutes.`;
+
   return {
-    title: `${rank} - ${String(score)}/${String(total)} | Can't Maintain`,
-    description: `Scored ${String(score)}/${String(total)} on spotting better React prop naming. Can you beat this score?`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      siteName: "Can't Maintain",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
