@@ -6,7 +6,9 @@ interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: Props): Promise<Metadata> {
   const params = await searchParams;
   const r = typeof params.r === "string" ? params.r : undefined;
   const decoded = r ? decodeResults(r) : null;

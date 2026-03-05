@@ -150,9 +150,7 @@ export function Game() {
   }
 
   if (state.isFinished) {
-    return (
-      <ResultsScreen state={state} onRestart={restartGame} />
-    );
+    return <ResultsScreen state={state} onRestart={restartGame} />;
   }
 
   if (!displayChallenge) return null;
@@ -372,7 +370,6 @@ export function Game() {
             ? "Press Enter to continue"
             : "A / \u2190 for left \u00B7 B / \u2192 for right"}
       </Typography>
-
     </Stack>
   );
 }

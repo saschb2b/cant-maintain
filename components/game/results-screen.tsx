@@ -128,11 +128,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    window.history.replaceState(
-      null,
-      "",
-      `/play/results?r=${resultsParam}`,
-    );
+    window.history.replaceState(null, "", `/play/results?r=${resultsParam}`);
     return () => window.history.replaceState(null, "", "/play");
   }, [resultsParam]);
 
@@ -152,107 +148,103 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
             width: "100%",
           }}
         >
-        <Typography
-          variant="h2"
-          fontWeight={700}
-          fontFamily="var(--font-geist-mono), monospace"
-          sx={{ color: scoreColor, lineHeight: 1 }}
-        >
-          {correct}/{total}
-        </Typography>
-
-        <Typography
-          variant="h6"
-          fontWeight={600}
-          sx={{ mt: 1, color: "text.primary" }}
-        >
-          {rank}
-        </Typography>
-
-        {/* Dot row */}
-        <Stack
-          direction="row"
-          spacing={0.75}
-          justifyContent="center"
-          sx={{ mt: 2 }}
-        >
-          {state.challenges.map((c) => {
-            const isCorrect = state.answers[c.id]?.result === "correct";
-            return (
-              <Box
-                key={c.id}
-                sx={{
-                  width: 12,
-                  height: 12,
-                  borderRadius: "50%",
-                  bgcolor: isCorrect ? "success.main" : "error.main",
-                  opacity: 0.8,
-                }}
-              />
-            );
-          })}
-        </Stack>
-
-        {/* Stats */}
-        <Stack
-          direction="row"
-          spacing={2}
-          justifyContent="center"
-          sx={{ mt: 2 }}
-        >
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Zap size={14} color="var(--mui-palette-warning-main)" />
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              fontFamily="var(--font-geist-mono), monospace"
-            >
-              {state.bestStreak}x streak
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Clock size={14} color="var(--mui-palette-text-secondary)" />
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              fontFamily="var(--font-geist-mono), monospace"
-            >
-              {minutes}:{seconds.toString().padStart(2, "0")}
-            </Typography>
-          </Stack>
-        </Stack>
-
-        {/* Actions */}
-        <Stack
-          direction="row"
-          spacing={1}
-          justifyContent="center"
-          sx={{ mt: 3 }}
-        >
-          <Button
-            variant="outlined"
-            size="large"
-            onClick={handleShare}
-            startIcon={
-              hasCopied ? (
-                <ClipboardCheck size={18} />
-              ) : (
-                <Share2 size={18} />
-              )
-            }
+          <Typography
+            variant="h2"
+            fontWeight={700}
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{ color: scoreColor, lineHeight: 1 }}
           >
-            {hasCopied ? "Copied!" : "Share"}
-          </Button>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={onRestart}
-            startIcon={<RotateCcw size={18} />}
+            {correct}/{total}
+          </Typography>
+
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            sx={{ mt: 1, color: "text.primary" }}
           >
-            Play Again
-          </Button>
-        </Stack>
-      </Paper>
+            {rank}
+          </Typography>
+
+          {/* Dot row */}
+          <Stack
+            direction="row"
+            spacing={0.75}
+            justifyContent="center"
+            sx={{ mt: 2 }}
+          >
+            {state.challenges.map((c) => {
+              const isCorrect = state.answers[c.id]?.result === "correct";
+              return (
+                <Box
+                  key={c.id}
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    bgcolor: isCorrect ? "success.main" : "error.main",
+                    opacity: 0.8,
+                  }}
+                />
+              );
+            })}
+          </Stack>
+
+          {/* Stats */}
+          <Stack
+            direction="row"
+            spacing={2}
+            justifyContent="center"
+            sx={{ mt: 2 }}
+          >
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Zap size={14} color="var(--mui-palette-warning-main)" />
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                fontFamily="var(--font-geist-mono), monospace"
+              >
+                {state.bestStreak}x streak
+              </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Clock size={14} color="var(--mui-palette-text-secondary)" />
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                fontFamily="var(--font-geist-mono), monospace"
+              >
+                {minutes}:{seconds.toString().padStart(2, "0")}
+              </Typography>
+            </Stack>
+          </Stack>
+
+          {/* Actions */}
+          <Stack
+            direction="row"
+            spacing={1}
+            justifyContent="center"
+            sx={{ mt: 3 }}
+          >
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={handleShare}
+              startIcon={
+                hasCopied ? <ClipboardCheck size={18} /> : <Share2 size={18} />
+              }
+            >
+              {hasCopied ? "Copied!" : "Share"}
+            </Button>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={onRestart}
+              startIcon={<RotateCcw size={18} />}
+            >
+              Play Again
+            </Button>
+          </Stack>
+        </Paper>
       </Box>
 
       {/* Review: two-column bento on desktop, stacked on mobile */}
@@ -266,7 +258,11 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
       >
         {/* You missed */}
         {wrongChallenges.length > 0 && (
-          <Box sx={{ gridColumn: correctChallenges.length > 0 ? undefined : "1 / -1" }}>
+          <Box
+            sx={{
+              gridColumn: correctChallenges.length > 0 ? undefined : "1 / -1",
+            }}
+          >
             <Stack
               direction="row"
               alignItems="center"
@@ -274,11 +270,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
               sx={{ mb: 1.5 }}
             >
               <X size={16} color="var(--mui-palette-error-main)" />
-              <Typography
-                variant="body2"
-                fontWeight={600}
-                color="text.primary"
-              >
+              <Typography variant="body2" fontWeight={600} color="text.primary">
                 You missed ({String(wrongChallenges.length)})
               </Typography>
             </Stack>
@@ -512,10 +504,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
 
       {/* CTA fallback when no correct answers */}
       {correctChallenges.length === 0 && (
-        <Paper
-          elevation={0}
-          sx={{ border: 1, borderColor: "divider", p: 2.5 }}
-        >
+        <Paper elevation={0} sx={{ border: 1, borderColor: "divider", p: 2.5 }}>
           <Stack
             direction={{ xs: "column", sm: "row" }}
             alignItems="center"
