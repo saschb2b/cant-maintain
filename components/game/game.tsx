@@ -253,7 +253,7 @@ export function Game() {
           isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => submitAnswer("left")}
           result={getResult("left")}
-          selected={isSelectedSide("left")}
+          isSelected={isSelectedSide("left")}
         />
 
         <Box
@@ -287,7 +287,7 @@ export function Game() {
           isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => submitAnswer("right")}
           result={getResult("right")}
-          selected={isSelectedSide("right")}
+          isSelected={isSelectedSide("right")}
         />
       </Box>
 
@@ -297,7 +297,7 @@ export function Game() {
             <Box>
               <ExplanationPanel
                 isCorrect={displayAnswer.result === "correct"}
-                text={
+                explanationText={
                   displayAnswer.result === "correct"
                     ? displayChallenge.explanationCorrect
                     : displayChallenge.explanationWrong

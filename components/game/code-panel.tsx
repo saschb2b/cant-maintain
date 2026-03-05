@@ -21,8 +21,8 @@ interface CodePanelProps {
   onSelect: () => void;
   /** Answer result after the user picks; drives color and animation. */
   result?: "correct" | "wrong" | null;
-  /** Whether this panel was the one the user selected. */
-  selected?: boolean;
+  /** Whether this panel was the one the user isSelected. */
+  isSelected?: boolean;
 }
 
 export function CodePanel({
@@ -31,7 +31,7 @@ export function CodePanel({
   isSelectable,
   onSelect,
   result,
-  selected,
+  isSelected,
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
@@ -41,14 +41,14 @@ export function CodePanel({
   const lottieRef = useRef<any>(null);
 
   useEffect(() => {
-    if (result === "correct" && selected) {
+    if (result === "correct" && isSelected) {
       setShowCheckmark(true);
       setFadingOut(false);
     } else {
       setShowCheckmark(false);
       setFadingOut(false);
     }
-  }, [result, selected]);
+  }, [result, isSelected]);
 
   useEffect(() => {
     if (lottieRef.current) {
@@ -121,24 +121,26 @@ export function CodePanel({
         cursor: isSelectable ? "pointer" : "default",
         transition: "all 0.3s ease",
         boxShadow: ringColor ? `0 0 0 3px ${ringColor}` : undefined,
-        ...(result === "correct" && selected && {
-          animation: "panelCorrect 0.4s ease",
-          "@keyframes panelCorrect": {
-            "0%": { transform: "scale(1)" },
-            "50%": { transform: "scale(1.015)" },
-            "100%": { transform: "scale(1)" },
-          },
-        }),
-        ...(result === "wrong" && selected && {
-          animation: "panelWrong 0.3s ease",
-          "@keyframes panelWrong": {
-            "0%": { transform: "translateX(0)" },
-            "25%": { transform: "translateX(-3px)" },
-            "50%": { transform: "translateX(3px)" },
-            "75%": { transform: "translateX(-2px)" },
-            "100%": { transform: "translateX(0)" },
-          },
-        }),
+        ...(result === "correct" &&
+          isSelected && {
+            animation: "panelCorrect 0.4s ease",
+            "@keyframes panelCorrect": {
+              "0%": { transform: "scale(1)" },
+              "50%": { transform: "scale(1.015)" },
+              "100%": { transform: "scale(1)" },
+            },
+          }),
+        ...(result === "wrong" &&
+          isSelected && {
+            animation: "panelWrong 0.3s ease",
+            "@keyframes panelWrong": {
+              "0%": { transform: "translateX(0)" },
+              "25%": { transform: "translateX(-3px)" },
+              "50%": { transform: "translateX(3px)" },
+              "75%": { transform: "translateX(-2px)" },
+              "100%": { transform: "translateX(0)" },
+            },
+          }),
         "&:hover": isSelectable
           ? {
               borderColor: "text.secondary",

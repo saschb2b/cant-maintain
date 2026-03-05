@@ -14,7 +14,7 @@ interface ExplanationPanelProps {
   /** Whether the user answered correctly; controls color scheme. */
   isCorrect: boolean;
   /** Explanation text shown after answering. */
-  text: string;
+  explanationText: string;
   /** URL to an authoritative reference for this convention. */
   sourceUrl: string;
   /** Display label for the source link. */
@@ -25,7 +25,7 @@ interface ExplanationPanelProps {
 
 export function ExplanationPanel({
   isCorrect,
-  text,
+  explanationText,
   sourceUrl,
   sourceLabel,
   category,
@@ -62,7 +62,7 @@ export function ExplanationPanel({
         </Avatar>
         <Box sx={{ flex: 1 }}>
           <Box sx={{ typography: "body2", lineHeight: 1.6, mb: 1 }}>
-            <FormattedText text={text} />
+            <FormattedText text={explanationText} />
           </Box>
           <Link
             href={sourceUrl}

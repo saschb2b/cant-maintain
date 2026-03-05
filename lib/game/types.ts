@@ -76,7 +76,10 @@ export interface GameState {
   /** Best streak achieved this session. */
   bestStreak: number;
   /** Map of challenge id -> answer result and which side was chosen. */
-  answers: Record<string, { result: "correct" | "wrong"; side: "left" | "right" }>;
+  answers: Record<
+    string,
+    { result: "correct" | "wrong"; side: "left" | "right" }
+  >;
   /** Index of a previously answered challenge being reviewed, or null. */
   reviewIndex: number | null;
   /** Whether the game has ended. */
