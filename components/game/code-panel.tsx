@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
-import Lottie from "lottie-react";
+import Lottie, { type LottieRefCurrentProps } from "lottie-react";
 import { getHighlighter } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
 import checkmarkAnimation from "./checkmark-animation.json";
@@ -25,6 +25,39 @@ interface CodePanelProps {
   isSelected?: boolean;
 }
 
+function CheckmarkOverlay() {
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isDone, setIsDone] = useState(false);
+
+  useEffect(() => {
+    lottieRef.current?.setSpeed(0.5);
+  }, []);
+
+  if (isDone) return null;
+
+  return (
+    <Lottie
+      lottieRef={lottieRef}
+      animationData={checkmarkAnimation}
+      loop={false}
+      onComplete={() => {
+        setIsFadingOut(true);
+        setTimeout(() => setIsDone(true), 400);
+      }}
+      style={{
+        position: "absolute",
+        bottom: 8,
+        right: 8,
+        width: 48,
+        height: 48,
+        opacity: isFadingOut ? 0 : 1,
+        transition: "opacity 0.4s ease",
+      }}
+    />
+  );
+}
+
 export function CodePanel({
   code,
   label,
@@ -35,26 +68,6 @@ export function CodePanel({
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
-  const [showCheckmark, setShowCheckmark] = useState(false);
-  const [fadingOut, setFadingOut] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const lottieRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (result === "correct" && isSelected) {
-      setShowCheckmark(true);
-      setFadingOut(false);
-    } else {
-      setShowCheckmark(false);
-      setFadingOut(false);
-    }
-  }, [result, isSelected]);
-
-  useEffect(() => {
-    if (lottieRef.current) {
-      lottieRef.current.setSpeed(0.5);
-    }
-  });
 
   useEffect(() => {
     let cancelled = false;
@@ -220,26 +233,7 @@ export function CodePanel({
           </pre>
         )}
       </Box>
-      {showCheckmark && (
-        <Lottie
-          lottieRef={lottieRef}
-          animationData={checkmarkAnimation}
-          loop={false}
-          onComplete={() => {
-            setFadingOut(true);
-            setTimeout(() => setShowCheckmark(false), 400);
-          }}
-          style={{
-            position: "absolute",
-            bottom: 8,
-            right: 8,
-            width: 48,
-            height: 48,
-            opacity: fadingOut ? 0 : 1,
-            transition: "opacity 0.4s ease",
-          }}
-        />
-      )}
+      {result === "correct" && isSelected && <CheckmarkOverlay />}
     </Paper>
   );
 }
