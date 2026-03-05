@@ -8,7 +8,7 @@ import Fade from "@mui/material/Fade";
 import Lottie from "lottie-react";
 import { getHighlighter } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
-import checkmarkAnimation from "@/public/animations/Checkmark.json";
+import checkmarkAnimation from "./checkmark-animation.json";
 
 interface CodePanelProps {
   /** TypeScript/TSX source code to display in the editor. */
