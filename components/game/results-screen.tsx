@@ -127,7 +127,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   const resultsParam = useMemo(() => encodeResults(state), [state]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "instant" });
     window.history.replaceState(null, "", `/play/results?r=${resultsParam}`);
     return () => window.history.replaceState(null, "", "/play");
   }, [resultsParam]);
