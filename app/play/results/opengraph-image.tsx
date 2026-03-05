@@ -1,10 +1,41 @@
 import { ImageResponse } from "next/og";
-import { decodeResults, getRank } from "@/lib/game/share";
 
 export const runtime = "edge";
 export const alt = "Can't Maintain - Results";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+function getRank(percentage: number): string {
+  if (percentage >= 90) return "Prop Master";
+  if (percentage >= 70) return "Naming Ninja";
+  if (percentage >= 50) return "Getting There";
+  return "Keep Practicing";
+}
+
+function decodeResults(param: string) {
+  let raw: string;
+  try {
+    raw = atob(param);
+  } catch {
+    return null;
+  }
+  const parts = raw.split("-");
+  if (parts.length !== 5) return null;
+
+  const [scoreStr, totalStr, streakStr, secondsStr, dotsStr] = parts;
+  const score = Number(scoreStr);
+  const total = Number(totalStr);
+  const streak = Number(streakStr);
+  const seconds = Number(secondsStr);
+
+  if ([score, total, streak, seconds].some((n) => !Number.isFinite(n) || n < 0))
+    return null;
+  if (dotsStr?.length !== total) return null;
+  if (!/^[01]+$/.test(dotsStr)) return null;
+
+  const results = Array.from(dotsStr, (c) => c === "1");
+  return { score, total, streak, seconds, results };
+}
 
 export default async function OgImage({
   searchParams,
