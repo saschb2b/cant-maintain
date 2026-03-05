@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useGame } from "@/lib/game/use-game";
 import { CodePanel } from "./code-panel";
 import { ExplanationPanel } from "./explanation-panel";
@@ -33,6 +33,8 @@ export function Game() {
     reviewQuestion,
     exitReview,
   } = useGame();
+
+  const explanationRef = useRef<HTMLDivElement>(null);
 
   const { leftCode, rightCode } = useMemo(() => {
     if (!displayChallenge) return { leftCode: "", rightCode: "" };
@@ -118,6 +120,17 @@ export function Game() {
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [handleKeyPress]);
+
+  useEffect(() => {
+    if (!displayAnswer || isReviewing) return;
+    const t = setTimeout(() => {
+      explanationRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 300);
+    return () => clearTimeout(t);
+  }, [displayAnswer, isReviewing]);
 
   if (!state) {
     return (
@@ -292,7 +305,7 @@ export function Game() {
       <Stack spacing={2}>
         {displayAnswer && (
           <Grow in timeout={400} style={{ transformOrigin: "top center" }}>
-            <Box>
+            <Box ref={explanationRef}>
               <ExplanationPanel
                 isCorrect={displayAnswer.result === "correct"}
                 explanationText={
@@ -350,6 +363,7 @@ export function Game() {
           textAlign: "center",
           opacity: 0.9,
           transition: "opacity 0.2s",
+          display: { xs: "none", md: "block" },
         }}
       >
         {isReviewing
@@ -358,6 +372,7 @@ export function Game() {
             ? "Press Enter to continue"
             : "A / \u2190 for left \u00B7 B / \u2192 for right"}
       </Typography>
+
     </Stack>
   );
 }

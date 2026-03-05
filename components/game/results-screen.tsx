@@ -139,16 +139,19 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   return (
     <Stack spacing={4} sx={{ py: 4 }}>
       {/* Hero */}
-      <Paper
-        elevation={0}
-        sx={{
-          border: 1,
-          borderColor: "divider",
-          py: 4,
-          px: 3,
-          textAlign: "center",
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Paper
+          elevation={0}
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            py: 4,
+            px: 3,
+            textAlign: "center",
+            maxWidth: { md: 600 },
+            width: "100%",
+          }}
+        >
         <Typography
           variant="h2"
           fontWeight={700}
@@ -250,6 +253,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
           </Button>
         </Stack>
       </Paper>
+      </Box>
 
       {/* Review: two-column bento on desktop, stacked on mobile */}
       <Box

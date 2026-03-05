@@ -113,16 +113,20 @@ export function CodePanel({
   return (
     <Paper
       ref={containerRef}
-      role="button"
+      role={isSelectable ? "button" : undefined}
       tabIndex={isSelectable ? 0 : -1}
       aria-label={`Code option ${label}`}
-      onClick={() => isSelectable && onSelect()}
-      onKeyDown={(e) => {
-        if (isSelectable && (e.key === "Enter" || e.key === " ")) {
-          e.preventDefault();
-          onSelect();
-        }
-      }}
+      onClick={isSelectable ? onSelect : undefined}
+      onKeyDown={
+        isSelectable
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSelect();
+              }
+            }
+          : undefined
+      }
       elevation={0}
       sx={{
         position: "relative",
