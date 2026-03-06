@@ -1,6 +1,14 @@
 {
-  "name": "my-project",
-  "version": "0.1.0",
+  "name": "cant-maintain",
+  "version": "0.7.0",
+  "description": "Train your eye for code that lasts — a quiz game about React prop naming conventions",
+  "author": "saschb2b",
+  "license": "MIT",
+  "homepage": "https://github.com/saschb2b/cant-maintain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saschb2b/cant-maintain.git"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,6 +22,7 @@
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@mui/lab": "7.0.1-beta.23",
     "@mui/material": "^7.3.8",
     "@shikijs/core": "^4.0.1",
     "@shikijs/engine-javascript": "^4.0.1",

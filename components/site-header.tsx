@@ -2,10 +2,12 @@ import NextLink from "next/link";
 import Image from "next/image";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
+import packageJson from "@/package.json";
 
 export function SiteHeader() {
   return (
@@ -36,6 +38,26 @@ export function SiteHeader() {
                 Can you spot the better props?
               </Typography>
             </Box>
+          </NextLink>
+          <NextLink href="/changelog" style={{ textDecoration: "none", display: "contents" }}>
+            <Chip
+              clickable
+              label={`v${packageJson.version}`}
+              size="small"
+              variant="outlined"
+              sx={{
+                ml: 1.5,
+                height: 22,
+                fontWeight: 600,
+                fontSize: "0.65rem",
+                letterSpacing: "0.05em",
+                fontFamily: "var(--font-geist-mono), monospace",
+                borderColor: "primary.main",
+                color: "primary.main",
+                backgroundColor: "rgba(var(--mui-palette-primary-mainChannel) / 0.08)",
+                display: { xs: "none", sm: "flex" },
+              }}
+            />
           </NextLink>
 
           <Stack
