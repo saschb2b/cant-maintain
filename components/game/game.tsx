@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import type { Challenge } from "@/lib/game/types";
 import { useGame } from "@/lib/game/use-game";
 import { CodePanel } from "./code-panel";
 import { ExplanationPanel } from "./explanation-panel";
@@ -17,7 +18,12 @@ import Grow from "@mui/material/Grow";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export function Game() {
+interface GameProps {
+  challenges: Challenge[];
+  highlightMap: Record<string, { goodHtml: string; badHtml: string }>;
+}
+
+export function Game({ challenges, highlightMap }: GameProps) {
   const {
     state,
     currentChallenge,
@@ -32,22 +38,24 @@ export function Game() {
     restartGame,
     reviewQuestion,
     exitReview,
-  } = useGame();
+  } = useGame(challenges);
 
   const explanationRef = useRef<HTMLDivElement>(null);
 
-  const { leftCode, rightCode } = useMemo(() => {
-    if (!displayChallenge) return { leftCode: "", rightCode: "" };
-    const left =
+  const { leftHtml, rightHtml } = useMemo(() => {
+    if (!displayChallenge) return { leftHtml: "", rightHtml: "" };
+    const highlight = highlightMap[displayChallenge.id];
+    if (!highlight) return { leftHtml: "", rightHtml: "" };
+    const leftHtml =
       displayChallenge.correctSide === "left"
-        ? displayChallenge.goodCode
-        : displayChallenge.badCode;
-    const right =
+        ? highlight.goodHtml
+        : highlight.badHtml;
+    const rightHtml =
       displayChallenge.correctSide === "left"
-        ? displayChallenge.badCode
-        : displayChallenge.goodCode;
-    return { leftCode: left, rightCode: right };
-  }, [displayChallenge]);
+        ? highlight.badHtml
+        : highlight.goodHtml;
+    return { leftHtml, rightHtml };
+  }, [displayChallenge, highlightMap]);
 
   const getResult = (side: "left" | "right"): "correct" | "wrong" | null => {
     if (!displayAnswer || !displayChallenge) return null;
@@ -261,7 +269,7 @@ export function Game() {
         }}
       >
         <CodePanel
-          code={leftCode}
+          highlightedHtml={leftHtml}
           label="A"
           isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => submitAnswer("left")}
@@ -295,7 +303,7 @@ export function Game() {
         </Box>
 
         <CodePanel
-          code={rightCode}
+          highlightedHtml={rightHtml}
           label="B"
           isSelectable={!isReviewing && !currentAnswer}
           onSelect={() => submitAnswer("right")}

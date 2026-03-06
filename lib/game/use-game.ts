@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Challenge, Difficulty, GameState } from "./types";
-import { challenges as allChallenges } from "./challenges";
 
 /** Fisher-Yates shuffle (immutable). */
 function shuffle<T>(arr: T[]): T[] {
@@ -38,7 +37,7 @@ const SESSION_PICKS: Record<Difficulty, number> = {
  * for progressive difficulty. Also randomizes which side the "good" code
  * appears on.
  */
-function prepareChallenges(): Challenge[] {
+function prepareChallenges(allChallenges: Challenge[]): Challenge[] {
   const byDifficulty = allChallenges.reduce<Record<Difficulty, Challenge[]>>(
     (acc, c) => {
       acc[c.difficulty].push(c);
@@ -61,9 +60,9 @@ function prepareChallenges(): Challenge[] {
     );
 }
 
-function createInitialState(): GameState {
+function createInitialState(allChallenges: Challenge[]): GameState {
   return {
-    challenges: prepareChallenges(),
+    challenges: prepareChallenges(allChallenges),
     currentIndex: 0,
     score: 0,
     streak: 0,
@@ -77,12 +76,12 @@ function createInitialState(): GameState {
 }
 
 /** Core game state hook. Handles scoring, progression, and answers. */
-export function useGame() {
+export function useGame(challengePool: Challenge[]) {
   const [state, setState] = useState<GameState | null>(null);
 
   // Defer random shuffle to client to avoid hydration mismatch
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setState(createInitialState()), []);
+  useEffect(() => setState(createInitialState(challengePool)), [challengePool]);
 
   const currentChallenge = useMemo(
     () => state?.challenges[state.currentIndex] ?? null,
@@ -165,8 +164,8 @@ export function useGame() {
 
   /** Restart the game with freshly shuffled challenges. */
   const restartGame = useCallback(() => {
-    setState(createInitialState());
-  }, []);
+    setState(createInitialState(challengePool));
+  }, [challengePool]);
 
   /** Enter review mode for a previously answered challenge. */
   const reviewQuestion = useCallback((index: number) => {

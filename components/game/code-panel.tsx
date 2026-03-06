@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
-import Lottie, { type LottieRefCurrentProps } from "lottie-react";
-import { getHighlighter } from "@/lib/shiki";
+import type { LottieRefCurrentProps } from "lottie-react";
 import { codeBlockStyles } from "@/lib/code-styles";
 import checkmarkAnimation from "./checkmark-animation.json";
 
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+
 interface CodePanelProps {
-  /** TypeScript/TSX source code to display in the editor. */
-  code: string;
+  /** Pre-rendered HTML from Shiki syntax highlighting. */
+  highlightedHtml: string;
   /** Short label shown in the panel header (e.g. "A" or "B"). */
   label: string;
   /** Whether the panel can be clicked to select this option. */
@@ -59,7 +61,7 @@ function CheckmarkOverlay() {
 }
 
 export function CodePanel({
-  code,
+  highlightedHtml,
   label,
   isSelectable,
   onSelect,
@@ -67,20 +69,6 @@ export function CodePanel({
   isSelected,
 }: CodePanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    void getHighlighter().then((hl) => {
-      if (cancelled) return;
-      setHighlightedHtml(
-        hl.codeToHtml(code, { lang: "typescript", theme: "github-light" }),
-      );
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [code]);
 
   const borderColor =
     result === "correct"
@@ -221,21 +209,7 @@ export function CodePanel({
           ...codeBlockStyles,
         }}
       >
-        {highlightedHtml ? (
-          <div dangerouslySetInnerHTML={{ __html: highlightedHtml }} />
-        ) : (
-          <pre
-            style={{
-              margin: 0,
-              padding: 16,
-              fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace",
-              fontSize: "0.875rem",
-              lineHeight: 1.7,
-            }}
-          >
-            {code}
-          </pre>
-        )}
+        <div dangerouslySetInnerHTML={{ __html: highlightedHtml }} />
       </Box>
       {result === "correct" && isSelected && <CheckmarkOverlay />}
     </Paper>
