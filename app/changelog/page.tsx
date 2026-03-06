@@ -1,6 +1,9 @@
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -22,56 +25,50 @@ export const metadata: Metadata = {
     "See what's new in Can't Maintain — new challenges, features, and improvements.",
 };
 
-const sectionConfig: Record<
+const sectionColors: Record<
   string,
-  { label: string; color: string; bg: string; dot: string }
+  "info" | "warning" | "success" | "primary"
 > = {
-  Added: { label: "Added", color: "#0284c7", bg: "rgba(43,76,126,0.08)", dot: "#a7d8ff" },
-  Changed: { label: "Changed", color: "#9F6625", bg: "rgba(159,102,37,0.08)", dot: "#ffe7a3" },
-  Fixed: { label: "Fixed", color: "#15803d", bg: "rgba(74,122,98,0.08)", dot: "#bfebd6" },
-  Improved: { label: "Improved", color: "#7c3aed", bg: "rgba(124,58,237,0.08)", dot: "#ddd6fe" },
+  Added: "info",
+  Changed: "warning",
+  Fixed: "success",
+  Improved: "primary",
 };
 
-function getSectionStyle(type: string) {
-  return (
-    sectionConfig[type] ?? {
-      label: type,
-      color: "#536476",
-      bg: "rgba(83,100,118,0.08)",
-      dot: "#cbd5e1",
-    }
-  );
+function getSectionColor(type: string) {
+  return sectionColors[type] ?? "primary";
 }
 
 /** Render inline markdown (bold + code) */
 function renderInline(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
   return parts.map((part, i) => {
-    const boldMatch = part.match(/^\*\*(.+)\*\*$/);
+    const boldMatch = /^\*\*(.+)\*\*$/.exec(part);
     if (boldMatch) {
       return (
-        <Box key={i} component="span" sx={{ fontWeight: 700 }}>
+        <Box key={i} component="span" fontWeight={700}>
           {boldMatch[1]}
         </Box>
       );
     }
-    const codeMatch = part.match(/^`(.+)`$/);
+    const codeMatch = /^`(.+)`$/.exec(part);
     if (codeMatch) {
       return (
-        <Box
+        <Typography
           key={i}
           component="code"
+          variant="body2"
           sx={{
             px: 0.5,
             py: 0.25,
             borderRadius: 0.5,
-            bgcolor: "rgba(0,0,0,0.05)",
+            bgcolor: "action.hover",
             fontFamily: "var(--font-geist-mono), monospace",
             fontSize: "0.85em",
           }}
         >
           {codeMatch[1]}
-        </Box>
+        </Typography>
       );
     }
     return part;
@@ -86,14 +83,8 @@ export default function ChangelogPage() {
       <SiteHeader />
 
       <Container maxWidth="md" sx={{ flex: 1, py: { xs: 4, md: 6 } }}>
-        {/* Page header */}
         <Box sx={{ textAlign: "center", mb: { xs: 4, md: 6 } }}>
-          <Typography
-            variant="h3"
-            component="h1"
-            fontWeight={700}
-            sx={{ fontSize: { xs: "1.75rem", md: "2.5rem" }, mb: 1 }}
-          >
+          <Typography variant="h4" component="h1" gutterBottom>
             Changelog
           </Typography>
           <Typography variant="body1" color="text.secondary">
@@ -101,12 +92,10 @@ export default function ChangelogPage() {
           </Typography>
         </Box>
 
-        {/* Timeline */}
         <Timeline
           position="right"
           sx={{
             p: 0,
-            // hide the opposite-content gutter
             "& .MuiTimelineItem-root::before": { display: "none" },
           }}
         >
@@ -117,132 +106,75 @@ export default function ChangelogPage() {
               <TimelineItem key={entry.version}>
                 <TimelineSeparator>
                   <TimelineDot
-                    color={isLatest ? "primary" : undefined}
+                    color={isLatest ? "primary" : "grey"}
                     variant={isLatest ? "filled" : "outlined"}
-                    sx={isLatest ? undefined : { borderColor: "divider" }}
                   />
                   {!isLast && <TimelineConnector />}
                 </TimelineSeparator>
 
                 <TimelineContent sx={{ pb: { xs: 4, md: 5 } }}>
                   <Paper
-                    elevation={0}
+                    variant="outlined"
                     sx={{
                       p: { xs: 2, md: 3 },
-                      border: 1,
                       borderColor: isLatest ? "primary.main" : "divider",
                     }}
                   >
-                    {/* Version + date header */}
                     <Stack
                       direction="row"
-                      spacing={1.5}
+                      spacing={1}
                       alignItems="center"
                       sx={{ mb: 2 }}
                     >
                       <Chip
                         label={`v${entry.version}`}
                         size="small"
-                        sx={{
-                          fontWeight: 700,
-                          fontSize: "0.8rem",
-                          bgcolor: isLatest
-                            ? "rgba(var(--mui-palette-primary-mainChannel) / 0.1)"
-                            : "rgba(0,0,0,0.04)",
-                          color: isLatest ? "primary.main" : "text.secondary",
-                          border: 1,
-                          borderColor: isLatest
-                            ? "rgba(var(--mui-palette-primary-mainChannel) / 0.25)"
-                            : "divider",
-                        }}
+                        color={isLatest ? "primary" : "default"}
+                        variant={isLatest ? "filled" : "outlined"}
                       />
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        fontWeight={500}
-                        sx={{
-                          fontFamily: "var(--font-geist-mono), monospace",
-                        }}
-                      >
+                      <Typography variant="caption" color="text.secondary">
                         {entry.date}
                       </Typography>
                       {isLatest && (
-                        <Chip
-                          label="Latest"
-                          size="small"
-                          sx={{
-                            height: 20,
-                            fontSize: "0.6rem",
-                            fontWeight: 700,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.08em",
-                            bgcolor: "primary.main",
-                            color: "primary.contrastText",
-                          }}
-                        />
+                        <Typography variant="caption" color="primary">
+                          Latest
+                        </Typography>
                       )}
                     </Stack>
 
-                    {/* Sections */}
-                    <Stack spacing={2.5}>
+                    <Stack spacing={2}>
                       {entry.sections.map((section) => {
-                        const style = getSectionStyle(section.type);
+                        const color = getSectionColor(section.type);
                         return (
                           <Box key={section.type}>
-                            {/* Section label */}
                             <Chip
-                              label={style.label}
+                              label={section.type}
                               size="small"
+                              color={color}
                               variant="outlined"
-                              sx={{
-                                mb: 1.5,
-                                height: 24,
-                                fontSize: "0.7rem",
-                                fontWeight: 600,
-                                color: style.color,
-                                bgcolor: style.bg,
-                                borderColor: style.dot,
-                              }}
+                              sx={{ mb: 1 }}
                             />
-
-                            {/* Items */}
-                            <Stack spacing={0.75}>
+                            <List dense disablePadding>
                               {section.items.map((item, itemIdx) => {
                                 const isSub = item.startsWith("  ");
                                 const text = isSub ? item.slice(2) : item;
                                 return (
-                                  <Box
+                                  <ListItem
                                     key={itemIdx}
-                                    sx={{
-                                      display: "flex",
-                                      gap: 1.5,
-                                      pl: isSub ? 3 : 0,
-                                    }}
+                                    disableGutters
+                                    disablePadding
+                                    sx={{ pl: isSub ? 3 : 0, py: 0 }}
                                   >
-                                    <Box
-                                      sx={{
-                                        mt: "8px",
-                                        width: isSub ? 5 : 7,
-                                        height: isSub ? 5 : 7,
-                                        borderRadius: "50%",
-                                        bgcolor: style.dot,
-                                        flexShrink: 0,
+                                    <ListItemText
+                                      primary={renderInline(text)}
+                                      slotProps={{
+                                        primary: { variant: "body2" },
                                       }}
                                     />
-                                    <Typography
-                                      variant="body2"
-                                      sx={{
-                                        lineHeight: 1.6,
-                                        color: "text.primary",
-                                        fontWeight: isSub ? 400 : 500,
-                                      }}
-                                    >
-                                      {renderInline(text)}
-                                    </Typography>
-                                  </Box>
+                                  </ListItem>
                                 );
                               })}
-                            </Stack>
+                            </List>
                           </Box>
                         );
                       })}
