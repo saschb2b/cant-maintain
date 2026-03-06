@@ -21,16 +21,16 @@ import { MeshGradient } from "@/components/mesh-gradient";
 import { getHighlighter } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
 
-const BAD_CODE = `interface TodoItemProps {
-  todo: Todo;
-  loading: boolean;
-  delete: () => void;
+const BAD_CODE = `interface UserCardProps {
+  data: User;
+  active: boolean;
+  click: () => void;
 }`;
 
-const GOOD_CODE = `interface TodoItemProps {
-  todo: Todo;
-  isLoading: boolean;
-  onDelete: () => void;
+const GOOD_CODE = `interface UserCardProps {
+  user: User;
+  isActive: boolean;
+  onClick: () => void;
 }`;
 
 export default async function LandingPage() {
@@ -297,7 +297,7 @@ export default async function LandingPage() {
             fontWeight={600}
             sx={{ textAlign: "center", mb: 1 }}
           >
-            {"Spot the patterns PRs won't teach you"}
+            {"Train your eye for code that lasts"}
           </Typography>
           <Typography
             variant="body2"
