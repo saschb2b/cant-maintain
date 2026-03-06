@@ -5,14 +5,17 @@ All notable changes to **Can't Maintain** are documented here.
 ## [0.7.0] - 2026-03-06
 
 ### Added
+
 - `/changelog` page with MUI Timeline component
 - Version badge in site header linking to changelog
 - Package metadata (name, description, author, repository, license)
 
 ### Changed
+
 - Updated landing page tagline and hero code example for clarity
 
 ### Fixed
+
 - Open Graph image rendering for shared results (static root image, edge import fixes, Next.js 16 compat)
 - Scroll behavior on results screen
 
@@ -21,11 +24,13 @@ All notable changes to **Can't Maintain** are documented here.
 ## [0.6.0] - 2026-03-05
 
 ### Added
+
 - Shareable results with dynamic OG image generation
 - Redesigned results screen with two-column bento layout
 - Lottie checkmark animation on correct answers
 
 ### Fixed
+
 - Mobile layout and game UX improvements
 - Wrong answer flash when advancing to next challenge
 
@@ -34,6 +39,7 @@ All notable changes to **Can't Maintain** are documented here.
 ## [0.5.0] - 2026-03-04
 
 ### Added
+
 - 3 new challenge categories with 23 new challenges (108 total):
   - **Controlled / Uncontrolled** — recognizing controlled vs uncontrolled component patterns
   - **Generic Props** — leveraging TypeScript generics in prop interfaces
@@ -45,6 +51,7 @@ All notable changes to **Can't Maintain** are documented here.
 - Smooth page transitions with View Transitions API
 
 ### Improved
+
 - Challenge explanations toned down from prescriptive absolutes
 - Render props, compound components, and controlled/uncontrolled challenges refined
 - WCAG AA contrast compliance for text
@@ -55,6 +62,7 @@ All notable changes to **Can't Maintain** are documented here.
 ## [0.4.0] - 2026-03-03 (evening)
 
 ### Added
+
 - `/learn` section with react.dev-style sidebar layout
 - Inline markdown rendering in challenge explanations
 - 2 new challenge categories:
@@ -66,6 +74,7 @@ All notable changes to **Can't Maintain** are documented here.
 - SEO metadata and custom angle-bracket favicon
 
 ### Fixed
+
 - Visual parity enforced on medium/hard challenges
 - Challenge titles blurred pre-answer to prevent bias
 
@@ -74,6 +83,7 @@ All notable changes to **Can't Maintain** are documented here.
 ## [0.3.0] - 2026-03-03 (afternoon)
 
 ### Added
+
 - 1 new challenge category:
   - **Prop Organization** — ordering and grouping props (6 challenges)
 - 12 new challenges across existing categories
@@ -83,6 +93,7 @@ All notable changes to **Can't Maintain** are documented here.
 - Footer links and contribution CTA
 
 ### Fixed
+
 - Results screen text contrast against gradient background
 - SSR hydration issues
 
@@ -91,6 +102,7 @@ All notable changes to **Can't Maintain** are documented here.
 ## [0.2.0] - 2026-03-03 (early afternoon)
 
 ### Added
+
 - 9 initial challenge categories:
   - **Boolean Naming** — `is`/`has`/`should` prefixes for boolean props
   - **Callback Naming** — `on`-prefixed event handler conventions
@@ -105,6 +117,7 @@ All notable changes to **Can't Maintain** are documented here.
 - ESLint strict type-checking, Prettier, and GitHub CI
 
 ### Changed
+
 - Migrated from Tailwind CSS + shadcn/ui to Material UI
 
 ---
@@ -112,6 +125,7 @@ All notable changes to **Can't Maintain** are documented here.
 ## [0.1.0] - 2026-03-03
 
 ### Added
+
 - Initial release — renamed from "PropDoc" to "Can't Maintain"
 - Core quiz gameplay — pick the better-named prop
 - First set of challenges covering naming conventions

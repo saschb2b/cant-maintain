@@ -11,7 +11,7 @@ export function parseChangelog(markdown: string): ChangelogEntry[] {
 
   for (const line of markdown.split("\n")) {
     // Version header: ## [0.7.0] - 2026-03-06
-    const versionMatch = line.match(/^## \[([^\]]+)\]\s*-\s*(.+)$/);
+    const versionMatch = /^## \[([^\]]+)\]\s*-\s*(.+)$/.exec(line);
     if (versionMatch?.[1] && versionMatch[2]) {
       if (current) entries.push(current);
       current = {
@@ -24,7 +24,7 @@ export function parseChangelog(markdown: string): ChangelogEntry[] {
     }
 
     // Section header: ### Added
-    const sectionMatch = line.match(/^### (.+)$/);
+    const sectionMatch = /^### (.+)$/.exec(line);
     if (sectionMatch?.[1] && current) {
       currentSection = { type: sectionMatch[1], items: [] };
       current.sections.push(currentSection);
@@ -32,15 +32,19 @@ export function parseChangelog(markdown: string): ChangelogEntry[] {
     }
 
     // Top-level list item: - Something
-    const itemMatch = line.match(/^- (.+)$/);
+    const itemMatch = /^- (.+)$/.exec(line);
     if (itemMatch?.[1] && currentSection) {
       currentSection.items.push(itemMatch[1]);
       continue;
     }
 
     // Sub-item:   - **Name** — description (append to last item)
-    const subItemMatch = line.match(/^ {2}- (.+)$/);
-    if (subItemMatch?.[1] && currentSection && currentSection.items.length > 0) {
+    const subItemMatch = /^ {2}- (.+)$/.exec(line);
+    if (
+      subItemMatch?.[1] &&
+      currentSection &&
+      currentSection.items.length > 0
+    ) {
       currentSection.items.push("  " + subItemMatch[1]);
     }
   }

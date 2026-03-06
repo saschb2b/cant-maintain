@@ -39,7 +39,10 @@ export function SiteHeader() {
               </Typography>
             </Box>
           </NextLink>
-          <NextLink href="/changelog" style={{ textDecoration: "none", display: "contents" }}>
+          <NextLink
+            href="/changelog"
+            style={{ textDecoration: "none", display: "contents" }}
+          >
             <Chip
               clickable
               label={`v${packageJson.version}`}
@@ -54,7 +57,8 @@ export function SiteHeader() {
                 fontFamily: "var(--font-geist-mono), monospace",
                 borderColor: "primary.main",
                 color: "primary.main",
-                backgroundColor: "rgba(var(--mui-palette-primary-mainChannel) / 0.08)",
+                backgroundColor:
+                  "rgba(var(--mui-palette-primary-mainChannel) / 0.08)",
                 display: { xs: "none", sm: "flex" },
               }}
             />
