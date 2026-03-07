@@ -2,22 +2,27 @@ import type { ChallengeCategory } from "./types";
 
 /** Canonical display order of challenge categories. */
 export const CATEGORY_ORDER: ChallengeCategory[] = [
+  // Naming & Docs
   "boolean-naming",
   "callback-naming",
+  "jsdoc",
+  // Prop Design
   "default-values",
   "prop-specificity",
-  "jsdoc",
   "prop-organization",
+  "enumerated-variants",
+  "styling-api",
   "controlled-uncontrolled",
+  // Composition
   "children-pattern",
   "render-props",
-  "generic-props",
+  // Advanced Patterns
   "extending-html",
   "ref-forwarding",
+  "generic-props",
   "accessibility-props",
-  "enumerated-variants",
   "discriminated-unions",
-  "styling-api",
+  // React 19 & Server
   "server-component-props",
 ];
 
@@ -59,8 +64,9 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "default-values",
       "prop-specificity",
       "prop-organization",
-      "controlled-uncontrolled",
+      "enumerated-variants",
       "styling-api",
+      "controlled-uncontrolled",
     ],
   },
   {
@@ -74,7 +80,6 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "ref-forwarding",
       "generic-props",
       "accessibility-props",
-      "enumerated-variants",
       "discriminated-unions",
     ],
   },
