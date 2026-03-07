@@ -155,7 +155,7 @@ function Card({ children, variant, className }: CardProps) {
   {
     id: "sa-006",
     category: "styling-api",
-    difficulty: "hard",
+    difficulty: "medium",
     title: "CSS variables vs style props",
     badCode: `interface ProgressBarProps {
   /** Progress from 0 to 100. */
@@ -220,7 +220,7 @@ function Card({ children, variant, className }: CardProps) {
   {
     id: "sa-008",
     category: "styling-api",
-    difficulty: "hard",
+    difficulty: "medium",
     title: "Exposing internal layout props",
     badCode: `interface ListProps<T> {
   items: T[];

@@ -83,7 +83,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
   {
     id: "ev-004",
     category: "enumerated-variants",
-    difficulty: "medium",
+    difficulty: "easy",
     title: "Text alignment prop",
     badCode: `interface TextProps {
   children: React.ReactNode;
@@ -165,7 +165,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
   {
     id: "ev-007",
     category: "enumerated-variants",
-    difficulty: "hard",
+    difficulty: "medium",
     title: "Spacing scale vs arbitrary numbers",
     badCode: `interface StackProps {
   children: React.ReactNode;
