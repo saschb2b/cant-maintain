@@ -15,6 +15,7 @@ export const CATEGORY_ORDER: ChallengeCategory[] = [
   "extending-html",
   "ref-forwarding",
   "accessibility-props",
+  "enumerated-variants",
   "discriminated-unions",
   "server-component-props",
 ];
@@ -36,6 +37,7 @@ export const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "controlled-uncontrolled": "Controlled & Uncontrolled",
   "server-component-props": "Server Component Props",
   "generic-props": "Generic Props",
+  "enumerated-variants": "Enumerated Variants",
 };
 
 /** Logical grouping of categories for sidebar navigation. */
@@ -69,6 +71,7 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "ref-forwarding",
       "generic-props",
       "accessibility-props",
+      "enumerated-variants",
       "discriminated-unions",
     ],
   },
@@ -110,4 +113,6 @@ export const CATEGORY_DESCRIPTIONS: Record<ChallengeCategory, string> = {
     "Serializable props across the server/client boundary, Server Actions, and the donut pattern.",
   "generic-props":
     "Using TypeScript generics to create type-safe, reusable component APIs that infer from props.",
+  "enumerated-variants":
+    "Replacing boolean prop explosion with string union enums for size, variant, color, and other visual dimensions.",
 };

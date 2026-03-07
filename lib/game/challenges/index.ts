@@ -13,6 +13,7 @@ import { propSpecificityChallenges } from "./prop-specificity";
 import { propOrganizationChallenges } from "./prop-organization";
 import { refForwardingChallenges } from "./ref-forwarding";
 import { renderPropsChallenges } from "./render-props";
+import { enumeratedVariantsChallenges } from "./enumerated-variants";
 import { serverComponentPropsChallenges } from "./server-component-props";
 
 /**
@@ -38,4 +39,5 @@ export const challenges: Challenge[] = [
   ...controlledUncontrolledChallenges,
   ...serverComponentPropsChallenges,
   ...genericPropsChallenges,
+  ...enumeratedVariantsChallenges,
 ];

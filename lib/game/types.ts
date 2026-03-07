@@ -17,7 +17,8 @@ export type ChallengeCategory =
   | "prop-organization"
   | "controlled-uncontrolled"
   | "server-component-props"
-  | "generic-props";
+  | "generic-props"
+  | "enumerated-variants";
 
 /**
  * A single challenge in the game.
