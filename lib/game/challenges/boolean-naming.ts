@@ -81,7 +81,7 @@ export const booleanNamingChallenges: Challenge[] = [
   {
     id: "bl-005",
     category: "boolean-naming",
-    difficulty: "hard",
+    difficulty: "medium",
     title: "Intent-specific boolean prefixes",
     badCode: `interface ModalProps {
   children: React.ReactNode;
