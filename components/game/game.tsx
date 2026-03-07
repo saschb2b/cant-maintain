@@ -256,7 +256,7 @@ export function Game({ challenges, highlightMap }: GameProps) {
         <Typography variant="body2" color="text.secondary">
           {isReviewing
             ? "Reviewing your previous answer"
-            : "Pick the code with better prop naming"}
+            : "Pick the better component API"}
         </Typography>
       </Box>
 

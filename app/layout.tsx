@@ -18,17 +18,21 @@ const siteUrl = "https://cant-maintain.saschb2b.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Can't Maintain — React Prop Naming Game",
+    default: "Can't Maintain — React Component API Game",
     template: "%s — Can't Maintain",
   },
   description:
-    "Train your eye for clean React component APIs. Pick the better prop naming in 10 side-by-side challenges — callbacks, booleans, JSDoc, TypeScript patterns, and more.",
+    "Train your eye for clean React component APIs. Pick the better design in 10 side-by-side challenges — props, composition, TypeScript patterns, and more.",
   keywords: [
     "React",
     "props",
     "TypeScript",
     "component API",
     "prop naming",
+    "component API design",
+    "React patterns",
+    "composition",
+    "generics",
     "quiz",
     "training",
     "best practices",
@@ -41,16 +45,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Can't Maintain",
-    title: "Can't Maintain — React Prop Naming Game",
+    title: "Can't Maintain — React Component API Game",
     description:
-      "Can you spot the better props? Train your eye for clean React component APIs in under 5 minutes.",
+      "Can you spot the better API? Train your eye for clean React component APIs in under 5 minutes.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Can't Maintain — React Prop Naming Game",
+    title: "Can't Maintain — React Component API Game",
     description:
-      "Can you spot the better props? Train your eye for clean React component APIs in under 5 minutes.",
+      "Can you spot the better API? Train your eye for clean React component APIs in under 5 minutes.",
   },
   icons: {
     icon: [

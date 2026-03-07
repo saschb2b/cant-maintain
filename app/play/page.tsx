@@ -11,7 +11,7 @@ import { challenges } from "@/lib/game/challenges";
 export const metadata: Metadata = {
   title: "Play",
   description:
-    "Pick the better React prop naming in 10 side-by-side code challenges. Covers callbacks, booleans, JSDoc, discriminated unions, and more.",
+    "Pick the better React component API in 10 side-by-side code challenges. Covers props, composition, TypeScript patterns, and more.",
 };
 
 export default async function PlayPage() {

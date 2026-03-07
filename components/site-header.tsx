@@ -35,7 +35,7 @@ export function SiteHeader() {
                 fontFamily="var(--font-geist-mono), monospace"
                 sx={{ display: { xs: "none", sm: "block" } }}
               >
-                Can you spot the better props?
+                Can you spot the better API?
               </Typography>
             </Box>
           </NextLink>

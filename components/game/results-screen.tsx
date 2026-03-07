@@ -82,7 +82,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
 
     if (correct === total) {
       lines.push(
-        `Perfect ${String(correct)}/${String(total)} on spotting better React prop naming!`,
+        `Perfect ${String(correct)}/${String(total)} on spotting better React component APIs!`,
       );
       lines.push("");
       lines.push(dots);
@@ -90,7 +90,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
       lines.push("Can you match a perfect score?");
     } else {
       lines.push(
-        `I scored ${String(correct)}/${String(total)} on spotting better React prop naming.`,
+        `I scored ${String(correct)}/${String(total)} on spotting better React component APIs.`,
       );
       lines.push("");
       lines.push(dots);

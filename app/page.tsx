@@ -88,10 +88,10 @@ export default async function LandingPage() {
                 fontSize: { xs: "1.75rem", sm: "2.5rem", md: "3rem" },
               }}
             >
-              One prop name.
+              One component.
               <br />
               <Box component="span" sx={{ color: "error.main" }}>
-                Two choices.
+                Two APIs.
               </Box>
             </Typography>
             <Typography

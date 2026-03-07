@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = {
   title: "Learn",
   description:
-    "Learn React prop naming conventions across 10 categories. Side-by-side good vs bad code examples with explanations.",
+    "Learn React component API conventions across 15 categories. Side-by-side good vs bad code examples with explanations.",
 };
 
 export default async function LearnPage() {
@@ -54,7 +54,7 @@ export default async function LearnPage() {
     <>
       <Stack spacing={1} sx={{ mb: { xs: 4, md: 5 } }}>
         <Typography variant="h4" component="h1" fontWeight={700}>
-          Learn Prop Naming
+          Learn Component APIs
         </Typography>
         <Typography
           variant="body1"
