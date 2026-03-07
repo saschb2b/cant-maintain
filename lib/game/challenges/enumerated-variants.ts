@@ -183,12 +183,12 @@ export const enumeratedVariantsChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "A spacing scale enforces visual consistency across the application. `gap=\"md\"` maps to your design system's spacing tokens, so every component uses the same values.\n\nArbitrary numbers like `gap={12}` or `gap={13}` lead to inconsistent spacing that's invisible in code review but visible to users. The scale also decouples the API from pixel values, so you can change `md` from 16px to 20px without updating every call site.",
+      "Named spacing tokens enforce visual consistency. `gap=\"md\"` constrains consumers to your design system's scale, so every component uses the same values.\n\nNote: MUI uses numbers (`gap={2}`) that multiply `theme.spacing`, which also works because the multiplier constrains values to the scale. The key insight is the same: don't accept arbitrary pixel values. Whether you use string tokens or a numeric multiplier, the API should map to a finite set of spacing steps.",
     explanationWrong:
-      'Arbitrary pixel values (`gap={12}`, `gap={14}`, `gap={16}`) create invisible inconsistency. There\'s no way to enforce spacing scale adherence through the type system. A team of 10 developers will produce 10 different spacing values.\n\nDesign token enums constrain the prop to valid scale values. The component maps tokens to pixels internally, keeping the API stable even if the scale changes.',
+      'Raw pixel values (`gap={12}`, `gap={14}`, `gap={16}`) create invisible inconsistency. There\'s no way to enforce spacing scale adherence through the type system. A team of 10 developers will produce 10 different spacing values.\n\nConstrain the prop to a finite scale, either with string tokens (`"sm" | "md" | "lg"`) or numeric multipliers (`1 | 2 | 3` mapped to `theme.spacing`). Both approaches keep the API consistent and decoupled from raw pixel values.',
     sourceUrl:
-      "https://mui.com/system/spacing/",
-    sourceLabel: "MUI: Spacing System",
+      "https://tailwindcss.com/docs/customizing-spacing",
+    sourceLabel: "Tailwind: Customizing Spacing",
   },
   {
     id: "ev-008",
