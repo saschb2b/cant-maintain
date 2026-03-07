@@ -17,6 +17,7 @@ export const CATEGORY_ORDER: ChallengeCategory[] = [
   "accessibility-props",
   "enumerated-variants",
   "discriminated-unions",
+  "styling-api",
   "server-component-props",
 ];
 
@@ -38,6 +39,7 @@ export const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "server-component-props": "Server Component Props",
   "generic-props": "Generic Props",
   "enumerated-variants": "Enumerated Variants",
+  "styling-api": "Styling API",
 };
 
 /** Logical grouping of categories for sidebar navigation. */
@@ -73,6 +75,7 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "accessibility-props",
       "enumerated-variants",
       "discriminated-unions",
+      "styling-api",
     ],
   },
   {
@@ -115,4 +118,6 @@ export const CATEGORY_DESCRIPTIONS: Record<ChallengeCategory, string> = {
     "Using TypeScript generics to create type-safe, reusable component APIs that infer from props.",
   "enumerated-variants":
     "Replacing boolean prop explosion with string union enums for size, variant, color, and other visual dimensions.",
+  "styling-api":
+    "Choosing between className, style, variants, and design tokens to keep styling concerns out of your prop API.",
 };

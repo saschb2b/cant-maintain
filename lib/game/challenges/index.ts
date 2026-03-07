@@ -14,6 +14,7 @@ import { propOrganizationChallenges } from "./prop-organization";
 import { refForwardingChallenges } from "./ref-forwarding";
 import { renderPropsChallenges } from "./render-props";
 import { enumeratedVariantsChallenges } from "./enumerated-variants";
+import { stylingApiChallenges } from "./styling-api";
 import { serverComponentPropsChallenges } from "./server-component-props";
 
 /**
@@ -40,4 +41,5 @@ export const challenges: Challenge[] = [
   ...serverComponentPropsChallenges,
   ...genericPropsChallenges,
   ...enumeratedVariantsChallenges,
+  ...stylingApiChallenges,
 ];
