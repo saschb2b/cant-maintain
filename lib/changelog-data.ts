@@ -6,6 +6,20 @@ export const changelog = `# Changelog
 
 All notable changes to **Can't Maintain** are documented here.
 
+## [0.8.0] - 2026-03-07
+
+### Added
+- 2 new challenge categories with 16 new challenges (124 total):
+  - **Enumerated Variants** — replacing boolean prop explosion with string union enums
+  - **Styling API** — choosing between className, style, variants, and design tokens
+
+### Changed
+- Rebranded from "prop naming" to "component API design" across all copy, meta tags, and OG images
+- Reorganized sidebar sections: moved Enumerated Variants and Styling API into Prop Design
+- Aligned category display order with section groupings
+
+---
+
 ## [0.7.0] - 2026-03-06
 
 ### Added
