@@ -60,6 +60,7 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "prop-specificity",
       "prop-organization",
       "controlled-uncontrolled",
+      "styling-api",
     ],
   },
   {
@@ -75,7 +76,6 @@ export const CATEGORY_SECTIONS: CategorySection[] = [
       "accessibility-props",
       "enumerated-variants",
       "discriminated-unions",
-      "styling-api",
     ],
   },
   {
