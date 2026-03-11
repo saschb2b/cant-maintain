@@ -28,7 +28,6 @@
     "@shikijs/engine-javascript": "^4.0.1",
     "@shikijs/langs": "^4.0.1",
     "@shikijs/themes": "^4.0.1",
-    "@vercel/analytics": "1.6.1",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.564.0",
     "next": "16.1.6",
