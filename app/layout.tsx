@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     "callbacks",
     "boolean props",
   ],
-  authors: [{ name: "Sascha", url: "https://www.saschb2b.com/" }],
+  authors: [{ name: "Sascha", url: "https://saschb2b.com/" }],
   openGraph: {
     type: "website",
     locale: "en_US",

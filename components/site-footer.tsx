@@ -46,7 +46,7 @@ export function SiteFooter() {
             by{" "}
             <Box
               component="a"
-              href="https://www.saschb2b.com/"
+              href="https://saschb2b.com/"
               target="_blank"
               rel="noopener noreferrer"
               sx={{
