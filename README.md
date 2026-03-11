@@ -108,4 +108,5 @@ Each session picks 3 easy, 4 medium, and 3 hard challenges, shuffled within tier
 - Material UI 7 (`@mui/material`)
 - Shiki (`shiki`) for syntax highlighting
 - TypeScript strict mode
+- Umami (self-hosted analytics)
 - pnpm
