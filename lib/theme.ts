@@ -52,7 +52,7 @@ const theme = createTheme({
     divider: "#DDD6CA",
   },
   typography: {
-    fontFamily: "var(--font-geist-sans), sans-serif",
+    fontFamily: "var(--font-inter), sans-serif",
     h2: {
       fontWeight: 700,
     },
