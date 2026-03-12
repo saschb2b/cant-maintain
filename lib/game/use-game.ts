@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { trackEvent } from "../analytics";
 import type { Challenge, Difficulty, GameState } from "./types";
 
 /** Fisher-Yates shuffle (immutable). */
@@ -123,10 +124,21 @@ export function useGame(challengePool: Challenge[]) {
       const challengeId = currentChallenge.id;
       const correctSide = currentChallenge.correctSide;
 
+      const category = currentChallenge.category;
+      const difficulty = currentChallenge.difficulty;
+
       setState((prev) => {
         if (!prev || prev.answers[challengeId]) return prev;
         const isCorrect = side === correctSide;
         const newStreak = isCorrect ? prev.streak + 1 : 0;
+
+        trackEvent("challenge-answered", {
+          challengeId,
+          category,
+          difficulty,
+          result: isCorrect ? "correct" : "wrong",
+        });
+
         return {
           ...prev,
           score: isCorrect ? prev.score + 1 : prev.score,
@@ -151,11 +163,18 @@ export function useGame(challengePool: Challenge[]) {
       if (!prev) return prev;
       const nextIndex = prev.currentIndex + 1;
       if (nextIndex >= prev.challenges.length) {
+        const finishedAt = Date.now();
+        trackEvent("game-finished", {
+          score: prev.score,
+          total: prev.challenges.length,
+          bestStreak: prev.bestStreak,
+          durationSec: Math.round((finishedAt - prev.startedAt) / 1000),
+        });
         return {
           ...prev,
           reviewIndex: null,
           isFinished: true,
-          finishedAt: Date.now(),
+          finishedAt,
         };
       }
       return { ...prev, reviewIndex: null, currentIndex: nextIndex };
