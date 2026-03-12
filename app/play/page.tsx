@@ -14,7 +14,12 @@ export const metadata: Metadata = {
     "Pick the better React component API in 10 side-by-side code challenges. Covers props, composition, TypeScript patterns, and more.",
 };
 
-export default async function PlayPage() {
+export default async function PlayPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ seed?: string }>;
+}) {
+  const { seed: defaultSeed } = await searchParams;
   const highlighter = await getHighlighter();
 
   const highlightMap: Record<string, { goodHtml: string; badHtml: string }> =
@@ -48,7 +53,7 @@ export default async function PlayPage() {
         component="section"
         sx={{ py: 4, flex: 1, position: "relative", zIndex: 1 }}
       >
-        <Game challenges={challenges} highlightMap={highlightMap} />
+        <Game challenges={challenges} highlightMap={highlightMap} defaultSeed={defaultSeed} />
       </Container>
 
       <SiteFooter />

@@ -90,4 +90,6 @@ export interface GameState {
   startedAt: number;
   /** Timestamp game finished (set when isFinished becomes true). */
   finishedAt: number | null;
+  /** Seed string used to generate this session's challenge order. */
+  seed: string;
 }

@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import type { Challenge } from "@/lib/game/types";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Challenge, ChallengeCategory } from "@/lib/game/types";
 import { useGame } from "@/lib/game/use-game";
+import { generateSeed } from "@/lib/game/seeded-random";
 import { CodePanel } from "./code-panel";
 import { ExplanationPanel } from "./explanation-panel";
 import { GameHeader } from "./game-header";
 import { ResultsScreen } from "./results-screen";
+import { LobbyScreen } from "./lobby-screen";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -21,9 +23,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 interface GameProps {
   challenges: Challenge[];
   highlightMap: Record<string, { goodHtml: string; badHtml: string }>;
+  defaultSeed?: string;
 }
 
-export function Game({ challenges, highlightMap }: GameProps) {
+export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
+  const [activeSeed, setActiveSeed] = useState<string | null>(null);
+  const [lobbySeed, setLobbySeed] = useState(defaultSeed);
+  const [excludedCategories, setExcludedCategories] = useState<Set<ChallengeCategory>>(new Set());
+
   const {
     state,
     currentChallenge,
@@ -38,7 +45,21 @@ export function Game({ challenges, highlightMap }: GameProps) {
     restartGame,
     reviewQuestion,
     exitReview,
-  } = useGame(challenges);
+  } = useGame(challenges, activeSeed, excludedCategories);
+
+  const handleLobbyStart = useCallback(
+    (seed: string, excluded: Set<ChallengeCategory>) => {
+      setExcludedCategories(excluded);
+      setActiveSeed(seed || generateSeed());
+    },
+    [],
+  );
+
+  const handleRestart = useCallback(() => {
+    restartGame();
+    setActiveSeed(null);
+    setLobbySeed(undefined);
+  }, [restartGame]);
 
   const explanationRef = useRef<HTMLDivElement>(null);
 
@@ -144,6 +165,10 @@ export function Game({ challenges, highlightMap }: GameProps) {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [state?.currentIndex]);
 
+  if (!activeSeed) {
+    return <LobbyScreen onStart={handleLobbyStart} defaultSeed={lobbySeed} />;
+  }
+
   if (!state) {
     return (
       <Box
@@ -162,7 +187,7 @@ export function Game({ challenges, highlightMap }: GameProps) {
   }
 
   if (state.isFinished) {
-    return <ResultsScreen state={state} onRestart={restartGame} />;
+    return <ResultsScreen state={state} onRestart={handleRestart} />;
   }
 
   if (!displayChallenge) return null;

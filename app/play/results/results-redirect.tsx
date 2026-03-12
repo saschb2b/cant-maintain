@@ -3,12 +3,16 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export function ResultsRedirect() {
+interface ResultsRedirectProps {
+  seed?: string;
+}
+
+export function ResultsRedirect({ seed }: ResultsRedirectProps) {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/play");
-  }, [router]);
+    router.replace(seed ? `/play?seed=${seed}` : "/play");
+  }, [router, seed]);
 
   return null;
 }

@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "../analytics";
-import type { Challenge, Difficulty, GameState } from "./types";
+import type { Challenge, ChallengeCategory, Difficulty, GameState } from "./types";
+import { createRng, encodeSeed, hashSeed } from "./seeded-random";
 
-/** Fisher-Yates shuffle (immutable). */
-function shuffle<T>(arr: T[]): T[] {
+/** Fisher-Yates shuffle (immutable) using a provided RNG. */
+function shuffle<T>(arr: T[], rng: () => number): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(rng() * (i + 1));
     // Indices i and j are guaranteed to be in bounds by the loop and Math.floor
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const temp = a[i]!;
@@ -38,8 +39,15 @@ const SESSION_PICKS: Record<Difficulty, number> = {
  * for progressive difficulty. Also randomizes which side the "good" code
  * appears on.
  */
-function prepareChallenges(allChallenges: Challenge[]): Challenge[] {
-  const byDifficulty = allChallenges.reduce<Record<Difficulty, Challenge[]>>(
+function prepareChallenges(
+  allChallenges: Challenge[],
+  rng: () => number,
+  excludedCategories: Set<ChallengeCategory>,
+): Challenge[] {
+  const pool = excludedCategories.size === 0
+    ? allChallenges
+    : allChallenges.filter((c) => !excludedCategories.has(c.category));
+  const byDifficulty = pool.reduce<Record<Difficulty, Challenge[]>>(
     (acc, c) => {
       acc[c.difficulty].push(c);
       return acc;
@@ -50,20 +58,25 @@ function prepareChallenges(allChallenges: Challenge[]): Challenge[] {
   return (Object.entries(byDifficulty) as [Difficulty, Challenge[]][])
     .sort(([a], [b]) => DIFFICULTY_ORDER[a] - DIFFICULTY_ORDER[b])
     .flatMap(([, cs]) =>
-      shuffle(cs)
+      shuffle(cs, rng)
         .slice(0, SESSION_PICKS[cs[0]?.difficulty ?? "medium"])
         .map((c) => ({
           ...c,
-          correctSide: (Math.random() > 0.5 ? "left" : "right") satisfies
+          correctSide: (rng() > 0.5 ? "left" : "right") satisfies
             | "left"
             | "right",
         })),
     );
 }
 
-function createInitialState(allChallenges: Challenge[]): GameState {
+function createInitialState(
+  allChallenges: Challenge[],
+  rawSeed: string,
+  excludedCategories: Set<ChallengeCategory>,
+): GameState {
+  const rng = createRng(hashSeed(rawSeed));
   return {
-    challenges: prepareChallenges(allChallenges),
+    challenges: prepareChallenges(allChallenges, rng, excludedCategories),
     currentIndex: 0,
     score: 0,
     streak: 0,
@@ -73,17 +86,21 @@ function createInitialState(allChallenges: Challenge[]): GameState {
     isFinished: false,
     startedAt: Date.now(),
     finishedAt: null,
+    seed: encodeSeed(rawSeed, excludedCategories),
   };
 }
 
 /** Core game state hook. Handles scoring, progression, and answers. */
-export function useGame(challengePool: Challenge[]) {
+export function useGame(challengePool: Challenge[], seed: string | null, excludedCategories: Set<ChallengeCategory> = new Set()) {
   const [state, setState] = useState<GameState | null>(null);
   const challengeShownAt = useRef<number>(0);
 
-  // Defer random shuffle to client to avoid hydration mismatch
+  // Initialize game when a seed is provided (deferred to client for hydration safety)
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setState(createInitialState(challengePool)), [challengePool]);
+  useEffect(() => {
+    if (seed) setState(createInitialState(challengePool, seed, excludedCategories));
+    else setState(null);
+  }, [challengePool, seed, excludedCategories]);
 
   // Reset timer whenever the current challenge changes
   useEffect(() => {
@@ -191,18 +208,15 @@ export function useGame(challengePool: Challenge[]) {
     });
   }, []);
 
-  /** Restart the game with freshly shuffled challenges. */
+  /** Track restart analytics. The actual reset is handled by the parent. */
   const restartGame = useCallback(() => {
-    setState((prev) => {
-      if (prev) {
-        trackEvent("game-restarted", {
-          previousScore: prev.score,
-          previousTotal: prev.challenges.length,
-        });
-      }
-      return createInitialState(challengePool);
-    });
-  }, [challengePool]);
+    if (state) {
+      trackEvent("game-restarted", {
+        previousScore: state.score,
+        previousTotal: state.challenges.length,
+      });
+    }
+  }, [state]);
 
   /** Enter review mode for a previously answered challenge. */
   const reviewQuestion = useCallback((index: number) => {

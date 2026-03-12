@@ -16,6 +16,7 @@ export interface SharedResults {
   streak: number;
   seconds: number;
   results: boolean[];
+  seed?: string;
 }
 
 /**
@@ -35,7 +36,7 @@ export function encodeResults(state: GameState): string {
     .map((c) => (state.answers[c.id]?.result === "correct" ? "1" : "0"))
     .join("");
 
-  const raw = `${String(score)}-${String(total)}-${String(state.bestStreak)}-${String(elapsed)}-${dots}`;
+  const raw = `${String(score)}-${String(total)}-${String(state.bestStreak)}-${String(elapsed)}-${dots}-${state.seed}`;
   return btoa(raw);
 }
 
@@ -51,9 +52,10 @@ export function decodeResults(param: string): SharedResults | null {
     return null;
   }
   const parts = raw.split("-");
-  if (parts.length !== 5) return null;
+  // Support both old 5-part format and new 6-part format with seed
+  if (parts.length !== 5 && parts.length !== 6) return null;
 
-  const [scoreStr, totalStr, streakStr, secondsStr, dotsStr] = parts;
+  const [scoreStr, totalStr, streakStr, secondsStr, dotsStr, seedStr] = parts;
   const score = Number(scoreStr);
   const total = Number(totalStr);
   const streak = Number(streakStr);
@@ -65,12 +67,12 @@ export function decodeResults(param: string): SharedResults | null {
   if (!/^[01]+$/.test(dotsStr)) return null;
 
   const results = Array.from(dotsStr, (c) => c === "1");
-  return { score, total, streak, seconds, results };
+  return { score, total, streak, seconds, results, seed: seedStr };
 }
 
 /** Build the full share URL for a game session. */
 export function getShareUrl(state: GameState): string {
-  return `https://cant-maintain.saschb2b.com/play/results?r=${encodeResults(state)}`;
+  return `https://cant-maintain.saschb2b.com/play/results?r=${encodeResults(state)}&seed=${state.seed}`;
 }
 
 /** Get human-readable missed category names from game state. */

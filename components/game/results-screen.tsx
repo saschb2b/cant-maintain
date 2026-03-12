@@ -30,6 +30,8 @@ import {
   GitPullRequestArrow,
   Share2,
   ClipboardCheck,
+  Hash,
+  Copy,
 } from "lucide-react";
 
 interface ResultsScreenProps {
@@ -69,6 +71,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   );
 
   const [hasCopied, setHasCopied] = useState(false);
+  const [seedCopied, setSeedCopied] = useState(false);
 
   const buildShareText = useCallback(() => {
     const dots = state.challenges
@@ -88,6 +91,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
       lines.push("");
       lines.push(dots);
       lines.push("");
+      lines.push(`Seed: ${state.seed}`);
       lines.push("Can you match a perfect score?");
     } else {
       lines.push(
@@ -96,6 +100,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
       lines.push("");
       lines.push(dots);
       lines.push("");
+      lines.push(`Seed: ${state.seed}`);
       lines.push(`Tripped up on ${missedLabels.join(" and ")}.`);
       lines.push("Can you beat my score?");
     }
@@ -130,7 +135,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-    window.history.replaceState(null, "", `/play/results?r=${resultsParam}`);
+    window.history.replaceState(null, "", `/play/results?r=${resultsParam}&seed=${state.seed}`);
     return () => window.history.replaceState(null, "", "/play");
   }, [resultsParam]);
 
@@ -196,6 +201,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
             direction="row"
             spacing={2}
             justifyContent="center"
+            flexWrap="wrap"
             sx={{ mt: 2 }}
           >
             <Stack direction="row" alignItems="center" spacing={0.5}>
@@ -217,6 +223,39 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
               >
                 {minutes}:{seconds.toString().padStart(2, "0")}
               </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={0.5}
+              onClick={() => {
+                void navigator.clipboard.writeText(state.seed);
+                setSeedCopied(true);
+                setTimeout(() => setSeedCopied(false), 2000);
+              }}
+              sx={{
+                cursor: "pointer",
+                borderRadius: 1,
+                px: 0.5,
+                "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
+              }}
+            >
+              <Hash size={14} color="var(--mui-palette-text-secondary)" />
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                fontFamily="var(--font-geist-mono), monospace"
+              >
+                {state.seed}
+              </Typography>
+              {seedCopied ? (
+                <ClipboardCheck
+                  size={12}
+                  color="var(--mui-palette-success-main)"
+                />
+              ) : (
+                <Copy size={12} color="var(--mui-palette-text-secondary)" />
+              )}
             </Stack>
           </Stack>
 

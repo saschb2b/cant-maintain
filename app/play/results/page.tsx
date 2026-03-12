@@ -55,6 +55,8 @@ export async function generateMetadata({
  * Renders a minimal page so crawlers can read OG meta tags,
  * then redirects browsers to /play via client-side navigation.
  */
-export default function ResultsPage() {
-  return <ResultsRedirect />;
+export default async function ResultsPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const seed = typeof params.seed === "string" ? params.seed : undefined;
+  return <ResultsRedirect seed={seed} />;
 }
