@@ -2,6 +2,18 @@
 
 All notable changes to **Can't Maintain** are documented here.
 
+## [0.9.0] - 2026-03-13
+
+### Added
+
+- **Lobby screen** — new pre-game screen to customize sessions with category filtering, seeded play, and seed sharing
+- **Daily & Weekly challenges** — deterministic seeds that are the same for all players worldwide, resetting on schedule
+- **Game history** — track played seeds with best scores, streaks, and play counts (localStorage-backed)
+- **Activity graph** — GitHub-style contribution heatmap showing play frequency over the last year
+- Retry (same seed) and New Game options on the results screen
+
+---
+
 ## [0.8.0] - 2026-03-07
 
 ### Added
