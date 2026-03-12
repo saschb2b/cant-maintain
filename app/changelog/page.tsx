@@ -114,35 +114,58 @@ export default function ChangelogPage() {
 
                 <TimelineContent sx={{ pb: { xs: 4, md: 5 } }}>
                   <Paper
-                    variant="outlined"
+                    elevation={0}
                     sx={{
-                      p: { xs: 2, md: 3 },
+                      border: 1,
                       borderColor: isLatest ? "primary.main" : "divider",
+                      overflow: "hidden",
                     }}
                   >
+                    {/* Card header */}
                     <Stack
                       direction="row"
                       spacing={1}
                       alignItems="center"
-                      sx={{ mb: 2 }}
+                      sx={{
+                        px: { xs: 2, md: 3 },
+                        py: 1,
+                        bgcolor: "secondary.main",
+                        borderBottom: 1,
+                        borderColor: isLatest ? "primary.main" : "divider",
+                      }}
                     >
-                      <Chip
-                        label={`v${entry.version}`}
-                        size="small"
-                        color={isLatest ? "primary" : "default"}
-                        variant={isLatest ? "filled" : "outlined"}
-                      />
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        fontWeight={600}
+                        fontFamily="var(--font-geist-mono), monospace"
+                        sx={{ fontSize: "0.72rem" }}
+                      >
+                        v{entry.version}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        color="text.disabled"
+                        sx={{ fontSize: "0.68rem" }}
+                      >
                         {entry.date}
                       </Typography>
                       {isLatest && (
-                        <Typography variant="caption" color="primary">
-                          Latest
-                        </Typography>
+                        <Chip
+                          label="Latest"
+                          size="small"
+                          color="primary"
+                          sx={{
+                            height: 18,
+                            fontSize: "0.6rem",
+                            ml: "auto",
+                          }}
+                        />
                       )}
                     </Stack>
 
-                    <Stack spacing={2}>
+                    {/* Card body */}
+                    <Stack spacing={2} sx={{ p: { xs: 2, md: 3 } }}>
                       {entry.sections.map((section) => {
                         const color = getSectionColor(section.type);
                         return (
@@ -152,7 +175,7 @@ export default function ChangelogPage() {
                               size="small"
                               color={color}
                               variant="outlined"
-                              sx={{ mb: 1 }}
+                              sx={{ mb: 1, height: 22, fontSize: "0.7rem" }}
                             />
                             <List dense disablePadding>
                               {section.items.map((item, itemIdx) => {
