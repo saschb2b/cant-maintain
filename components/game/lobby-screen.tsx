@@ -23,6 +23,7 @@ import type { Challenge, ChallengeCategory } from "@/lib/game/types";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
 import { decodeSeed, generateSeed, seedFromKey, getTodayKey, getWeekKey } from "@/lib/game/seeded-random";
 import { getHistory, getEntryBySeed, formatRelativeDate, type HistoryEntry } from "@/lib/game/history";
+import { ActivityGraph } from "./activity-graph";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Tooltip from "@mui/material/Tooltip";
@@ -500,6 +501,7 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
     </Typography>
     <Stack
       direction={{ xs: "column", md: "row" }}
+      alignItems={{ md: "flex-start" }}
       spacing={{ xs: 2, md: 3 }}
     >
       {/* Daily & Weekly — 2/3 */}
@@ -653,6 +655,34 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
         )}
       </Paper>
     </Stack>
+    </Box>
+
+    {/* Activity graph */}
+    <Box sx={{ pb: { xs: 3, md: 6 } }}>
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        fontFamily="var(--font-geist-mono), monospace"
+        sx={{
+          fontSize: "0.63rem",
+          letterSpacing: "0.05em",
+          textTransform: "uppercase",
+          mb: 1.5,
+          display: "block",
+        }}
+      >
+        Activity
+      </Typography>
+      <Paper
+        elevation={0}
+        sx={{
+          border: 1,
+          borderColor: "divider",
+          p: { xs: 2, md: 3 },
+        }}
+      >
+        <ActivityGraph />
+      </Paper>
     </Box>
     </>
   );

@@ -5,6 +5,7 @@ import { trackEvent } from "../analytics";
 import type { Challenge, ChallengeCategory, Difficulty, GameState } from "./types";
 import { createRng, encodeSeed, hashSeed } from "./seeded-random";
 import { recordGame } from "./history";
+import { recordActivity } from "./activity";
 
 /** Fisher-Yates shuffle (immutable) using a provided RNG. */
 function shuffle<T>(arr: T[], rng: () => number): T[] {
@@ -200,6 +201,7 @@ export function useGame(challengePool: Challenge[], seed: string | null, exclude
           durationSec: Math.round((finishedAt - prev.startedAt) / 1000),
         });
         recordGame(prev.seed, prev.score, prev.challenges.length, prev.bestStreak);
+        recordActivity();
         return {
           ...prev,
           reviewIndex: null,
