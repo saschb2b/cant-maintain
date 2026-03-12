@@ -562,70 +562,94 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
             </Typography>
           </Box>
         ) : (
-          <Stack spacing={0} sx={{ py: 0.5 }}>
-            {history.slice(0, 6).map((entry) => {
-              const pct = Math.round((entry.bestScore / entry.total) * 100);
-              return (
-                <Box
-                  key={entry.seed}
-                  onClick={() => {
-                    const { rawSeed: s, excludedCategories: ec } = decodeSeed(entry.seed);
-                    onStart(s, ec);
-                  }}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: { xs: 1.5, md: 1 },
-                    py: { xs: 1, md: 0.75 },
-                    px: 2,
-                    cursor: "pointer",
-                    transition: "background 0.15s ease",
-                    "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
-                    minHeight: { xs: 40, md: "auto" },
-                  }}
-                >
-                  <Typography
-                    variant="caption"
-                    fontFamily="var(--font-geist-mono), monospace"
-                    fontWeight={600}
-                    sx={{ fontSize: "0.72rem", letterSpacing: "0.06em" }}
-                  >
-                    {entry.seed}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    fontFamily="var(--font-geist-mono), monospace"
+          <Box sx={{ position: "relative" }}>
+            <Stack
+              spacing={0}
+              sx={{
+                py: 0.5,
+                maxHeight: 300,
+                overflowY: "auto",
+                scrollbarWidth: "thin",
+              }}
+            >
+              {history.map((entry) => {
+                const pct = Math.round((entry.bestScore / entry.total) * 100);
+                return (
+                  <Box
+                    key={entry.seed}
+                    onClick={() => {
+                      const { rawSeed: s, excludedCategories: ec } = decodeSeed(entry.seed);
+                      onStart(s, ec);
+                    }}
                     sx={{
-                      fontSize: "0.72rem",
-                      color: pct >= 70 ? "success.main" : pct >= 50 ? "warning.main" : "text.secondary",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: { xs: 1.5, md: 1 },
+                      py: { xs: 1, md: 0.75 },
+                      px: 2,
+                      cursor: "pointer",
+                      transition: "background 0.15s ease",
+                      "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
+                      minHeight: { xs: 40, md: "auto" },
                     }}
                   >
-                    {entry.bestScore}/{entry.total}
-                  </Typography>
-                  {(entry.bestStreak ?? 0) > 0 && (
-                    <Stack direction="row" alignItems="center" spacing={0.25}>
-                      <Flame size={10} color="var(--mui-palette-text-disabled)" />
-                      <Typography
-                        variant="caption"
-                        color="text.disabled"
-                        fontFamily="var(--font-geist-mono), monospace"
-                        sx={{ fontSize: "0.65rem" }}
-                      >
-                        {entry.bestStreak}
-                      </Typography>
-                    </Stack>
-                  )}
-                  <Typography
-                    variant="caption"
-                    color="text.disabled"
-                    sx={{ fontSize: "0.62rem", ml: "auto", flexShrink: 0 }}
-                  >
-                    {formatRelativeDate(entry.lastPlayedAt)}
-                  </Typography>
-                </Box>
-              );
-            })}
-          </Stack>
+                    <Typography
+                      variant="caption"
+                      fontFamily="var(--font-geist-mono), monospace"
+                      fontWeight={600}
+                      sx={{ fontSize: "0.72rem", letterSpacing: "0.06em" }}
+                    >
+                      {entry.seed}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      fontFamily="var(--font-geist-mono), monospace"
+                      sx={{
+                        fontSize: "0.72rem",
+                        color: pct >= 70 ? "success.main" : pct >= 50 ? "warning.main" : "text.secondary",
+                      }}
+                    >
+                      {entry.bestScore}/{entry.total}
+                    </Typography>
+                    {(entry.bestStreak ?? 0) > 0 && (
+                      <Stack direction="row" alignItems="center" spacing={0.25}>
+                        <Flame size={10} color="var(--mui-palette-text-disabled)" />
+                        <Typography
+                          variant="caption"
+                          color="text.disabled"
+                          fontFamily="var(--font-geist-mono), monospace"
+                          sx={{ fontSize: "0.65rem" }}
+                        >
+                          {entry.bestStreak}
+                        </Typography>
+                      </Stack>
+                    )}
+                    <Typography
+                      variant="caption"
+                      color="text.disabled"
+                      sx={{ fontSize: "0.62rem", ml: "auto", flexShrink: 0 }}
+                    >
+                      {formatRelativeDate(entry.lastPlayedAt)}
+                    </Typography>
+                  </Box>
+                );
+              })}
+            </Stack>
+            {/* Bottom fade hint when list overflows */}
+            {history.length > 6 && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 32,
+                  background: "linear-gradient(transparent, var(--mui-palette-background-paper))",
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+          </Box>
         )}
       </Paper>
     </Stack>
