@@ -17,6 +17,8 @@ interface GameFinishedData {
   total: number;
   bestStreak: number;
   durationSec: number;
+  seed: string;
+  gameType: "daily" | "weekly" | "custom";
 }
 
 interface LinkClickedData {
@@ -35,11 +37,25 @@ interface GameRestartedData {
   previousTotal: number;
 }
 
+interface GameStartedData {
+  seed: string;
+  type: "daily" | "weekly" | "custom";
+  categories: number;
+}
+
+interface HistoryReplayedData {
+  seed: string;
+  previousBestScore: number;
+  plays: number;
+}
+
 interface EventMap {
   "challenge-answered": ChallengeAnsweredData;
   "game-finished": GameFinishedData;
   "game-shared": GameSharedData;
   "game-restarted": GameRestartedData;
+  "game-started": GameStartedData;
+  "history-replayed": HistoryReplayedData;
   "source-link-clicked": LinkClickedData;
   "learn-link-clicked": LinkClickedData;
 }

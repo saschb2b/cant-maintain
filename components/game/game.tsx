@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Challenge, ChallengeCategory } from "@/lib/game/types";
+import type { GameType } from "./lobby-screen";
 import { useGame } from "@/lib/game/use-game";
 import { generateSeed } from "@/lib/game/seeded-random";
 import { CodePanel } from "./code-panel";
@@ -29,8 +30,11 @@ interface GameProps {
 export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   const [activeSeed, setActiveSeed] = useState<string | null>(null);
   const [lobbySeed, setLobbySeed] = useState(defaultSeed);
-  const [excludedCategories, setExcludedCategories] = useState<Set<ChallengeCategory>>(new Set());
+  const [excludedCategories, setExcludedCategories] = useState<
+    Set<ChallengeCategory>
+  >(new Set());
   const [retryKey, setRetryKey] = useState(0);
+  const [gameType, setGameType] = useState<GameType>("custom");
 
   const {
     state,
@@ -46,11 +50,12 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
     restartGame,
     reviewQuestion,
     exitReview,
-  } = useGame(challenges, activeSeed, excludedCategories, retryKey);
+  } = useGame(challenges, activeSeed, excludedCategories, retryKey, gameType);
 
   const handleLobbyStart = useCallback(
-    (seed: string, excluded: Set<ChallengeCategory>) => {
+    (seed: string, excluded: Set<ChallengeCategory>, type: GameType) => {
       setExcludedCategories(excluded);
+      setGameType(type);
       setActiveSeed(seed || generateSeed());
     },
     [],
@@ -174,7 +179,14 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   }, [state?.currentIndex]);
 
   if (!activeSeed) {
-    return <LobbyScreen challenges={challenges} onStart={handleLobbyStart} defaultSeed={lobbySeed} defaultExcluded={excludedCategories} />;
+    return (
+      <LobbyScreen
+        challenges={challenges}
+        onStart={handleLobbyStart}
+        defaultSeed={lobbySeed}
+        defaultExcluded={excludedCategories}
+      />
+    );
   }
 
   if (!state) {
@@ -195,7 +207,13 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   }
 
   if (state.isFinished) {
-    return <ResultsScreen state={state} onRetry={handleRetry} onNewGame={handleNewGame} />;
+    return (
+      <ResultsScreen
+        state={state}
+        onRetry={handleRetry}
+        onNewGame={handleNewGame}
+      />
+    );
   }
 
   if (!displayChallenge) return null;

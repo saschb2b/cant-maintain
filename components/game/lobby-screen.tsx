@@ -34,6 +34,7 @@ import {
   formatRelativeDate,
   type HistoryEntry,
 } from "@/lib/game/history";
+import { trackEvent } from "@/lib/analytics";
 import { ActivityGraph } from "./activity-graph";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -186,11 +187,14 @@ function ChallengeCard({
   );
 }
 
+export type GameType = "daily" | "weekly" | "custom";
+
 interface LobbyScreenProps {
   challenges: Challenge[];
   onStart: (
     rawSeed: string,
     excludedCategories: Set<ChallengeCategory>,
+    gameType: GameType,
   ) => void;
   defaultSeed?: string;
   defaultExcluded?: Set<ChallengeCategory>;
@@ -266,9 +270,19 @@ export function LobbyScreen({
     const trimmed = seedInput.trim().toUpperCase();
     if (trimmed) {
       const { rawSeed, excludedCategories } = decodeSeed(trimmed);
-      onStart(rawSeed, excludedCategories);
+      trackEvent("game-started", {
+        seed: trimmed,
+        type: "custom",
+        categories: ALL_CATEGORIES.length - excludedCategories.size,
+      });
+      onStart(rawSeed, excludedCategories, "custom");
     } else {
-      onStart("", excluded);
+      trackEvent("game-started", {
+        seed: "",
+        type: "custom",
+        categories: enabledCount,
+      });
+      onStart("", excluded, "custom");
     }
   };
 
@@ -557,7 +571,14 @@ export function LobbyScreen({
               sublabel="Resets every day"
               seed={dailySeed}
               result={dailyResult}
-              onPlay={() => onStart(dailySeed, new Set())}
+              onPlay={() => {
+                trackEvent("game-started", {
+                  seed: dailySeed,
+                  type: "daily",
+                  categories: ALL_CATEGORIES.length,
+                });
+                onStart(dailySeed, new Set(), "daily");
+              }}
             />
             <ChallengeCard
               icon={<Calendar size={18} />}
@@ -565,7 +586,14 @@ export function LobbyScreen({
               sublabel="Resets every Monday"
               seed={weeklySeed}
               result={weeklyResult}
-              onPlay={() => onStart(weeklySeed, new Set())}
+              onPlay={() => {
+                trackEvent("game-started", {
+                  seed: weeklySeed,
+                  type: "weekly",
+                  categories: ALL_CATEGORIES.length,
+                });
+                onStart(weeklySeed, new Set(), "weekly");
+              }}
             />
           </Stack>
 
@@ -631,9 +659,14 @@ export function LobbyScreen({
                       <Box
                         key={entry.seed}
                         onClick={() => {
+                          trackEvent("history-replayed", {
+                            seed: entry.seed,
+                            previousBestScore: entry.bestScore,
+                            plays: entry.plays,
+                          });
                           const { rawSeed: s, excludedCategories: ec } =
                             decodeSeed(entry.seed);
-                          onStart(s, ec);
+                          onStart(s, ec, "custom");
                         }}
                         sx={{
                           display: "flex",

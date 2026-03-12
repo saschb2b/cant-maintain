@@ -92,4 +92,6 @@ export interface GameState {
   finishedAt: number | null;
   /** Seed string used to generate this session's challenge order. */
   seed: string;
+  /** How the game was started. */
+  gameType: "daily" | "weekly" | "custom";
 }

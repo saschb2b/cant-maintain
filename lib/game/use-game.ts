@@ -81,6 +81,7 @@ function createInitialState(
   allChallenges: Challenge[],
   rawSeed: string,
   excludedCategories: Set<ChallengeCategory>,
+  gameType: "daily" | "weekly" | "custom",
 ): GameState {
   const rng = createRng(hashSeed(rawSeed));
   return {
@@ -95,6 +96,7 @@ function createInitialState(
     startedAt: Date.now(),
     finishedAt: null,
     seed: encodeSeed(rawSeed, excludedCategories),
+    gameType,
   };
 }
 
@@ -104,6 +106,7 @@ export function useGame(
   seed: string | null,
   excludedCategories = new Set<ChallengeCategory>(),
   retryKey = 0,
+  gameType: "daily" | "weekly" | "custom" = "custom",
 ) {
   const [state, setState] = useState<GameState | null>(null);
   const challengeShownAt = useRef<number>(0);
@@ -112,9 +115,11 @@ export function useGame(
   // retryKey forces re-initialization for same-seed retries
   useEffect(() => {
     if (seed)
-      setState(createInitialState(challengePool, seed, excludedCategories));
+      setState(
+        createInitialState(challengePool, seed, excludedCategories, gameType),
+      );
     else setState(null);
-  }, [challengePool, seed, excludedCategories, retryKey]);
+  }, [challengePool, seed, excludedCategories, retryKey, gameType]);
 
   // Reset timer whenever the current challenge changes
   useEffect(() => {
@@ -210,6 +215,8 @@ export function useGame(
           total: prev.challenges.length,
           bestStreak: prev.bestStreak,
           durationSec: Math.round((finishedAt - prev.startedAt) / 1000),
+          seed: prev.seed,
+          gameType: prev.gameType,
         });
         recordGame(
           prev.seed,
