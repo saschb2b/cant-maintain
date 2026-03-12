@@ -82,13 +82,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
-      <header>
+      <head>
         <Script
           async
           src="https://umami.saschb2b.com/script.js"
           data-website-id="c4123bd8-26b2-45df-9f44-ff7139d83c30"
         />
-      </header>
+      </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
