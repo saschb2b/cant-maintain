@@ -11,7 +11,20 @@ const MAX_WEEKS = 52;
 const CELL_GAP = 3;
 const LABEL_WIDTH = 28;
 const DAY_LABELS = ["Mon", "", "Wed", "", "Fri", "", ""];
-const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const MONTH_NAMES = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 function getLevel(count: number): number {
   if (count === 0) return 0;
@@ -21,13 +34,7 @@ function getLevel(count: number): number {
   return 4;
 }
 
-const LEVEL_COLORS = [
-  "#E8E0D4",
-  "#A8C5AE",
-  "#6F9E7A",
-  "#4A7A62",
-  "#2F5A45",
-];
+const LEVEL_COLORS = ["#E8E0D4", "#A8C5AE", "#6F9E7A", "#4A7A62", "#2F5A45"];
 
 function formatDate(d: Date): string {
   return d.toLocaleDateString("en-US", {
@@ -39,7 +46,10 @@ function formatDate(d: Date): string {
 }
 
 /** Calculate how many weeks fit in a given width, keeping cell size ≥ 10px. */
-function calcLayout(containerWidth: number): { weeks: number; cellSize: number } {
+function calcLayout(containerWidth: number): {
+  weeks: number;
+  cellSize: number;
+} {
   const available = containerWidth - LABEL_WIDTH;
   // Try to fill the space with the largest cells ≥ 10px
   // available = weeks * (cellSize + gap) - gap
@@ -53,8 +63,10 @@ function calcLayout(containerWidth: number): { weeks: number; cellSize: number }
 
 export function ActivityGraph() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [layout, setLayout] = useState<{ weeks: number; cellSize: number } | null>(null);
-  const [grid, setGrid] = useState<ReturnType<typeof getActivityGrid>>([]);
+  const [layout, setLayout] = useState<{
+    weeks: number;
+    cellSize: number;
+  } | null>(null);
 
   const measure = useCallback(() => {
     if (!containerRef.current) return;
@@ -69,12 +81,13 @@ export function ActivityGraph() {
     return () => observer.disconnect();
   }, [measure]);
 
-  useEffect(() => {
-    if (layout) setGrid(getActivityGrid(layout.weeks));
-  }, [layout]);
+  const grid = useMemo(
+    () => (layout ? getActivityGrid(layout.weeks) : []),
+    [layout],
+  );
 
   const weeks = useMemo(() => {
-    const result: typeof grid[] = [];
+    const result: (typeof grid)[] = [];
     for (let i = 0; i < grid.length; i += 7) {
       result.push(grid.slice(i, i + 7));
     }
@@ -89,14 +102,17 @@ export function ActivityGraph() {
       if (!firstDay) continue;
       const month = firstDay.date.getMonth();
       if (month !== lastMonth) {
-        labels.push({ weekIndex: w, label: MONTH_NAMES[month]! });
+        labels.push({ weekIndex: w, label: MONTH_NAMES[month] ?? "" });
         lastMonth = month;
       }
     }
     return labels;
   }, [weeks]);
 
-  const totalGames = useMemo(() => grid.reduce((sum, d) => sum + d.count, 0), [grid]);
+  const totalGames = useMemo(
+    () => grid.reduce((sum, d) => sum + d.count, 0),
+    [grid],
+  );
   const cellSize = layout?.cellSize ?? 12;
   const step = cellSize + CELL_GAP;
 
@@ -112,14 +128,21 @@ export function ActivityGraph() {
           >
             {totalGames === 0
               ? "No activity yet — play a game to start your streak!"
-              : `${totalGames} game${totalGames === 1 ? "" : "s"} in the last ${layout.weeks} weeks`}
+              : `${String(totalGames)} game${totalGames === 1 ? "" : "s"} in the last ${String(layout.weeks)} weeks`}
           </Typography>
 
           {/* Month labels */}
-          <Box sx={{ position: "relative", height: 14, ml: `${LABEL_WIDTH}px`, mb: 0.5 }}>
+          <Box
+            sx={{
+              position: "relative",
+              height: 14,
+              ml: `${String(LABEL_WIDTH)}px`,
+              mb: 0.5,
+            }}
+          >
             {monthLabels.map(({ weekIndex, label }) => (
               <Typography
-                key={`${label}-${weekIndex}`}
+                key={`${label}-${String(weekIndex)}`}
                 variant="caption"
                 color="text.disabled"
                 sx={{
@@ -141,13 +164,20 @@ export function ActivityGraph() {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: `${CELL_GAP}px`,
+                gap: `${String(CELL_GAP)}px`,
                 width: LABEL_WIDTH,
                 flexShrink: 0,
               }}
             >
               {DAY_LABELS.map((label, i) => (
-                <Box key={i} sx={{ height: cellSize, display: "flex", alignItems: "center" }}>
+                <Box
+                  key={i}
+                  sx={{
+                    height: cellSize,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   <Typography
                     variant="caption"
                     color="text.disabled"
@@ -160,14 +190,21 @@ export function ActivityGraph() {
             </Box>
 
             {/* Cells */}
-            <Box sx={{ display: "flex", gap: `${CELL_GAP}px`, flex: 1, minWidth: 0 }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: `${String(CELL_GAP)}px`,
+                flex: 1,
+                minWidth: 0,
+              }}
+            >
               {weeks.map((week, wIdx) => (
                 <Box
                   key={wIdx}
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: `${CELL_GAP}px`,
+                    gap: `${String(CELL_GAP)}px`,
                   }}
                 >
                   {week.map((day) => {
@@ -175,7 +212,7 @@ export function ActivityGraph() {
                     const tooltip =
                       day.count === 0
                         ? `No games on ${formatDate(day.date)}`
-                        : `${day.count} game${day.count === 1 ? "" : "s"} on ${formatDate(day.date)}`;
+                        : `${String(day.count)} game${day.count === 1 ? "" : "s"} on ${formatDate(day.date)}`;
                     return (
                       <Tooltip
                         key={day.dateKey}
@@ -219,7 +256,11 @@ export function ActivityGraph() {
               mt: 1.5,
             }}
           >
-            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.55rem", mr: 0.25 }}>
+            <Typography
+              variant="caption"
+              color="text.disabled"
+              sx={{ fontSize: "0.55rem", mr: 0.25 }}
+            >
               Less
             </Typography>
             {LEVEL_COLORS.map((color, i) => (
@@ -233,7 +274,11 @@ export function ActivityGraph() {
                 }}
               />
             ))}
-            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.55rem", ml: 0.25 }}>
+            <Typography
+              variant="caption"
+              color="text.disabled"
+              sx={{ fontSize: "0.55rem", ml: 0.25 }}
+            >
               More
             </Typography>
           </Box>

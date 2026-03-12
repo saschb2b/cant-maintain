@@ -24,7 +24,7 @@ function writeActivity(map: ActivityMap) {
 
 /** Format a Date as "YYYY-MM-DD" in local time. */
 function toDateKey(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 /** Record one completed game for today. */
@@ -44,7 +44,7 @@ export function getActivity(): ActivityMap {
  * Build activity data for the last N weeks ending today.
  * Returns an array of { date, count, dateKey } for each day.
  */
-export function getActivityGrid(weeks: number = 20): {
+export function getActivityGrid(weeks = 20): {
   date: Date;
   dateKey: string;
   count: number;

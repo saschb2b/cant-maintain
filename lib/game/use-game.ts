@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "../analytics";
-import type { Challenge, ChallengeCategory, Difficulty, GameState } from "./types";
+import type {
+  Challenge,
+  ChallengeCategory,
+  Difficulty,
+  GameState,
+} from "./types";
 import { createRng, encodeSeed, hashSeed } from "./seeded-random";
 import { recordGame } from "./history";
 import { recordActivity } from "./activity";
@@ -46,9 +51,10 @@ function prepareChallenges(
   rng: () => number,
   excludedCategories: Set<ChallengeCategory>,
 ): Challenge[] {
-  const pool = excludedCategories.size === 0
-    ? allChallenges
-    : allChallenges.filter((c) => !excludedCategories.has(c.category));
+  const pool =
+    excludedCategories.size === 0
+      ? allChallenges
+      : allChallenges.filter((c) => !excludedCategories.has(c.category));
   const byDifficulty = pool.reduce<Record<Difficulty, Challenge[]>>(
     (acc, c) => {
       acc[c.difficulty].push(c);
@@ -93,15 +99,20 @@ function createInitialState(
 }
 
 /** Core game state hook. Handles scoring, progression, and answers. */
-export function useGame(challengePool: Challenge[], seed: string | null, excludedCategories: Set<ChallengeCategory> = new Set(), retryKey = 0) {
+export function useGame(
+  challengePool: Challenge[],
+  seed: string | null,
+  excludedCategories = new Set<ChallengeCategory>(),
+  retryKey = 0,
+) {
   const [state, setState] = useState<GameState | null>(null);
   const challengeShownAt = useRef<number>(0);
 
   // Initialize game when a seed is provided (deferred to client for hydration safety)
   // retryKey forces re-initialization for same-seed retries
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
-    if (seed) setState(createInitialState(challengePool, seed, excludedCategories));
+    if (seed)
+      setState(createInitialState(challengePool, seed, excludedCategories));
     else setState(null);
   }, [challengePool, seed, excludedCategories, retryKey]);
 
@@ -200,7 +211,12 @@ export function useGame(challengePool: Challenge[], seed: string | null, exclude
           bestStreak: prev.bestStreak,
           durationSec: Math.round((finishedAt - prev.startedAt) / 1000),
         });
-        recordGame(prev.seed, prev.score, prev.challenges.length, prev.bestStreak);
+        recordGame(
+          prev.seed,
+          prev.score,
+          prev.challenges.length,
+          prev.bestStreak,
+        );
         recordActivity();
         return {
           ...prev,
