@@ -91,16 +91,17 @@ function createInitialState(
 }
 
 /** Core game state hook. Handles scoring, progression, and answers. */
-export function useGame(challengePool: Challenge[], seed: string | null, excludedCategories: Set<ChallengeCategory> = new Set()) {
+export function useGame(challengePool: Challenge[], seed: string | null, excludedCategories: Set<ChallengeCategory> = new Set(), retryKey = 0) {
   const [state, setState] = useState<GameState | null>(null);
   const challengeShownAt = useRef<number>(0);
 
   // Initialize game when a seed is provided (deferred to client for hydration safety)
+  // retryKey forces re-initialization for same-seed retries
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (seed) setState(createInitialState(challengePool, seed, excludedCategories));
     else setState(null);
-  }, [challengePool, seed, excludedCategories]);
+  }, [challengePool, seed, excludedCategories, retryKey]);
 
   // Reset timer whenever the current challenge changes
   useEffect(() => {

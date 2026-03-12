@@ -37,11 +37,13 @@ import {
 interface ResultsScreenProps {
   /** Complete game state with all challenges and answers. */
   state: GameState;
-  /** Called when the user clicks "Play Again" to start a fresh game. */
-  onRestart: () => void;
+  /** Replay the exact same game (same seed + categories). */
+  onRetry: () => void;
+  /** Start a new game — goes to lobby with categories preserved. */
+  onNewGame: () => void;
 }
 
-export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
+export function ResultsScreen({ state, onRetry, onNewGame }: ResultsScreenProps) {
   const total = state.challenges.length;
   const correct = Object.values(state.answers).filter(
     (a) => a.result === "correct",
@@ -279,10 +281,17 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
             <Button
               variant="contained"
               size="large"
-              onClick={onRestart}
+              onClick={onRetry}
               startIcon={<RotateCcw size={18} />}
             >
-              Play Again
+              Retry
+            </Button>
+            <Button
+              variant="text"
+              size="large"
+              onClick={onNewGame}
+            >
+              New Game
             </Button>
           </Stack>
         </Paper>

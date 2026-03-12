@@ -48,13 +48,14 @@ interface LobbyScreenProps {
   challenges: Challenge[];
   onStart: (rawSeed: string, excludedCategories: Set<ChallengeCategory>) => void;
   defaultSeed?: string;
+  defaultExcluded?: Set<ChallengeCategory>;
 }
 
-export function LobbyScreen({ challenges, onStart, defaultSeed = "" }: LobbyScreenProps) {
+export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcluded }: LobbyScreenProps) {
   const defaultDecoded = defaultSeed ? decodeSeed(defaultSeed) : null;
   const [seedInput, setSeedInput] = useState(defaultSeed);
   const [excluded, setExcluded] = useState<Set<ChallengeCategory>>(
-    defaultDecoded?.excludedCategories ?? new Set(),
+    defaultDecoded?.excludedCategories ?? defaultExcluded ?? new Set(),
   );
 
   const hasSeed = seedInput.trim().length > 0;

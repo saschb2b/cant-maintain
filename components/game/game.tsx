@@ -30,6 +30,7 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   const [activeSeed, setActiveSeed] = useState<string | null>(null);
   const [lobbySeed, setLobbySeed] = useState(defaultSeed);
   const [excludedCategories, setExcludedCategories] = useState<Set<ChallengeCategory>>(new Set());
+  const [retryKey, setRetryKey] = useState(0);
 
   const {
     state,
@@ -45,7 +46,7 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
     restartGame,
     reviewQuestion,
     exitReview,
-  } = useGame(challenges, activeSeed, excludedCategories);
+  } = useGame(challenges, activeSeed, excludedCategories, retryKey);
 
   const handleLobbyStart = useCallback(
     (seed: string, excluded: Set<ChallengeCategory>) => {
@@ -55,7 +56,14 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
     [],
   );
 
-  const handleRestart = useCallback(() => {
+  /** Replay the exact same game (same seed + categories, skip lobby). */
+  const handleRetry = useCallback(() => {
+    restartGame();
+    setRetryKey((k) => k + 1);
+  }, [restartGame]);
+
+  /** New game — go to lobby with categories preserved but no seed. */
+  const handleNewGame = useCallback(() => {
     restartGame();
     setActiveSeed(null);
     setLobbySeed(undefined);
@@ -166,7 +174,7 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   }, [state?.currentIndex]);
 
   if (!activeSeed) {
-    return <LobbyScreen challenges={challenges} onStart={handleLobbyStart} defaultSeed={lobbySeed} />;
+    return <LobbyScreen challenges={challenges} onStart={handleLobbyStart} defaultSeed={lobbySeed} defaultExcluded={excludedCategories} />;
   }
 
   if (!state) {
@@ -187,7 +195,7 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   }
 
   if (state.isFinished) {
-    return <ResultsScreen state={state} onRestart={handleRestart} />;
+    return <ResultsScreen state={state} onRetry={handleRetry} onNewGame={handleNewGame} />;
   }
 
   if (!displayChallenge) return null;
