@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -11,11 +11,14 @@ import {
   ArrowRight,
   Hash,
   Dices,
+  History,
+  Flame,
   X,
 } from "lucide-react";
 import type { Challenge, ChallengeCategory } from "@/lib/game/types";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
 import { decodeSeed, generateSeed } from "@/lib/game/seeded-random";
+import { getHistory, formatRelativeDate, type HistoryEntry } from "@/lib/game/history";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Tooltip from "@mui/material/Tooltip";
@@ -36,6 +39,9 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
   const [excluded, setExcluded] = useState<Set<ChallengeCategory>>(
     defaultDecoded?.excludedCategories ?? defaultExcluded ?? new Set(),
   );
+
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  useEffect(() => { setHistory(getHistory()); }, []);
 
   const hasSeed = seedInput.trim().length > 0;
   const seedDecoded = hasSeed ? decodeSeed(seedInput.trim().toUpperCase()) : null;
@@ -86,6 +92,7 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
   };
 
   return (
+    <>
     <Stack
       direction={{ xs: "column", md: "row" }}
       alignItems={{ md: "flex-start" }}
@@ -215,6 +222,7 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
             </Tooltip>
           </Stack>
         </Box>
+
       </Box>
 
       {/* Right column — categories */}
@@ -333,5 +341,100 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
 
       </Box>
     </Stack>
+
+    {/* History — full width below both columns */}
+    {history.length > 0 && (
+      <Box sx={{ pb: { xs: 3, md: 6 } }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={0.75}
+          sx={{ mb: 1 }}
+        >
+          <History size={13} color="var(--mui-palette-text-secondary)" />
+          <Typography variant="caption" color="text.secondary" fontWeight={500}>
+            Previous games
+          </Typography>
+        </Stack>
+        <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 1 }}>
+          {history.map((entry) => {
+            const pct = Math.round((entry.bestScore / entry.total) * 100);
+            return (
+              <Box
+                key={entry.seed}
+                onClick={() => {
+                  const { rawSeed: s, excludedCategories: ec } = decodeSeed(entry.seed);
+                  onStart(s, ec);
+                }}
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 1,
+                  py: 0.75,
+                  px: 1.5,
+                  borderRadius: 1,
+                  cursor: "pointer",
+                  bgcolor: "rgba(0,0,0,0.03)",
+                  transition: "background 0.15s ease",
+                  "&:hover": {
+                    bgcolor: "rgba(0,0,0,0.07)",
+                  },
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  fontWeight={600}
+                  sx={{ fontSize: "0.75rem", letterSpacing: "0.08em" }}
+                >
+                  {entry.seed}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{
+                    fontSize: "0.72rem",
+                    color: pct >= 70 ? "success.main" : pct >= 50 ? "warning.main" : "text.secondary",
+                  }}
+                >
+                  {entry.bestScore}/{entry.total}
+                </Typography>
+                {(entry.bestStreak ?? 0) > 0 && (
+                  <Stack direction="row" alignItems="center" spacing={0.25}>
+                    <Flame size={10} color="var(--mui-palette-text-disabled)" />
+                    <Typography
+                      variant="caption"
+                      color="text.disabled"
+                      fontFamily="var(--font-geist-mono), monospace"
+                      sx={{ fontSize: "0.65rem" }}
+                    >
+                      {entry.bestStreak}
+                    </Typography>
+                  </Stack>
+                )}
+                {entry.plays > 1 && (
+                  <Typography
+                    variant="caption"
+                    color="text.disabled"
+                    fontFamily="var(--font-geist-mono), monospace"
+                    sx={{ fontSize: "0.65rem" }}
+                  >
+                    {entry.plays}x
+                  </Typography>
+                )}
+                <Typography
+                  variant="caption"
+                  color="text.disabled"
+                  sx={{ fontSize: "0.62rem" }}
+                >
+                  {formatRelativeDate(entry.lastPlayedAt)}
+                </Typography>
+              </Box>
+            );
+          })}
+        </Stack>
+      </Box>
+    )}
+    </>
   );
 }
