@@ -107,13 +107,18 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "" }: LobbyScre
   };
 
   return (
-    <Stack spacing={0}>
-      {/* Hero */}
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      alignItems={{ md: "flex-start" }}
+      spacing={{ xs: 4, md: 8 }}
+      sx={{ pt: { xs: 3, md: 12 }, pb: { xs: 3, md: 8 } }}
+    >
+      {/* Left column — title, subtitle, seed, CTA */}
       <Box
         sx={{
-          textAlign: "center",
-          pt: { xs: 4, md: 10 },
-          pb: { xs: 4, md: 6 },
+          flex: 1,
+          minWidth: 0,
+          textAlign: { xs: "center", md: "left" },
         }}
       >
         <Typography
@@ -122,11 +127,11 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "" }: LobbyScre
           fontWeight={700}
           sx={{
             lineHeight: 1.15,
-            mb: { xs: 1, md: 2 },
+            mb: { xs: 1, md: 1.5 },
             fontSize: { xs: "1.75rem", sm: "2.25rem", md: "2.75rem" },
           }}
         >
-          Ready when you are
+          Customize your game
         </Typography>
 
         <Typography
@@ -134,27 +139,50 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "" }: LobbyScre
           color="text.secondary"
           sx={{
             lineHeight: 1.7,
-            mb: { xs: 3, md: 4 },
-            maxWidth: 440,
-            mx: "auto",
+            mb: { xs: 2, md: 4 },
             fontSize: { xs: "0.9rem", md: "1rem" },
           }}
         >
-          Two code snippets, side by side.
-          Pick the one with the better component API.
+          Focus on specific categories or play them all.
+          Hit Go to jump straight in.
         </Typography>
 
-        {/* What to expect */}
+        {/* CTA */}
         <Stack
           direction="row"
-          spacing={{ xs: 2, md: 4 }}
-          justifyContent="center"
-          sx={{ mb: { xs: 3, md: 5 } }}
+          alignItems="center"
+          spacing={1.5}
+          sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
+        >
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleStart}
+            endIcon={<ArrowRight size={18} />}
+            sx={{
+              px: { xs: 3, md: 5 },
+              py: { xs: 1, md: 1.5 },
+              fontSize: { xs: "0.9rem", md: "1.05rem" },
+            }}
+          >
+            Go
+          </Button>
+        </Stack>
+
+        {/* Info pills */}
+        <Stack
+          direction="row"
+          spacing={{ xs: 2, md: 3 }}
+          sx={{
+            mt: 1.5,
+            mb: { xs: 2.5, md: 3 },
+            justifyContent: { xs: "center", md: "flex-start" },
+          }}
         >
           {[
-            { icon: <Layers size={16} />, label: `${String(sessionCount)} questions` },
-            { icon: <Timer size={16} />, label: "~3 minutes" },
-            { icon: <Eye size={16} />, label: "No trick questions" },
+            { icon: <Layers size={14} />, label: `${String(sessionCount)} questions` },
+            { icon: <Timer size={14} />, label: "~3 min" },
+            { icon: <Eye size={14} />, label: "No tricks" },
           ].map((item) => (
             <Stack
               key={item.label}
@@ -177,263 +205,211 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "" }: LobbyScre
           ))}
         </Stack>
 
-        <Button
-          variant="contained"
-          size="large"
-          onClick={handleStart}
-          endIcon={<ArrowRight size={18} />}
-          sx={{
-            minWidth: 220,
-            py: 1.25,
-            px: 5,
-            fontSize: "1.05rem",
-          }}
-        >
-          Go
-        </Button>
-
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          fontFamily="var(--font-geist-mono), monospace"
-          sx={{ display: "block", mt: 1.5 }}
-        >
-          no signup &middot; instant start
-        </Typography>
+        {/* Seed input */}
+        <Box>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={0.75}
+            sx={{ mb: 0.75, justifyContent: { xs: "center", md: "flex-start" } }}
+          >
+            <Hash size={13} color="var(--mui-palette-text-secondary)" />
+            <Typography variant="caption" color="text.secondary" fontWeight={500}>
+              Seed — play the same game as a friend
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={0.5}
+            sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
+          >
+            <TextField
+              placeholder="e.g. A3X9K2"
+              size="small"
+              value={seedInput}
+              onChange={(e) => setSeedInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleStart();
+              }}
+              slotProps={{
+                htmlInput: {
+                  maxLength: 20,
+                  style: {
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.15em",
+                  },
+                },
+                input: {
+                  endAdornment: hasSeed ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        size="small"
+                        onClick={() => setSeedInput("")}
+                        edge="end"
+                        sx={{ color: "text.disabled", p: 0.5 }}
+                      >
+                        <X size={14} />
+                      </IconButton>
+                    </InputAdornment>
+                  ) : undefined,
+                },
+              }}
+              sx={{ maxWidth: 200 }}
+            />
+            <Tooltip title="Random seed" arrow>
+              <IconButton
+                size="small"
+                onClick={() => setSeedInput(generateSeed())}
+                sx={{
+                  color: "text.secondary",
+                  "&:hover": { color: "text.primary" },
+                }}
+              >
+                <Dices size={18} />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </Box>
       </Box>
 
-      {/* Customize section */}
-      <Box
+      {/* Right column — categories */}
+      <Paper
+        elevation={0}
         sx={{
-          borderTop: 1,
+          border: 1,
           borderColor: "divider",
-          py: { xs: 2, md: 3 },
+          p: { xs: 2.5, md: 3 },
+          flex: 1,
+          minWidth: 0,
+          width: { xs: "100%", md: "auto" },
+          maxWidth: { md: 520 },
+          opacity: hasSeed ? 0.45 : 1,
+          pointerEvents: hasSeed ? "none" : "auto",
+          transition: "opacity 0.2s ease",
         }}
       >
         <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={{ xs: 3, md: 5 }}
-            alignItems="flex-start"
-            sx={{ pt: { xs: 2, md: 3 } }}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ mb: 0.75 }}
+        >
+          <Typography variant="body2" fontWeight={600}>
+            Categories
+          </Typography>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{ fontSize: "0.7rem" }}
           >
-            {/* Seed card */}
-            <Paper
-              elevation={0}
-              sx={{
-                border: 1,
-                borderColor: "divider",
-                p: 3,
-                flex: 1,
-                minWidth: 0,
-                width: { xs: "100%", md: "auto" },
-              }}
-            >
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={0.75}
-                sx={{ mb: 1 }}
-              >
-                <Hash size={14} color="var(--mui-palette-text-secondary)" />
-                <Typography variant="body2" fontWeight={600}>
-                  Seed
-                </Typography>
-              </Stack>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ mb: 2, lineHeight: 1.6 }}
-              >
-                Play the exact same challenges as a friend.
-                Leave empty for a random set.
-              </Typography>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <TextField
-                  placeholder="e.g. A3X9K2"
-                  size="small"
-                  value={seedInput}
-                  onChange={(e) => setSeedInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleStart();
-                  }}
-                  slotProps={{
-                    htmlInput: {
-                      maxLength: 20,
-                      style: {
-                        fontFamily: "var(--font-geist-mono), monospace",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.15em",
-                      },
-                    },
-                    input: {
-                      endAdornment: hasSeed ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            size="small"
-                            onClick={() => setSeedInput("")}
-                            edge="end"
-                            sx={{ color: "text.disabled", p: 0.5 }}
-                          >
-                            <X size={14} />
-                          </IconButton>
-                        </InputAdornment>
-                      ) : undefined,
-                    },
-                  }}
-                  sx={{ maxWidth: 220 }}
-                />
-                <Tooltip title="Random seed" arrow>
-                  <IconButton
-                    size="small"
-                    onClick={() => setSeedInput(generateSeed())}
-                    sx={{
-                      color: "text.secondary",
-                      "&:hover": { color: "text.primary" },
-                    }}
-                  >
-                    <Dices size={18} />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-            </Paper>
+            {enabledCount}/{ALL_CATEGORIES.length} active &middot; {sessionCount} questions
+          </Typography>
+        </Stack>
 
-            {/* Categories card */}
-            <Paper
-              elevation={0}
-              sx={{
-                border: 1,
-                borderColor: "divider",
-                p: 3,
-                flex: 2,
-                minWidth: 0,
-                width: { xs: "100%", md: "auto" },
-                opacity: hasSeed ? 0.45 : 1,
-                pointerEvents: hasSeed ? "none" : "auto",
-                transition: "opacity 0.2s ease",
-              }}
-            >
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{ mb: 1 }}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mb: 2, lineHeight: 1.6, fontSize: "0.82rem" }}
+        >
+          {hasSeed
+            ? seedHasCategories
+              ? "This seed includes a category preset — categories are locked to match the original game."
+              : "This seed uses all categories."
+            : "Click to toggle. Challenges are drawn only from active categories."}
+        </Typography>
+
+        <Stack spacing={1.5}>
+          {CATEGORY_SECTIONS.map((section) => (
+            <Box key={section.label}>
+              <Box
+                onClick={() => toggleSection(section.categories)}
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 0.75,
+                  mb: 0.5,
+                  cursor: "pointer",
+                  "&:hover .toggle-hint": {
+                    opacity: 1,
+                  },
+                }}
               >
-                <Typography variant="body2" fontWeight={600}>
-                  Categories
-                </Typography>
                 <Typography
                   variant="caption"
                   color="text.secondary"
                   fontFamily="var(--font-geist-mono), monospace"
-                  sx={{ fontSize: "0.7rem" }}
+                  sx={{
+                    fontSize: "0.63rem",
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                  }}
                 >
-                  {enabledCount}/{ALL_CATEGORIES.length} active &middot; {sessionCount} questions
+                  {section.label}
                 </Typography>
-              </Stack>
-
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ mb: 2.5, lineHeight: 1.6 }}
+                <Typography
+                  className="toggle-hint"
+                  variant="caption"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{
+                    fontSize: "0.58rem",
+                    color: "text.disabled",
+                    opacity: 0,
+                    transition: "opacity 0.15s ease",
+                  }}
+                >
+                  {section.categories.every((c) => effectiveExcluded.has(c))
+                    ? "enable all"
+                    : "disable all"}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 0.5,
+                }}
               >
-                {hasSeed
-                  ? seedHasCategories
-                    ? "This seed includes a category preset — categories are locked to match the original game."
-                    : "This seed uses all categories."
-                  : "Click to toggle. Challenges are drawn only from active categories."}
-              </Typography>
-
-              <Stack spacing={2}>
-                {CATEGORY_SECTIONS.map((section) => (
-                  <Box key={section.label}>
-                    <Box
-                      onClick={() => toggleSection(section.categories)}
+                {section.categories.map((cat) => {
+                  const isEnabled = !effectiveExcluded.has(cat);
+                  return (
+                    <Chip
+                      key={cat}
+                      label={CATEGORY_LABELS[cat]}
+                      size="small"
+                      onClick={() => toggleCategory(cat)}
                       sx={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 0.75,
-                        mb: 0.75,
+                        height: 26,
+                        fontSize: "0.72rem",
                         cursor: "pointer",
-                        "&:hover .toggle-hint": {
-                          opacity: 1,
+                        bgcolor: isEnabled
+                          ? "rgba(0,0,0,0.07)"
+                          : "transparent",
+                        color: isEnabled
+                          ? "text.primary"
+                          : "text.disabled",
+                        border: 1,
+                        borderColor: isEnabled
+                          ? "transparent"
+                          : "divider",
+                        opacity: isEnabled ? 1 : 0.45,
+                        transition: "all 0.15s ease",
+                        "&:hover": {
+                          bgcolor: isEnabled
+                            ? "rgba(0,0,0,0.12)"
+                            : "rgba(0,0,0,0.04)",
                         },
                       }}
-                    >
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        fontFamily="var(--font-geist-mono), monospace"
-                        sx={{
-                          fontSize: "0.63rem",
-                          letterSpacing: "0.05em",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {section.label}
-                      </Typography>
-                      <Typography
-                        className="toggle-hint"
-                        variant="caption"
-                        fontFamily="var(--font-geist-mono), monospace"
-                        sx={{
-                          fontSize: "0.58rem",
-                          color: "text.disabled",
-                          opacity: 0,
-                          transition: "opacity 0.15s ease",
-                        }}
-                      >
-                        {section.categories.every((c) => effectiveExcluded.has(c))
-                          ? "enable all"
-                          : "disable all"}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: 0.5,
-                      }}
-                    >
-                      {section.categories.map((cat) => {
-                        const isEnabled = !effectiveExcluded.has(cat);
-                        return (
-                          <Chip
-                            key={cat}
-                            label={CATEGORY_LABELS[cat]}
-                            size="small"
-                            onClick={() => toggleCategory(cat)}
-                            sx={{
-                              height: 28,
-                              fontSize: "0.73rem",
-                              cursor: "pointer",
-                              bgcolor: isEnabled
-                                ? "rgba(0,0,0,0.07)"
-                                : "transparent",
-                              color: isEnabled
-                                ? "text.primary"
-                                : "text.disabled",
-                              border: 1,
-                              borderColor: isEnabled
-                                ? "transparent"
-                                : "divider",
-                              opacity: isEnabled ? 1 : 0.45,
-                              transition: "all 0.15s ease",
-                              "&:hover": {
-                                bgcolor: isEnabled
-                                  ? "rgba(0,0,0,0.12)"
-                                  : "rgba(0,0,0,0.04)",
-                              },
-                            }}
-                          />
-                        );
-                      })}
-                    </Box>
-                  </Box>
-                ))}
-              </Stack>
-            </Paper>
-          </Stack>
-      </Box>
+                    />
+                  );
+                })}
+              </Box>
+            </Box>
+          ))}
+        </Stack>
+      </Paper>
     </Stack>
   );
 }
