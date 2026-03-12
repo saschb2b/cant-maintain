@@ -3,16 +3,12 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import {
   ArrowRight,
-  Eye,
-  Timer,
-  Layers,
   Hash,
   Dices,
   X,
@@ -26,23 +22,6 @@ import Tooltip from "@mui/material/Tooltip";
 
 const ALL_CATEGORIES = CATEGORY_SECTIONS.flatMap((s) => s.categories);
 
-const SESSION_PICKS: Record<string, number> = { easy: 3, medium: 4, hard: 3 };
-
-function countSessionChallenges(
-  challenges: Challenge[],
-  excludedCategories: Set<ChallengeCategory>,
-): number {
-  const pool =
-    excludedCategories.size === 0
-      ? challenges
-      : challenges.filter((c) => !excludedCategories.has(c.category));
-  const byDifficulty: Record<string, number> = { easy: 0, medium: 0, hard: 0 };
-  for (const c of pool) byDifficulty[c.difficulty] = (byDifficulty[c.difficulty] ?? 0) + 1;
-  return Object.entries(SESSION_PICKS).reduce(
-    (sum, [d, pick]) => sum + Math.min(pick, byDifficulty[d] ?? 0),
-    0,
-  );
-}
 
 interface LobbyScreenProps {
   challenges: Challenge[];
@@ -63,7 +42,6 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
   const seedHasCategories = (seedDecoded?.excludedCategories.size ?? 0) > 0;
   const effectiveExcluded = hasSeed ? (seedDecoded?.excludedCategories ?? new Set<ChallengeCategory>()) : excluded;
   const enabledCount = ALL_CATEGORIES.length - effectiveExcluded.size;
-  const sessionCount = countSessionChallenges(challenges, effectiveExcluded);
 
   const toggleCategory = (cat: ChallengeCategory) => {
     setExcluded((prev) => {
@@ -140,7 +118,7 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
           color="text.secondary"
           sx={{
             lineHeight: 1.7,
-            mb: { xs: 2, md: 4 },
+            mb: { xs: 2, md: 3 },
             fontSize: { xs: "0.9rem", md: "1rem" },
           }}
         >
@@ -170,44 +148,8 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
           </Button>
         </Stack>
 
-        {/* Info pills */}
-        <Stack
-          direction="row"
-          spacing={{ xs: 2, md: 3 }}
-          sx={{
-            mt: 1.5,
-            mb: { xs: 2.5, md: 3 },
-            justifyContent: { xs: "center", md: "flex-start" },
-          }}
-        >
-          {[
-            { icon: <Layers size={14} />, label: `${String(sessionCount)} questions` },
-            { icon: <Timer size={14} />, label: "~3 min" },
-            { icon: <Eye size={14} />, label: "No tricks" },
-          ].map((item) => (
-            <Stack
-              key={item.label}
-              direction="row"
-              alignItems="center"
-              spacing={0.75}
-            >
-              <Box sx={{ color: "text.secondary", display: "flex" }}>
-                {item.icon}
-              </Box>
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                fontFamily="var(--font-geist-mono), monospace"
-                sx={{ fontSize: "0.72rem" }}
-              >
-                {item.label}
-              </Typography>
-            </Stack>
-          ))}
-        </Stack>
-
         {/* Seed input */}
-        <Box>
+        <Box sx={{ mt: { xs: 2.5, md: 3 } }}>
           <Stack
             direction="row"
             alignItems="center"
@@ -276,12 +218,8 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
       </Box>
 
       {/* Right column — categories */}
-      <Paper
-        elevation={0}
+      <Box
         sx={{
-          border: 1,
-          borderColor: "divider",
-          p: { xs: 2.5, md: 3 },
           flex: 1,
           minWidth: 0,
           width: { xs: "100%", md: "auto" },
@@ -291,36 +229,18 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
           transition: "opacity 0.2s ease",
         }}
       >
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ mb: 0.75 }}
-        >
-          <Typography variant="body2" fontWeight={600}>
-            Categories
-          </Typography>
+        {hasSeed && (
           <Typography
             variant="caption"
             color="text.secondary"
             fontFamily="var(--font-geist-mono), monospace"
-            sx={{ fontSize: "0.7rem" }}
+            sx={{ display: "block", mb: 1.5, fontSize: "0.72rem" }}
           >
-            {enabledCount}/{ALL_CATEGORIES.length} active &middot; {sessionCount} questions
+            {seedHasCategories
+              ? "Categories locked by seed."
+              : "This seed uses all categories."}
           </Typography>
-        </Stack>
-
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ mb: 2, lineHeight: 1.6, fontSize: "0.82rem" }}
-        >
-          {hasSeed
-            ? seedHasCategories
-              ? "This seed includes a category preset — categories are locked to match the original game."
-              : "This seed uses all categories."
-            : "Click to toggle. Challenges are drawn only from active categories."}
-        </Typography>
+        )}
 
         <Stack spacing={1.5}>
           {CATEGORY_SECTIONS.map((section) => (
@@ -410,7 +330,8 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
             </Box>
           ))}
         </Stack>
-      </Paper>
+
+      </Box>
     </Stack>
   );
 }
