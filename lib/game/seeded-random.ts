@@ -43,6 +43,37 @@ export function generateSeed(): string {
 }
 
 /**
+ * Generate a deterministic seed from a string key (e.g. "daily-2026-03-12").
+ * Same key always produces the same 6-character seed code.
+ */
+export function seedFromKey(key: string): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const rng = createRng(hashSeed(key));
+  let seed = "";
+  for (let i = 0; i < 6; i++) {
+    seed += chars[Math.floor(rng() * chars.length)];
+  }
+  return seed;
+}
+
+/** Get today's date string in YYYY-MM-DD format (UTC). */
+export function getTodayKey(): string {
+  const d = new Date();
+  return `daily-${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+}
+
+/** Get the current ISO week key (UTC). */
+export function getWeekKey(): string {
+  const d = new Date();
+  // ISO week calculation
+  const jan4 = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+  const start = new Date(jan4.getTime());
+  start.setUTCDate(jan4.getUTCDate() - ((jan4.getUTCDay() + 6) % 7));
+  const weekNum = Math.ceil(((d.getTime() - start.getTime()) / 86400000 + 1) / 7);
+  return `weekly-${d.getUTCFullYear()}-W${String(weekNum).padStart(2, "0")}`;
+}
+
+/**
  * Encode excluded categories as a hex bitmask suffix on the seed.
  * Each bit corresponds to a category in CATEGORY_ORDER (1 = excluded).
  * Returns the raw seed if no categories are excluded.

@@ -7,23 +7,135 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
 import {
   ArrowRight,
   Hash,
   Dices,
   History,
   Flame,
+  Sun,
+  Calendar,
+  Check,
   X,
 } from "lucide-react";
 import type { Challenge, ChallengeCategory } from "@/lib/game/types";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
-import { decodeSeed, generateSeed } from "@/lib/game/seeded-random";
-import { getHistory, formatRelativeDate, type HistoryEntry } from "@/lib/game/history";
+import { decodeSeed, generateSeed, seedFromKey, getTodayKey, getWeekKey } from "@/lib/game/seeded-random";
+import { getHistory, getEntryBySeed, formatRelativeDate, type HistoryEntry } from "@/lib/game/history";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Tooltip from "@mui/material/Tooltip";
 
 const ALL_CATEGORIES = CATEGORY_SECTIONS.flatMap((s) => s.categories);
+
+function ChallengeCard({
+  icon,
+  label,
+  sublabel,
+  seed,
+  result,
+  onPlay,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  sublabel: string;
+  seed: string;
+  result: HistoryEntry | null;
+  onPlay: () => void;
+}) {
+  const completed = result !== null;
+  const pct = completed ? Math.round((result.bestScore / result.total) * 100) : 0;
+  const scoreColor = pct >= 70 ? "success.main" : pct >= 50 ? "warning.main" : "error.main";
+
+  return (
+    <Paper
+      elevation={0}
+      onClick={onPlay}
+      sx={{
+        flex: 1,
+        p: 2.5,
+        border: 1,
+        borderColor: "divider",
+        cursor: "pointer",
+      }}
+    >
+      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1.5 }}>
+        <Box sx={{ color: "text.secondary", display: "flex" }}>
+          {icon}
+        </Box>
+        <Typography variant="body2" fontWeight={700}>
+          {label}
+        </Typography>
+        {completed && (
+          <Box sx={{ color: "success.main", display: "flex", ml: "auto" }}>
+            <Check size={16} />
+          </Box>
+        )}
+      </Stack>
+
+      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>
+        {sublabel}
+      </Typography>
+
+      {completed ? (
+        <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mt: 1.5 }}>
+          <Typography
+            fontFamily="var(--font-geist-mono), monospace"
+            fontWeight={700}
+            sx={{ fontSize: "1.1rem", color: scoreColor }}
+          >
+            {result.bestScore}/{result.total}
+          </Typography>
+          {(result.bestStreak ?? 0) > 0 && (
+            <Stack direction="row" alignItems="center" spacing={0.25}>
+              <Flame size={12} color="var(--mui-palette-text-disabled)" />
+              <Typography
+                variant="caption"
+                color="text.disabled"
+                fontFamily="var(--font-geist-mono), monospace"
+                sx={{ fontSize: "0.7rem" }}
+              >
+                {result.bestStreak}
+              </Typography>
+            </Stack>
+          )}
+          {result.plays > 1 && (
+            <Typography
+              variant="caption"
+              color="text.disabled"
+              fontFamily="var(--font-geist-mono), monospace"
+              sx={{ fontSize: "0.65rem" }}
+            >
+              {result.plays}x
+            </Typography>
+          )}
+          <Typography
+            variant="caption"
+            color="text.disabled"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{ fontSize: "0.65rem", ml: "auto" }}
+          >
+            {pct < 100 ? "Improve?" : "Perfect!"}
+          </Typography>
+        </Stack>
+      ) : (
+        <Stack direction="row" alignItems="center" spacing={0.75} sx={{ mt: 1.5 }}>
+          <Typography
+            fontFamily="var(--font-geist-mono), monospace"
+            fontWeight={600}
+            sx={{ fontSize: "0.75rem", letterSpacing: "0.1em", color: "text.secondary" }}
+          >
+            {seed}
+          </Typography>
+          <Box sx={{ ml: "auto", color: "text.secondary", display: "flex" }}>
+            <ArrowRight size={14} />
+          </Box>
+        </Stack>
+      )}
+    </Paper>
+  );
+}
 
 
 interface LobbyScreenProps {
@@ -41,7 +153,17 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
   );
 
   const [history, setHistory] = useState<HistoryEntry[]>([]);
-  useEffect(() => { setHistory(getHistory()); }, []);
+  const [dailyResult, setDailyResult] = useState<HistoryEntry | null>(null);
+  const [weeklyResult, setWeeklyResult] = useState<HistoryEntry | null>(null);
+
+  const dailySeed = seedFromKey(getTodayKey());
+  const weeklySeed = seedFromKey(getWeekKey());
+
+  useEffect(() => {
+    setHistory(getHistory());
+    setDailyResult(getEntryBySeed(dailySeed));
+    setWeeklyResult(getEntryBySeed(weeklySeed));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const hasSeed = seedInput.trim().length > 0;
   const seedDecoded = hasSeed ? decodeSeed(seedInput.trim().toUpperCase()) : null;
@@ -342,9 +464,34 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
       </Box>
     </Stack>
 
-    {/* History — full width below both columns */}
-    {history.length > 0 && (
-      <Box sx={{ pb: { xs: 3, md: 6 } }}>
+    {/* Bottom section — Daily, Weekly, History */}
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      spacing={{ xs: 2, md: 3 }}
+      sx={{ pb: { xs: 3, md: 6 } }}
+    >
+      {/* Daily & Weekly — 2/3 */}
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 2, md: 3 }} sx={{ flex: 2 }}>
+        <ChallengeCard
+          icon={<Sun size={18} />}
+          label="Daily"
+          sublabel="Resets every day"
+          seed={dailySeed}
+          result={dailyResult}
+          onPlay={() => onStart(dailySeed, new Set())}
+        />
+        <ChallengeCard
+          icon={<Calendar size={18} />}
+          label="Weekly"
+          sublabel="Resets every Monday"
+          seed={weeklySeed}
+          result={weeklyResult}
+          onPlay={() => onStart(weeklySeed, new Set())}
+        />
+      </Stack>
+
+      {/* History — 1/3 */}
+      <Box sx={{ flex: 1, minWidth: 0 }}>
         <Stack
           direction="row"
           alignItems="center"
@@ -356,85 +503,78 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
             Previous games
           </Typography>
         </Stack>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 1 }}>
-          {history.map((entry) => {
-            const pct = Math.round((entry.bestScore / entry.total) * 100);
-            return (
-              <Box
-                key={entry.seed}
-                onClick={() => {
-                  const { rawSeed: s, excludedCategories: ec } = decodeSeed(entry.seed);
-                  onStart(s, ec);
-                }}
-                sx={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 1,
-                  py: 0.75,
-                  px: 1.5,
-                  borderRadius: 1,
-                  cursor: "pointer",
-                  bgcolor: "rgba(0,0,0,0.03)",
-                  transition: "background 0.15s ease",
-                  "&:hover": {
-                    bgcolor: "rgba(0,0,0,0.07)",
-                  },
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  fontFamily="var(--font-geist-mono), monospace"
-                  fontWeight={600}
-                  sx={{ fontSize: "0.75rem", letterSpacing: "0.08em" }}
-                >
-                  {entry.seed}
-                </Typography>
-                <Typography
-                  variant="caption"
-                  fontFamily="var(--font-geist-mono), monospace"
+        {history.length === 0 ? (
+          <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.72rem" }}>
+            No games played yet.
+          </Typography>
+        ) : (
+          <Stack spacing={0}>
+            {history.slice(0, 8).map((entry) => {
+              const pct = Math.round((entry.bestScore / entry.total) * 100);
+              return (
+                <Box
+                  key={entry.seed}
+                  onClick={() => {
+                    const { rawSeed: s, excludedCategories: ec } = decodeSeed(entry.seed);
+                    onStart(s, ec);
+                  }}
                   sx={{
-                    fontSize: "0.72rem",
-                    color: pct >= 70 ? "success.main" : pct >= 50 ? "warning.main" : "text.secondary",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    py: 0.5,
+                    px: 0.75,
+                    borderRadius: 1,
+                    cursor: "pointer",
+                    transition: "background 0.15s ease",
+                    "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
                   }}
                 >
-                  {entry.bestScore}/{entry.total}
-                </Typography>
-                {(entry.bestStreak ?? 0) > 0 && (
-                  <Stack direction="row" alignItems="center" spacing={0.25}>
-                    <Flame size={10} color="var(--mui-palette-text-disabled)" />
-                    <Typography
-                      variant="caption"
-                      color="text.disabled"
-                      fontFamily="var(--font-geist-mono), monospace"
-                      sx={{ fontSize: "0.65rem" }}
-                    >
-                      {entry.bestStreak}
-                    </Typography>
-                  </Stack>
-                )}
-                {entry.plays > 1 && (
+                  <Typography
+                    variant="caption"
+                    fontFamily="var(--font-geist-mono), monospace"
+                    fontWeight={600}
+                    sx={{ fontSize: "0.7rem", letterSpacing: "0.06em", minWidth: 48 }}
+                  >
+                    {entry.seed}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    fontFamily="var(--font-geist-mono), monospace"
+                    sx={{
+                      fontSize: "0.68rem",
+                      color: pct >= 70 ? "success.main" : pct >= 50 ? "warning.main" : "text.secondary",
+                    }}
+                  >
+                    {entry.bestScore}/{entry.total}
+                  </Typography>
+                  {(entry.bestStreak ?? 0) > 0 && (
+                    <Stack direction="row" alignItems="center" spacing={0.25}>
+                      <Flame size={9} color="var(--mui-palette-text-disabled)" />
+                      <Typography
+                        variant="caption"
+                        color="text.disabled"
+                        fontFamily="var(--font-geist-mono), monospace"
+                        sx={{ fontSize: "0.6rem" }}
+                      >
+                        {entry.bestStreak}
+                      </Typography>
+                    </Stack>
+                  )}
                   <Typography
                     variant="caption"
                     color="text.disabled"
-                    fontFamily="var(--font-geist-mono), monospace"
-                    sx={{ fontSize: "0.65rem" }}
+                    sx={{ fontSize: "0.58rem", ml: "auto", flexShrink: 0 }}
                   >
-                    {entry.plays}x
+                    {formatRelativeDate(entry.lastPlayedAt)}
                   </Typography>
-                )}
-                <Typography
-                  variant="caption"
-                  color="text.disabled"
-                  sx={{ fontSize: "0.62rem" }}
-                >
-                  {formatRelativeDate(entry.lastPlayedAt)}
-                </Typography>
-              </Box>
-            );
-          })}
-        </Stack>
+                </Box>
+              );
+            })}
+          </Stack>
+        )}
       </Box>
-    )}
+    </Stack>
     </>
   );
 }

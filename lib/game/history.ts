@@ -40,6 +40,11 @@ export function getHistory(): HistoryEntry[] {
   return readAll().sort((a, b) => b.lastPlayedAt - a.lastPlayedAt);
 }
 
+/** Look up history for a specific seed. */
+export function getEntryBySeed(seed: string): HistoryEntry | null {
+  return readAll().find((e) => e.seed === seed) ?? null;
+}
+
 /** Format a timestamp as a relative date string. */
 export function formatRelativeDate(timestamp: number): string {
   const diff = Date.now() - timestamp;
