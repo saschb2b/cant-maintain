@@ -113,7 +113,9 @@ export function useGame(
 
   // Initialize game when a seed is provided (deferred to client for hydration safety)
   // retryKey forces re-initialization for same-seed retries
+  const didFireFinish = useRef(false);
   useEffect(() => {
+    didFireFinish.current = false;
     if (seed)
       setState(
         createInitialState(challengePool, seed, excludedCategories, gameType),
@@ -172,18 +174,19 @@ export function useGame(
         (Date.now() - challengeShownAt.current) / 1000,
       );
 
+      const isCorrect = side === correctSide;
+
+      trackEvent("challenge-answered", {
+        challengeId,
+        category,
+        difficulty,
+        result: isCorrect ? "correct" : "wrong",
+        timeSec,
+      });
+
       setState((prev) => {
         if (!prev || prev.answers[challengeId]) return prev;
-        const isCorrect = side === correctSide;
         const newStreak = isCorrect ? prev.streak + 1 : 0;
-
-        trackEvent("challenge-answered", {
-          challengeId,
-          category,
-          difficulty,
-          result: isCorrect ? "correct" : "wrong",
-          timeSec,
-        });
 
         return {
           ...prev,
@@ -209,32 +212,39 @@ export function useGame(
       if (!prev) return prev;
       const nextIndex = prev.currentIndex + 1;
       if (nextIndex >= prev.challenges.length) {
-        const finishedAt = Date.now();
-        trackEvent("game-finished", {
-          score: prev.score,
-          total: prev.challenges.length,
-          bestStreak: prev.bestStreak,
-          durationSec: Math.round((finishedAt - prev.startedAt) / 1000),
-          seed: prev.seed,
-          gameType: prev.gameType,
-        });
-        recordGame(
-          prev.seed,
-          prev.score,
-          prev.challenges.length,
-          prev.bestStreak,
-        );
-        recordActivity();
         return {
           ...prev,
           reviewIndex: null,
           isFinished: true,
-          finishedAt,
+          finishedAt: Date.now(),
         };
       }
       return { ...prev, reviewIndex: null, currentIndex: nextIndex };
     });
   }, []);
+
+  // Fire side effects once when the game finishes (outside setState to avoid
+  // double-invocation in React strict mode).
+  useEffect(() => {
+    if (!state?.isFinished || !state.finishedAt || didFireFinish.current)
+      return;
+    didFireFinish.current = true;
+    trackEvent("game-finished", {
+      score: state.score,
+      total: state.challenges.length,
+      bestStreak: state.bestStreak,
+      durationSec: Math.round((state.finishedAt - state.startedAt) / 1000),
+      seed: state.seed,
+      gameType: state.gameType,
+    });
+    recordGame(
+      state.seed,
+      state.score,
+      state.challenges.length,
+      state.bestStreak,
+    );
+    recordActivity();
+  }, [state?.isFinished]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /** Track restart analytics. The actual reset is handled by the parent. */
   const restartGame = useCallback(() => {
