@@ -54,17 +54,33 @@ function ChallengeCard({
       onClick={onPlay}
       sx={{
         flex: 1,
-        p: 2.5,
         border: 1,
         borderColor: "divider",
         cursor: "pointer",
+        overflow: "hidden",
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1.5 }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={0.75}
+        sx={{
+          px: 2,
+          py: 1,
+          bgcolor: "secondary.main",
+          borderBottom: 1,
+          borderColor: "divider",
+        }}
+      >
         <Box sx={{ color: "text.secondary", display: "flex" }}>
           {icon}
         </Box>
-        <Typography variant="body2" fontWeight={700}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          fontWeight={600}
+          sx={{ fontSize: "0.72rem" }}
+        >
           {label}
         </Typography>
         {completed && (
@@ -74,65 +90,67 @@ function ChallengeCard({
         )}
       </Stack>
 
-      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>
-        {sublabel}
-      </Typography>
+      <Box sx={{ p: 2 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>
+          {sublabel}
+        </Typography>
 
-      {completed ? (
-        <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mt: 1.5 }}>
-          <Typography
-            fontFamily="var(--font-geist-mono), monospace"
-            fontWeight={700}
-            sx={{ fontSize: "1.1rem", color: scoreColor }}
-          >
-            {result.bestScore}/{result.total}
-          </Typography>
-          {(result.bestStreak ?? 0) > 0 && (
-            <Stack direction="row" alignItems="center" spacing={0.25}>
-              <Flame size={12} color="var(--mui-palette-text-disabled)" />
+        {completed ? (
+          <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mt: 1.5 }}>
+            <Typography
+              fontFamily="var(--font-geist-mono), monospace"
+              fontWeight={700}
+              sx={{ fontSize: "1.1rem", color: scoreColor }}
+            >
+              {result.bestScore}/{result.total}
+            </Typography>
+            {(result.bestStreak ?? 0) > 0 && (
+              <Stack direction="row" alignItems="center" spacing={0.25}>
+                <Flame size={12} color="var(--mui-palette-text-disabled)" />
+                <Typography
+                  variant="caption"
+                  color="text.disabled"
+                  fontFamily="var(--font-geist-mono), monospace"
+                  sx={{ fontSize: "0.7rem" }}
+                >
+                  {result.bestStreak}
+                </Typography>
+              </Stack>
+            )}
+            {result.plays > 1 && (
               <Typography
                 variant="caption"
                 color="text.disabled"
                 fontFamily="var(--font-geist-mono), monospace"
-                sx={{ fontSize: "0.7rem" }}
+                sx={{ fontSize: "0.65rem" }}
               >
-                {result.bestStreak}
+                {result.plays}x
               </Typography>
-            </Stack>
-          )}
-          {result.plays > 1 && (
+            )}
             <Typography
               variant="caption"
               color="text.disabled"
               fontFamily="var(--font-geist-mono), monospace"
-              sx={{ fontSize: "0.65rem" }}
+              sx={{ fontSize: "0.65rem", ml: "auto" }}
             >
-              {result.plays}x
+              {pct < 100 ? "Improve?" : "Perfect!"}
             </Typography>
-          )}
-          <Typography
-            variant="caption"
-            color="text.disabled"
-            fontFamily="var(--font-geist-mono), monospace"
-            sx={{ fontSize: "0.65rem", ml: "auto" }}
-          >
-            {pct < 100 ? "Improve?" : "Perfect!"}
-          </Typography>
-        </Stack>
-      ) : (
-        <Stack direction="row" alignItems="center" spacing={0.75} sx={{ mt: 1.5 }}>
-          <Typography
-            fontFamily="var(--font-geist-mono), monospace"
-            fontWeight={600}
-            sx={{ fontSize: "0.75rem", letterSpacing: "0.1em", color: "text.secondary" }}
-          >
-            {seed}
-          </Typography>
-          <Box sx={{ ml: "auto", color: "text.secondary", display: "flex" }}>
-            <ArrowRight size={14} />
-          </Box>
-        </Stack>
-      )}
+          </Stack>
+        ) : (
+          <Stack direction="row" alignItems="center" spacing={0.75} sx={{ mt: 1.5 }}>
+            <Typography
+              fontFamily="var(--font-geist-mono), monospace"
+              fontWeight={600}
+              sx={{ fontSize: "0.75rem", letterSpacing: "0.1em", color: "text.secondary" }}
+            >
+              {seed}
+            </Typography>
+            <Box sx={{ ml: "auto", color: "text.secondary", display: "flex" }}>
+              <ArrowRight size={14} />
+            </Box>
+          </Stack>
+        )}
+      </Box>
     </Paper>
   );
 }
@@ -465,10 +483,24 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
     </Stack>
 
     {/* Bottom section — Daily, Weekly, History */}
+    <Box sx={{ pb: { xs: 3, md: 6 } }}>
+    <Typography
+      variant="caption"
+      color="text.secondary"
+      fontFamily="var(--font-geist-mono), monospace"
+      sx={{
+        fontSize: "0.63rem",
+        letterSpacing: "0.05em",
+        textTransform: "uppercase",
+        mb: 1.5,
+        display: "block",
+      }}
+    >
+      Challenges
+    </Typography>
     <Stack
       direction={{ xs: "column", md: "row" }}
       spacing={{ xs: 2, md: 3 }}
-      sx={{ pb: { xs: 3, md: 6 } }}
     >
       {/* Daily & Weekly — 2/3 */}
       <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 2, md: 3 }} sx={{ flex: 2 }}>
@@ -490,26 +522,48 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
         />
       </Stack>
 
-      {/* History — 1/3 */}
-      <Box sx={{ flex: 1, minWidth: 0 }}>
+      {/* History — 1/3 on desktop, full width on mobile */}
+      <Paper
+        elevation={0}
+        sx={{
+          flex: 1,
+          minWidth: 0,
+          border: 1,
+          borderColor: "divider",
+          overflow: "hidden",
+        }}
+      >
         <Stack
           direction="row"
           alignItems="center"
           spacing={0.75}
-          sx={{ mb: 1 }}
+          sx={{
+            px: 2,
+            py: 1,
+            bgcolor: "secondary.main",
+            borderBottom: 1,
+            borderColor: "divider",
+          }}
         >
           <History size={13} color="var(--mui-palette-text-secondary)" />
-          <Typography variant="caption" color="text.secondary" fontWeight={500}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            fontWeight={600}
+            sx={{ fontSize: "0.72rem" }}
+          >
             Previous games
           </Typography>
         </Stack>
         {history.length === 0 ? (
-          <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.72rem" }}>
-            No games played yet.
-          </Typography>
+          <Box sx={{ px: 2, py: 2.5 }}>
+            <Typography variant="caption" color="text.disabled" sx={{ fontSize: "0.72rem" }}>
+              No games played yet.
+            </Typography>
+          </Box>
         ) : (
-          <Stack spacing={0}>
-            {history.slice(0, 8).map((entry) => {
+          <Stack spacing={0} sx={{ py: 0.5 }}>
+            {history.slice(0, 6).map((entry) => {
               const pct = Math.round((entry.bestScore / entry.total) * 100);
               return (
                 <Box
@@ -521,20 +575,20 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    gap: 1,
-                    py: 0.5,
-                    px: 0.75,
-                    borderRadius: 1,
+                    gap: { xs: 1.5, md: 1 },
+                    py: { xs: 1, md: 0.75 },
+                    px: 2,
                     cursor: "pointer",
                     transition: "background 0.15s ease",
                     "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
+                    minHeight: { xs: 40, md: "auto" },
                   }}
                 >
                   <Typography
                     variant="caption"
                     fontFamily="var(--font-geist-mono), monospace"
                     fontWeight={600}
-                    sx={{ fontSize: "0.7rem", letterSpacing: "0.06em", minWidth: 48 }}
+                    sx={{ fontSize: "0.72rem", letterSpacing: "0.06em" }}
                   >
                     {entry.seed}
                   </Typography>
@@ -542,7 +596,7 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
                     variant="caption"
                     fontFamily="var(--font-geist-mono), monospace"
                     sx={{
-                      fontSize: "0.68rem",
+                      fontSize: "0.72rem",
                       color: pct >= 70 ? "success.main" : pct >= 50 ? "warning.main" : "text.secondary",
                     }}
                   >
@@ -550,12 +604,12 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
                   </Typography>
                   {(entry.bestStreak ?? 0) > 0 && (
                     <Stack direction="row" alignItems="center" spacing={0.25}>
-                      <Flame size={9} color="var(--mui-palette-text-disabled)" />
+                      <Flame size={10} color="var(--mui-palette-text-disabled)" />
                       <Typography
                         variant="caption"
                         color="text.disabled"
                         fontFamily="var(--font-geist-mono), monospace"
-                        sx={{ fontSize: "0.6rem" }}
+                        sx={{ fontSize: "0.65rem" }}
                       >
                         {entry.bestStreak}
                       </Typography>
@@ -564,7 +618,7 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
                   <Typography
                     variant="caption"
                     color="text.disabled"
-                    sx={{ fontSize: "0.58rem", ml: "auto", flexShrink: 0 }}
+                    sx={{ fontSize: "0.62rem", ml: "auto", flexShrink: 0 }}
                   >
                     {formatRelativeDate(entry.lastPlayedAt)}
                   </Typography>
@@ -573,8 +627,9 @@ export function LobbyScreen({ challenges, onStart, defaultSeed = "", defaultExcl
             })}
           </Stack>
         )}
-      </Box>
+      </Paper>
     </Stack>
+    </Box>
     </>
   );
 }
