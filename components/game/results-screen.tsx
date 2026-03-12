@@ -10,6 +10,7 @@ import Chip from "@mui/material/Chip";
 import Link from "@mui/material/Link";
 import type { GameState } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
+import { trackEvent } from "@/lib/analytics";
 import {
   getRank,
   getShareUrl,
@@ -106,6 +107,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
   }, [state, correct, total]);
 
   const handleShare = useCallback(() => {
+    trackEvent("game-shared", { score: correct, total });
     const text = buildShareText();
 
     if (typeof navigator.share === "function") {
@@ -122,7 +124,7 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
       setHasCopied(true);
       setTimeout(() => setHasCopied(false), 2000);
     });
-  }, [buildShareText]);
+  }, [buildShareText, correct, total]);
 
   const resultsParam = useMemo(() => encodeResults(state), [state]);
 
@@ -333,6 +335,13 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         underline="hover"
+                        onClick={() =>
+                          trackEvent("source-link-clicked", {
+                            challengeId: challenge.id,
+                            category: challenge.category,
+                            label: challenge.sourceLabel,
+                          })
+                        }
                         sx={{
                           display: "inline-flex",
                           alignItems: "center",
@@ -348,6 +357,13 @@ export function ResultsScreen({ state, onRestart }: ResultsScreenProps) {
                       <Link
                         href={`/learn/${challenge.category}`}
                         underline="hover"
+                        onClick={() =>
+                          trackEvent("learn-link-clicked", {
+                            challengeId: challenge.id,
+                            category: challenge.category,
+                            label: CATEGORY_LABELS[challenge.category],
+                          })
+                        }
                         sx={{
                           display: "inline-flex",
                           alignItems: "center",

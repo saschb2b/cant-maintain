@@ -326,6 +326,7 @@ export function Game({ challenges, highlightMap }: GameProps) {
                 sourceUrl={displayChallenge.sourceUrl}
                 sourceLabel={displayChallenge.sourceLabel}
                 category={displayChallenge.category}
+                challengeId={displayChallenge.id}
               />
             </Box>
           </Grow>

@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import { ExternalLink, BookOpen } from "lucide-react";
 import type { ChallengeCategory } from "@/lib/game/types";
 import { CATEGORY_LABELS } from "@/lib/game/categories";
+import { trackEvent } from "@/lib/analytics";
 import { FormattedText } from "@/components/formatted-text";
 
 interface ExplanationPanelProps {
@@ -21,6 +22,8 @@ interface ExplanationPanelProps {
   sourceLabel: string;
   /** Challenge category, used to link to the learn page. */
   category: ChallengeCategory;
+  /** Challenge ID for analytics tracking. */
+  challengeId: string;
 }
 
 export function ExplanationPanel({
@@ -29,6 +32,7 @@ export function ExplanationPanel({
   sourceUrl,
   sourceLabel,
   category,
+  challengeId,
 }: ExplanationPanelProps) {
   const color = isCorrect ? "success" : "error";
 
@@ -69,6 +73,13 @@ export function ExplanationPanel({
             target="_blank"
             rel="noopener noreferrer"
             underline="hover"
+            onClick={() =>
+              trackEvent("source-link-clicked", {
+                challengeId,
+                category,
+                label: sourceLabel,
+              })
+            }
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -84,6 +95,13 @@ export function ExplanationPanel({
           <Link
             href={`/learn/${category}`}
             underline="hover"
+            onClick={() =>
+              trackEvent("learn-link-clicked", {
+                challengeId,
+                category,
+                label: CATEGORY_LABELS[category],
+              })
+            }
             sx={{
               display: "inline-flex",
               alignItems: "center",

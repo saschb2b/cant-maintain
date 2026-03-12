@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "../analytics";
 import type { Challenge, Difficulty, GameState } from "./types";
 
@@ -79,10 +79,16 @@ function createInitialState(allChallenges: Challenge[]): GameState {
 /** Core game state hook. Handles scoring, progression, and answers. */
 export function useGame(challengePool: Challenge[]) {
   const [state, setState] = useState<GameState | null>(null);
+  const challengeShownAt = useRef<number>(0);
 
   // Defer random shuffle to client to avoid hydration mismatch
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setState(createInitialState(challengePool)), [challengePool]);
+
+  // Reset timer whenever the current challenge changes
+  useEffect(() => {
+    challengeShownAt.current = Date.now();
+  }, [state?.currentIndex]);
 
   const currentChallenge = useMemo(
     () => state?.challenges[state.currentIndex] ?? null,
@@ -126,6 +132,9 @@ export function useGame(challengePool: Challenge[]) {
 
       const category = currentChallenge.category;
       const difficulty = currentChallenge.difficulty;
+      const timeSec = Math.round(
+        (Date.now() - challengeShownAt.current) / 1000,
+      );
 
       setState((prev) => {
         if (!prev || prev.answers[challengeId]) return prev;
@@ -137,6 +146,7 @@ export function useGame(challengePool: Challenge[]) {
           category,
           difficulty,
           result: isCorrect ? "correct" : "wrong",
+          timeSec,
         });
 
         return {
@@ -183,7 +193,15 @@ export function useGame(challengePool: Challenge[]) {
 
   /** Restart the game with freshly shuffled challenges. */
   const restartGame = useCallback(() => {
-    setState(createInitialState(challengePool));
+    setState((prev) => {
+      if (prev) {
+        trackEvent("game-restarted", {
+          previousScore: prev.score,
+          previousTotal: prev.challenges.length,
+        });
+      }
+      return createInitialState(challengePool);
+    });
   }, [challengePool]);
 
   /** Enter review mode for a previously answered challenge. */

@@ -9,6 +9,7 @@ interface ChallengeAnsweredData {
   category: string;
   difficulty: string;
   result: "correct" | "wrong";
+  timeSec: number;
 }
 
 interface GameFinishedData {
@@ -18,9 +19,29 @@ interface GameFinishedData {
   durationSec: number;
 }
 
+interface LinkClickedData {
+  challengeId: string;
+  category: string;
+  label: string;
+}
+
+interface GameSharedData {
+  score: number;
+  total: number;
+}
+
+interface GameRestartedData {
+  previousScore: number;
+  previousTotal: number;
+}
+
 interface EventMap {
   "challenge-answered": ChallengeAnsweredData;
   "game-finished": GameFinishedData;
+  "game-shared": GameSharedData;
+  "game-restarted": GameRestartedData;
+  "source-link-clicked": LinkClickedData;
+  "learn-link-clicked": LinkClickedData;
 }
 
 declare global {
