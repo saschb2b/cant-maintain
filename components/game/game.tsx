@@ -166,7 +166,7 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   }, [state?.currentIndex]);
 
   if (!activeSeed) {
-    return <LobbyScreen onStart={handleLobbyStart} defaultSeed={lobbySeed} />;
+    return <LobbyScreen challenges={challenges} onStart={handleLobbyStart} defaultSeed={lobbySeed} />;
   }
 
   if (!state) {

@@ -14,21 +14,45 @@ import {
   Timer,
   Layers,
   Hash,
+  Dices,
+  X,
 } from "lucide-react";
-import type { ChallengeCategory } from "@/lib/game/types";
+import type { Challenge, ChallengeCategory } from "@/lib/game/types";
 import { CATEGORY_SECTIONS, CATEGORY_LABELS } from "@/lib/game/categories";
-import { decodeSeed } from "@/lib/game/seeded-random";
+import { decodeSeed, generateSeed } from "@/lib/game/seeded-random";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Tooltip from "@mui/material/Tooltip";
 
 const ALL_CATEGORIES = CATEGORY_SECTIONS.flatMap((s) => s.categories);
 
+const SESSION_PICKS: Record<string, number> = { easy: 3, medium: 4, hard: 3 };
+
+function countSessionChallenges(
+  challenges: Challenge[],
+  excludedCategories: Set<ChallengeCategory>,
+): number {
+  const pool =
+    excludedCategories.size === 0
+      ? challenges
+      : challenges.filter((c) => !excludedCategories.has(c.category));
+  const byDifficulty: Record<string, number> = { easy: 0, medium: 0, hard: 0 };
+  for (const c of pool) byDifficulty[c.difficulty] = (byDifficulty[c.difficulty] ?? 0) + 1;
+  return Object.entries(SESSION_PICKS).reduce(
+    (sum, [d, pick]) => sum + Math.min(pick, byDifficulty[d] ?? 0),
+    0,
+  );
+}
+
 interface LobbyScreenProps {
+  challenges: Challenge[];
   onStart: (rawSeed: string, excludedCategories: Set<ChallengeCategory>) => void;
   defaultSeed?: string;
 }
 
-export function LobbyScreen({ onStart, defaultSeed = "" }: LobbyScreenProps) {
+export function LobbyScreen({ challenges, onStart, defaultSeed = "" }: LobbyScreenProps) {
   const defaultDecoded = defaultSeed ? decodeSeed(defaultSeed) : null;
-  const [seedInput, setSeedInput] = useState(defaultDecoded?.rawSeed ?? "");
+  const [seedInput, setSeedInput] = useState(defaultSeed);
   const [excluded, setExcluded] = useState<Set<ChallengeCategory>>(
     defaultDecoded?.excludedCategories ?? new Set(),
   );
@@ -38,6 +62,7 @@ export function LobbyScreen({ onStart, defaultSeed = "" }: LobbyScreenProps) {
   const seedHasCategories = (seedDecoded?.excludedCategories.size ?? 0) > 0;
   const effectiveExcluded = hasSeed ? (seedDecoded?.excludedCategories ?? new Set<ChallengeCategory>()) : excluded;
   const enabledCount = ALL_CATEGORIES.length - effectiveExcluded.size;
+  const sessionCount = countSessionChallenges(challenges, effectiveExcluded);
 
   const toggleCategory = (cat: ChallengeCategory) => {
     setExcluded((prev) => {
@@ -127,7 +152,7 @@ export function LobbyScreen({ onStart, defaultSeed = "" }: LobbyScreenProps) {
           sx={{ mb: { xs: 3, md: 5 } }}
         >
           {[
-            { icon: <Layers size={16} />, label: "10 questions" },
+            { icon: <Layers size={16} />, label: `${String(sessionCount)} questions` },
             { icon: <Timer size={16} />, label: "~3 minutes" },
             { icon: <Eye size={16} />, label: "No trick questions" },
           ].map((item) => (
@@ -222,27 +247,54 @@ export function LobbyScreen({ onStart, defaultSeed = "" }: LobbyScreenProps) {
                 Play the exact same challenges as a friend.
                 Leave empty for a random set.
               </Typography>
-              <TextField
-                placeholder="e.g. A3X9K2"
-                size="small"
-                fullWidth
-                value={seedInput}
-                onChange={(e) => setSeedInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleStart();
-                }}
-                slotProps={{
-                  htmlInput: {
-                    maxLength: 20,
-                    style: {
-                      fontFamily: "var(--font-geist-mono), monospace",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.15em",
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <TextField
+                  placeholder="e.g. A3X9K2"
+                  size="small"
+                  value={seedInput}
+                  onChange={(e) => setSeedInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleStart();
+                  }}
+                  slotProps={{
+                    htmlInput: {
+                      maxLength: 20,
+                      style: {
+                        fontFamily: "var(--font-geist-mono), monospace",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.15em",
+                      },
                     },
-                  },
-                }}
-                sx={{ maxWidth: 220 }}
-              />
+                    input: {
+                      endAdornment: hasSeed ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            size="small"
+                            onClick={() => setSeedInput("")}
+                            edge="end"
+                            sx={{ color: "text.disabled", p: 0.5 }}
+                          >
+                            <X size={14} />
+                          </IconButton>
+                        </InputAdornment>
+                      ) : undefined,
+                    },
+                  }}
+                  sx={{ maxWidth: 220 }}
+                />
+                <Tooltip title="Random seed" arrow>
+                  <IconButton
+                    size="small"
+                    onClick={() => setSeedInput(generateSeed())}
+                    sx={{
+                      color: "text.secondary",
+                      "&:hover": { color: "text.primary" },
+                    }}
+                  >
+                    <Dices size={18} />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
             </Paper>
 
             {/* Categories card */}
@@ -275,7 +327,7 @@ export function LobbyScreen({ onStart, defaultSeed = "" }: LobbyScreenProps) {
                   fontFamily="var(--font-geist-mono), monospace"
                   sx={{ fontSize: "0.7rem" }}
                 >
-                  {enabledCount}/{ALL_CATEGORIES.length} active
+                  {enabledCount}/{ALL_CATEGORIES.length} active &middot; {sessionCount} questions
                 </Typography>
               </Stack>
 
