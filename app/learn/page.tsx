@@ -38,11 +38,11 @@ export default async function LearnPage() {
       preview: preview
         ? {
             goodHtml: highlighter.codeToHtml(preview.goodCode, {
-              lang: "typescript",
+              lang: "tsx",
               theme: "github-light",
             }),
             badHtml: highlighter.codeToHtml(preview.badCode, {
-              lang: "typescript",
+              lang: "tsx",
               theme: "github-light",
             }),
           }

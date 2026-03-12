@@ -36,11 +36,11 @@ const GOOD_CODE = `interface UserCardProps {
 export default async function LandingPage() {
   const highlighter = await getHighlighter();
   const badCodeHtml = highlighter.codeToHtml(BAD_CODE, {
-    lang: "typescript",
+    lang: "tsx",
     theme: "github-light",
   });
   const goodCodeHtml = highlighter.codeToHtml(GOOD_CODE, {
-    lang: "typescript",
+    lang: "tsx",
     theme: "github-light",
   });
   return (

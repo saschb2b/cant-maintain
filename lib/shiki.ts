@@ -6,6 +6,6 @@ export function getHighlighter() {
   return getSingletonHighlighterCore({
     engine: createJavaScriptRegexEngine(),
     themes: [import("@shikijs/themes/github-light")],
-    langs: [import("@shikijs/langs/typescript")],
+    langs: [import("@shikijs/langs/tsx")],
   });
 }

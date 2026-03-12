@@ -84,11 +84,11 @@ export default async function CategoryPage({ params }: PageProps) {
   for (const challenge of categoryChallenges) {
     highlighted.set(challenge.id, {
       goodHtml: highlighter.codeToHtml(challenge.goodCode, {
-        lang: "typescript",
+        lang: "tsx",
         theme: "github-light",
       }),
       badHtml: highlighter.codeToHtml(challenge.badCode, {
-        lang: "typescript",
+        lang: "tsx",
         theme: "github-light",
       }),
     });

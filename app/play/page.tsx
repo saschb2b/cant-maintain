@@ -22,11 +22,11 @@ export default async function PlayPage() {
   for (const challenge of challenges) {
     highlightMap[challenge.id] = {
       goodHtml: highlighter.codeToHtml(challenge.goodCode, {
-        lang: "typescript",
+        lang: "tsx",
         theme: "github-light",
       }),
       badHtml: highlighter.codeToHtml(challenge.badCode, {
-        lang: "typescript",
+        lang: "tsx",
         theme: "github-light",
       }),
     };
