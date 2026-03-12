@@ -538,8 +538,8 @@ export function LobbyScreen({
         </Box>
       </Stack>
 
-      {/* Bottom section — Daily, Weekly, History */}
-      <Box sx={{ pb: { xs: 3, md: 6 } }}>
+      {/* Challenges — Daily & Weekly side by side */}
+      <Box sx={{ pb: { xs: 2, md: 3 } }}>
         <Typography
           variant="caption"
           color="text.secondary"
@@ -555,49 +555,79 @@ export function LobbyScreen({
           Challenges
         </Typography>
         <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={{ xs: 2, md: 3 }}
+          sx={{ maxWidth: { sm: 520 } }}
+        >
+          <ChallengeCard
+            icon={<Sun size={18} />}
+            label="Daily"
+            sublabel="Resets every day"
+            seed={dailySeed}
+            result={dailyResult}
+            onPlay={() => {
+              trackEvent("game-started", {
+                seed: dailySeed,
+                type: "daily",
+                categories: ALL_CATEGORIES.length,
+              });
+              onStart(dailySeed, new Set(), "daily");
+            }}
+          />
+          <ChallengeCard
+            icon={<Calendar size={18} />}
+            label="Weekly"
+            sublabel="Resets every Monday"
+            seed={weeklySeed}
+            result={weeklyResult}
+            onPlay={() => {
+              trackEvent("game-started", {
+                seed: weeklySeed,
+                type: "weekly",
+                categories: ALL_CATEGORIES.length,
+              });
+              onStart(weeklySeed, new Set(), "weekly");
+            }}
+          />
+        </Stack>
+      </Box>
+
+      {/* Activity graph + History side by side */}
+      <Box sx={{ pb: { xs: 3, md: 6 } }}>
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          fontFamily="var(--font-geist-mono), monospace"
+          sx={{
+            fontSize: "0.63rem",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+            mb: 1.5,
+            display: "block",
+          }}
+        >
+          Activity
+        </Typography>
+        <Stack
           direction={{ xs: "column", md: "row" }}
           alignItems={{ md: "flex-start" }}
           spacing={{ xs: 2, md: 3 }}
         >
-          {/* Daily & Weekly — 2/3 */}
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={{ xs: 2, md: 3 }}
-            sx={{ flex: 2 }}
+          {/* Activity — 2/3 */}
+          <Paper
+            elevation={0}
+            sx={{
+              flex: 2,
+              minWidth: 0,
+              border: 1,
+              borderColor: "divider",
+              p: { xs: 2, md: 3 },
+            }}
           >
-            <ChallengeCard
-              icon={<Sun size={18} />}
-              label="Daily"
-              sublabel="Resets every day"
-              seed={dailySeed}
-              result={dailyResult}
-              onPlay={() => {
-                trackEvent("game-started", {
-                  seed: dailySeed,
-                  type: "daily",
-                  categories: ALL_CATEGORIES.length,
-                });
-                onStart(dailySeed, new Set(), "daily");
-              }}
-            />
-            <ChallengeCard
-              icon={<Calendar size={18} />}
-              label="Weekly"
-              sublabel="Resets every Monday"
-              seed={weeklySeed}
-              result={weeklyResult}
-              onPlay={() => {
-                trackEvent("game-started", {
-                  seed: weeklySeed,
-                  type: "weekly",
-                  categories: ALL_CATEGORIES.length,
-                });
-                onStart(weeklySeed, new Set(), "weekly");
-              }}
-            />
-          </Stack>
+            <ActivityGraph />
+          </Paper>
 
-          {/* History — 1/3 on desktop, full width on mobile */}
+          {/* History — 1/3 */}
           <Paper
             elevation={0}
             sx={{
@@ -684,7 +714,10 @@ export function LobbyScreen({
                           variant="caption"
                           fontFamily="var(--font-geist-mono), monospace"
                           fontWeight={600}
-                          sx={{ fontSize: "0.72rem", letterSpacing: "0.06em" }}
+                          sx={{
+                            fontSize: "0.72rem",
+                            letterSpacing: "0.06em",
+                          }}
                         >
                           {entry.seed}
                         </Typography>
@@ -757,34 +790,6 @@ export function LobbyScreen({
             )}
           </Paper>
         </Stack>
-      </Box>
-
-      {/* Activity graph */}
-      <Box sx={{ pb: { xs: 3, md: 6 } }}>
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          fontFamily="var(--font-geist-mono), monospace"
-          sx={{
-            fontSize: "0.63rem",
-            letterSpacing: "0.05em",
-            textTransform: "uppercase",
-            mb: 1.5,
-            display: "block",
-          }}
-        >
-          Activity
-        </Typography>
-        <Paper
-          elevation={0}
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            p: { xs: 2, md: 3 },
-          }}
-        >
-          <ActivityGraph />
-        </Paper>
       </Box>
     </>
   );
