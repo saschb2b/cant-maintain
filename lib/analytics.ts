@@ -49,6 +49,16 @@ interface HistoryReplayedData {
   plays: number;
 }
 
+interface SearchOpenedData {
+  trigger: "hotkey" | "button" | "unknown";
+}
+
+interface SearchSelectedData {
+  query: string;
+  selectedTitle: string;
+  selectedHref: string;
+}
+
 interface EventMap {
   "challenge-answered": ChallengeAnsweredData;
   "game-finished": GameFinishedData;
@@ -58,6 +68,8 @@ interface EventMap {
   "history-replayed": HistoryReplayedData;
   "source-link-clicked": LinkClickedData;
   "learn-link-clicked": LinkClickedData;
+  "search-opened": SearchOpenedData;
+  "search-selected": SearchSelectedData;
 }
 
 declare global {
