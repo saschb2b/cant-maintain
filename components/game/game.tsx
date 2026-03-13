@@ -274,7 +274,7 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
           size="small"
           sx={{
             mb: 1,
-            bgcolor: "rgba(0,0,0,0.08)",
+            bgcolor: "action.selected",
             color: "text.primary",
             fontSize: "0.7rem",
             height: 22,
@@ -342,7 +342,7 @@ export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
             fontFamily="var(--font-geist-mono), monospace"
             sx={{
               color: "text.primary",
-              bgcolor: "rgba(0,0,0,0.07)",
+              bgcolor: "action.selected",
               px: 1,
               py: 0.5,
               borderRadius: 1,

@@ -150,7 +150,7 @@ export function CodePanel({
           ? {
               borderColor: "text.secondary",
               transform: "translateY(-2px)",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+              boxShadow: 8,
             }
           : undefined,
         "&:focus-visible": isSelectable
@@ -205,7 +205,7 @@ export function CodePanel({
       <Box
         sx={{
           flex: 1,
-          bgcolor: "#FAF8F5",
+          bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
           ...codeBlockStyles,
         }}
       >

@@ -9,7 +9,7 @@ import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import { ArrowLeft, ArrowRight, Check, ExternalLink, X } from "lucide-react";
-import { getHighlighter } from "@/lib/shiki";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
 import { challenges } from "@/lib/game/challenges";
 import {
@@ -83,14 +83,8 @@ export default async function CategoryPage({ params }: PageProps) {
   const highlighted = new Map<string, { goodHtml: string; badHtml: string }>();
   for (const challenge of categoryChallenges) {
     highlighted.set(challenge.id, {
-      goodHtml: highlighter.codeToHtml(challenge.goodCode, {
-        lang: "tsx",
-        theme: "github-light",
-      }),
-      badHtml: highlighter.codeToHtml(challenge.badCode, {
-        lang: "tsx",
-        theme: "github-light",
-      }),
+      goodHtml: highlightDual(highlighter, challenge.goodCode),
+      badHtml: highlightDual(highlighter, challenge.badCode),
     });
   }
 
@@ -135,7 +129,7 @@ export default async function CategoryPage({ params }: PageProps) {
             sx={{
               height: 24,
               fontSize: "0.75rem",
-              bgcolor: "rgba(0,0,0,0.06)",
+              bgcolor: "action.hover",
             }}
           />
         </Stack>
@@ -186,7 +180,7 @@ export default async function CategoryPage({ params }: PageProps) {
               }
               sx={{ borderTop: 1, borderBottom: 1, borderColor: "divider" }}
             >
-              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "#F9F6F1" }}>
+              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)" }}>
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -227,7 +221,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
               <Divider sx={{ display: { sm: "none" } }} />
 
-              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "#F9F6F1" }}>
+              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)" }}>
                 <Stack
                   direction="row"
                   alignItems="center"

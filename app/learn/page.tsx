@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import { ArrowRight, Check, X } from "lucide-react";
-import { getHighlighter } from "@/lib/shiki";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
 import { challenges } from "@/lib/game/challenges";
 import {
@@ -37,14 +37,8 @@ export default async function LearnPage() {
       count: categoryChallenges.length,
       preview: preview
         ? {
-            goodHtml: highlighter.codeToHtml(preview.goodCode, {
-              lang: "tsx",
-              theme: "github-light",
-            }),
-            badHtml: highlighter.codeToHtml(preview.badCode, {
-              lang: "tsx",
-              theme: "github-light",
-            }),
+            goodHtml: highlightDual(highlighter, preview.goodCode),
+            badHtml: highlightDual(highlighter, preview.badCode),
           }
         : null,
     };
@@ -83,7 +77,7 @@ export default async function LearnPage() {
                 transition: "all 0.2s ease",
                 "&:hover": {
                   borderColor: "text.secondary",
-                  boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                  boxShadow: 8,
                   transform: "translateY(-2px)",
                 },
               }}
@@ -104,7 +98,7 @@ export default async function LearnPage() {
                       sx={{
                         height: 22,
                         fontSize: "0.7rem",
-                        bgcolor: "rgba(0,0,0,0.06)",
+                        bgcolor: "action.hover",
                       }}
                     />
                   </Stack>
@@ -134,7 +128,7 @@ export default async function LearnPage() {
                   sx={{
                     borderTop: 1,
                     borderColor: "divider",
-                    bgcolor: "#FAF8F5",
+                    bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
                   }}
                 >
                   <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>

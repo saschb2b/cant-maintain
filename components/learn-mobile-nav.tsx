@@ -51,12 +51,12 @@ export function LearnMobileNav() {
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 1,
-                  bgcolor: isActive ? "primary.main" : "rgba(0,0,0,0.05)",
+                  bgcolor: isActive ? "primary.main" : "action.hover",
                   color: isActive ? "primary.contrastText" : "text.secondary",
                   whiteSpace: "nowrap",
                   transition: "all 0.15s ease",
                   "&:hover": {
-                    bgcolor: isActive ? "primary.main" : "rgba(0,0,0,0.08)",
+                    bgcolor: isActive ? "primary.main" : "action.selected",
                   },
                 }}
               >

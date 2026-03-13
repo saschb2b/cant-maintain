@@ -272,9 +272,9 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
       cursor: "pointer",
       borderRadius: 1,
       mx: 1,
-      bgcolor: isHighlighted ? "secondary.main" : "transparent",
+      bgcolor: isHighlighted ? "action.selected" : "transparent",
       transition: "background-color 0.1s ease",
-      "&:hover": { bgcolor: "secondary.main" },
+      "&:hover": { bgcolor: "action.hover" },
     }) as const;
 
   const renderSearchResult = (
@@ -310,7 +310,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             flexShrink: 0,
             color: isHighlighted
               ? theme.palette.primary.main
-              : theme.palette.text.secondary,
+              : theme.palette.text.primary,
           }}
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
@@ -339,7 +339,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
               />
             )}
           </Box>
-          <Typography variant="caption" noWrap color="text.secondary" display="block">
+          <Typography variant="caption" noWrap color="text.primary" display="block" sx={{ opacity: 0.7 }}>
             {highlightMatches(
               result.item.description,
               descMatch?.indices as [number, number][] | undefined,
@@ -386,7 +386,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             flexShrink: 0,
             color: isHighlighted
               ? theme.palette.primary.main
-              : theme.palette.text.secondary,
+              : theme.palette.text.primary,
           }}
         />
         <Box sx={{ minWidth: 0 }}>
@@ -399,7 +399,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
           >
             {item.title}
           </Typography>
-          <Typography variant="caption" noWrap color="text.secondary" display="block">
+          <Typography variant="caption" noWrap color="text.primary" display="block" sx={{ opacity: 0.7 }}>
             {item.description}
           </Typography>
         </Box>
@@ -444,7 +444,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         backdrop: {
           sx: {
             bgcolor: alpha(theme.palette.background.default, 0.7),
-            backdropFilter: "blur(6px)",
+            backdropFilter: "blur(8px)",
           },
         },
         paper: {
@@ -456,7 +456,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             maxHeight: "70vh",
             border: 1,
             borderColor: "divider",
-            boxShadow: `0 16px 48px ${alpha(theme.palette.text.primary, 0.12)}`,
+            boxShadow: `0 16px 48px ${alpha(theme.palette.text.primary, 0.15)}`,
           },
         },
       }}
@@ -501,8 +501,10 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
                 </InputAdornment>
               ) : null,
               sx: {
-                bgcolor: "secondary.main",
-                "& fieldset": { border: "none" },
+                bgcolor: "background.default",
+                "& fieldset": {
+                  borderColor: "divider",
+                },
               },
             },
           }}
@@ -608,7 +610,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
           py: 1.25,
           borderTop: 1,
           borderColor: "divider",
-          bgcolor: "secondary.main",
+          bgcolor: "background.default",
         }}
       >
         {[

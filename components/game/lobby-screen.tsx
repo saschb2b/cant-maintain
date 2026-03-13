@@ -515,7 +515,7 @@ export function LobbyScreen({
                           fontSize: "0.72rem",
                           cursor: "pointer",
                           bgcolor: isEnabled
-                            ? "rgba(0,0,0,0.07)"
+                            ? "action.selected"
                             : "transparent",
                           color: isEnabled ? "text.primary" : "text.disabled",
                           border: 1,
@@ -524,8 +524,8 @@ export function LobbyScreen({
                           transition: "all 0.15s ease",
                           "&:hover": {
                             bgcolor: isEnabled
-                              ? "rgba(0,0,0,0.12)"
-                              : "rgba(0,0,0,0.04)",
+                              ? "action.focus"
+                              : "action.hover",
                           },
                         }}
                       />
@@ -706,7 +706,7 @@ export function LobbyScreen({
                           px: 2,
                           cursor: "pointer",
                           transition: "background 0.15s ease",
-                          "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
+                          "&:hover": { bgcolor: "action.hover" },
                           minHeight: { xs: 40, md: "auto" },
                         }}
                       >

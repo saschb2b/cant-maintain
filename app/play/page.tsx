@@ -5,7 +5,7 @@ import { Game } from "@/components/game/game";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
-import { getHighlighter } from "@/lib/shiki";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { challenges } from "@/lib/game/challenges";
 
 export const metadata: Metadata = {
@@ -26,14 +26,8 @@ export default async function PlayPage({
     {};
   for (const challenge of challenges) {
     highlightMap[challenge.id] = {
-      goodHtml: highlighter.codeToHtml(challenge.goodCode, {
-        lang: "tsx",
-        theme: "github-light",
-      }),
-      badHtml: highlighter.codeToHtml(challenge.badCode, {
-        lang: "tsx",
-        theme: "github-light",
-      }),
+      goodHtml: highlightDual(highlighter, challenge.goodCode),
+      badHtml: highlightDual(highlighter, challenge.badCode),
     };
   }
   return (

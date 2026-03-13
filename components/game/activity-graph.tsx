@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
+import { useColorScheme } from "@mui/material/styles";
 import { getActivityGrid } from "@/lib/game/activity";
 
 const MIN_WEEKS = 10;
@@ -34,7 +35,20 @@ function getLevel(count: number): number {
   return 4;
 }
 
-const LEVEL_COLORS = ["#E8E0D4", "#A8C5AE", "#6F9E7A", "#4A7A62", "#2F5A45"];
+const LEVEL_COLORS_LIGHT = [
+  "#E8E0D4",
+  "#A8C5AE",
+  "#6F9E7A",
+  "#4A7A62",
+  "#2F5A45",
+];
+const LEVEL_COLORS_DARK = [
+  "#2E2924",
+  "#3A6B4A",
+  "#4A8A5E",
+  "#6BA882",
+  "#8CC8A0",
+];
 
 function formatDate(d: Date): string {
   return d.toLocaleDateString("en-US", {
@@ -62,6 +76,9 @@ function calcLayout(containerWidth: number): {
 }
 
 export function ActivityGraph() {
+  const { mode } = useColorScheme();
+  const levelColors = mode === "dark" ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [layout, setLayout] = useState<{
     weeks: number;
@@ -233,7 +250,7 @@ export function ActivityGraph() {
                             width: cellSize,
                             height: cellSize,
                             borderRadius: "2px",
-                            bgcolor: LEVEL_COLORS[level],
+                            bgcolor: levelColors[level],
                             transition: "opacity 0.15s ease",
                             "&:hover": { opacity: 0.8 },
                           }}
@@ -263,7 +280,7 @@ export function ActivityGraph() {
             >
               Less
             </Typography>
-            {LEVEL_COLORS.map((color, i) => (
+            {levelColors.map((color, i) => (
               <Box
                 key={i}
                 sx={{

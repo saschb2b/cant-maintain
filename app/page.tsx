@@ -18,7 +18,7 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
-import { getHighlighter } from "@/lib/shiki";
+import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
 
 const BAD_CODE = `interface UserCardProps {
@@ -35,14 +35,8 @@ const GOOD_CODE = `interface UserCardProps {
 
 export default async function LandingPage() {
   const highlighter = await getHighlighter();
-  const badCodeHtml = highlighter.codeToHtml(BAD_CODE, {
-    lang: "tsx",
-    theme: "github-light",
-  });
-  const goodCodeHtml = highlighter.codeToHtml(GOOD_CODE, {
-    lang: "tsx",
-    theme: "github-light",
-  });
+  const badCodeHtml = highlightDual(highlighter, BAD_CODE);
+  const goodCodeHtml = highlightDual(highlighter, GOOD_CODE);
   return (
     <Box
       sx={{
@@ -603,7 +597,7 @@ export default async function LandingPage() {
                   fontWeight: 600,
                   "&:hover": {
                     borderColor: "text.secondary",
-                    bgcolor: "rgba(0,0,0,0.03)",
+                    bgcolor: "action.hover",
                   },
                 }}
               >

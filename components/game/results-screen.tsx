@@ -239,7 +239,7 @@ export function ResultsScreen({ state, onRetry, onNewGame }: ResultsScreenProps)
                 cursor: "pointer",
                 borderRadius: 1,
                 px: 0.5,
-                "&:hover": { bgcolor: "rgba(0,0,0,0.04)" },
+                "&:hover": { bgcolor: "action.hover" },
               }}
             >
               <Hash size={14} color="var(--mui-palette-text-secondary)" />
@@ -509,7 +509,7 @@ export function ResultsScreen({ state, onRetry, onNewGame }: ResultsScreenProps)
                       sx={{
                         height: 20,
                         fontSize: "0.65rem",
-                        bgcolor: "rgba(0,0,0,0.06)",
+                        bgcolor: "action.hover",
                         color: "text.secondary",
                       }}
                     />

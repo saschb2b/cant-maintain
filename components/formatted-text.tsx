@@ -10,7 +10,7 @@ interface FormattedTextProps {
 const codeStyle = {
   fontFamily: "var(--font-geist-mono), monospace",
   fontSize: "0.85em",
-  bgcolor: "rgba(0,0,0,0.05)",
+  bgcolor: "action.hover",
   px: 0.6,
   py: 0.2,
   borderRadius: 0.5,

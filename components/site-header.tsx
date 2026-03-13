@@ -7,13 +7,42 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
-import { Search } from "lucide-react";
+import { useColorScheme } from "@mui/material/styles";
+import { Search, Sun, Moon } from "lucide-react";
 import packageJson from "@/package.json";
 import { SearchPalette } from "@/components/search-palette";
 import { trackEvent } from "@/lib/analytics";
+
+function ColorSchemeToggle() {
+  const { mode, systemMode, setMode } = useColorScheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  // Avoid hydration mismatch — render nothing until mounted
+  if (!mounted) {
+    return <IconButton size="small" sx={{ color: "text.secondary" }} />;
+  }
+
+  // Resolve "system" to the actual preference
+  const resolvedMode = mode === "system" ? systemMode : mode;
+  const isDark = resolvedMode === "dark";
+
+  return (
+    <IconButton
+      size="small"
+      onClick={() => setMode(isDark ? "light" : "dark")}
+      sx={{ color: "text.secondary" }}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {isDark ? <Sun size={18} /> : <Moon size={18} />}
+    </IconButton>
+  );
+}
 
 export function SiteHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -146,6 +175,7 @@ export function SiteHeader() {
                   Ctrl K
                 </Box>
               </Button>
+              <ColorSchemeToggle />
               <NextLink
                 href="/learn"
                 style={{ textDecoration: "none", color: "inherit" }}
