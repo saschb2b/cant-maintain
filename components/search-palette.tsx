@@ -463,19 +463,28 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
           sx: {
             overflow: "hidden",
             position: "fixed",
-            top: "15%",
             m: 0,
-            maxHeight: "70vh",
+            display: "flex",
+            flexDirection: "column",
             border: 1,
             borderColor: "divider",
-            boxShadow:
-              "0 16px 48px rgba(var(--mui-palette-text-primaryChannel) / 0.15)",
+            // Mobile: fullscreen / Desktop: centered floating
+            top: { xs: 0, sm: "15%" },
+            left: { xs: 0, sm: "50%" },
+            right: { xs: 0, sm: "auto" },
+            transform: { xs: "none", sm: "translateX(-50%)" },
+            maxHeight: { xs: "100%", sm: "70vh" },
+            height: { xs: "100%", sm: "auto" },
+            width: { xs: "100%", sm: "100%" },
+            borderRadius: { xs: 0, sm: 1 },
+            borderWidth: { xs: 0, sm: 1 },
+            boxShadow: { xs: "none", sm: "0 16px 48px rgba(var(--mui-palette-text-primaryChannel) / 0.15)" },
           },
         },
       }}
     >
       {/* Search Input */}
-      <Box sx={{ p: 2, pb: 1 }}>
+      <Box sx={{ display: "flex", alignItems: "center", p: 2, pb: 1, gap: 1 }}>
         <TextField
           inputRef={inputRef}
           autoFocus
@@ -523,12 +532,30 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             },
           }}
         />
+        <Typography
+          component="button"
+          variant="body2"
+          onClick={handleClose}
+          sx={{
+            display: { xs: "block", sm: "none" },
+            flexShrink: 0,
+            background: "none",
+            border: "none",
+            color: "primary.main",
+            cursor: "pointer",
+            fontWeight: 500,
+            p: 0,
+          }}
+        >
+          Cancel
+        </Typography>
       </Box>
 
       {/* Results */}
       <Box
         sx={{
-          maxHeight: "calc(70vh - 130px)",
+          maxHeight: { xs: "none", sm: "calc(70vh - 130px)" },
+          flex: { xs: 1, sm: "initial" },
           overflowY: "auto",
           pb: 0.5,
         }}
@@ -615,10 +642,10 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         )}
       </Box>
 
-      {/* Footer — keyboard hints */}
+      {/* Footer — keyboard hints (hidden on mobile) */}
       <Box
         sx={{
-          display: "flex",
+          display: { xs: "none", sm: "flex" },
           gap: 3,
           px: 2.5,
           py: 1.25,
