@@ -17,8 +17,10 @@ export function LearnSidebar() {
         width: 220,
         flexShrink: 0,
         position: "sticky",
-        top: 24,
+        top: 73,
         alignSelf: "flex-start",
+        maxHeight: "calc(100vh - 73px)",
+        overflowY: "auto",
         py: { md: 4 },
         display: { xs: "none", md: "block" },
       }}

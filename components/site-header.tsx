@@ -69,7 +69,22 @@ export function SiteHeader() {
 
   return (
     <>
-      <Box component="header" sx={{ position: "relative", zIndex: 1 }}>
+      <Box
+        component="header"
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1100,
+          bgcolor: "var(--header-bg)",
+          backdropFilter: "blur(12px)",
+          '[data-mui-color-scheme="light"] &': {
+            "--header-bg": "rgba(245, 240, 235, 0.8)",
+          },
+          '[data-mui-color-scheme="dark"] &': {
+            "--header-bg": "rgba(26, 23, 20, 0.8)",
+          },
+        }}
+      >
         <Container maxWidth="lg">
           <Stack direction="row" alignItems="center" sx={{ py: 2 }}>
             <NextLink
