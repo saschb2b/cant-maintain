@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
 import { useColorScheme } from "@mui/material/styles";
 import { Search, Sun, Moon, GraduationCap } from "lucide-react";
 import packageJson from "@/package.json";
@@ -33,14 +34,16 @@ function ColorSchemeToggle() {
   const isDark = resolvedMode === "dark";
 
   return (
-    <IconButton
-      size="small"
-      onClick={() => setMode(isDark ? "light" : "dark")}
-      sx={{ color: "text.secondary" }}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-    >
-      {isDark ? <Sun size={18} /> : <Moon size={18} />}
-    </IconButton>
+    <Tooltip title={isDark ? "Switch to light mode" : "Switch to dark mode"}>
+      <IconButton
+        size="small"
+        onClick={() => setMode(isDark ? "light" : "dark")}
+        sx={{ color: "text.secondary" }}
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {isDark ? <Sun size={18} /> : <Moon size={18} />}
+      </IconButton>
+    </Tooltip>
   );
 }
 
@@ -101,25 +104,27 @@ export function SiteHeader() {
               href="/changelog"
               style={{ textDecoration: "none", display: "contents" }}
             >
-              <Chip
-                clickable
-                label={`v${packageJson.version}`}
-                size="small"
-                variant="outlined"
-                sx={{
-                  ml: 1.5,
-                  height: 22,
-                  fontWeight: 600,
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.05em",
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  borderColor: "primary.main",
-                  color: "primary.main",
-                  backgroundColor:
-                    "rgba(var(--mui-palette-primary-mainChannel) / 0.08)",
-                  display: { xs: "none", sm: "flex" },
-                }}
-              />
+              <Tooltip title="View changelog">
+                <Chip
+                  clickable
+                  label={`v${packageJson.version}`}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    ml: 1.5,
+                    height: 22,
+                    fontWeight: 600,
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.05em",
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    borderColor: "primary.main",
+                    color: "primary.main",
+                    backgroundColor:
+                      "rgba(var(--mui-palette-primary-mainChannel) / 0.08)",
+                    display: { xs: "none", sm: "flex" },
+                  }}
+                />
+              </Tooltip>
             </NextLink>
 
             <Stack
@@ -129,17 +134,19 @@ export function SiteHeader() {
               sx={{ ml: "auto" }}
             >
               {/* Search: icon button on mobile, pill on desktop */}
-              <IconButton
-                onClick={() => openSearch("button")}
-                size="small"
-                sx={{
-                  display: { xs: "flex", sm: "none" },
-                  color: "text.secondary",
-                }}
-                aria-label="Search"
-              >
-                <Search size={18} />
-              </IconButton>
+              <Tooltip title="Search">
+                <IconButton
+                  onClick={() => openSearch("button")}
+                  size="small"
+                  sx={{
+                    display: { xs: "flex", sm: "none" },
+                    color: "text.secondary",
+                  }}
+                  aria-label="Search"
+                >
+                  <Search size={18} />
+                </IconButton>
+              </Tooltip>
               <Button
                 onClick={() => openSearch("button")}
                 size="small"
@@ -187,17 +194,19 @@ export function SiteHeader() {
                 href="/learn"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <IconButton
-                  component="span"
-                  size="small"
-                  sx={{
-                    display: { xs: "flex", sm: "none" },
-                    color: "text.secondary",
-                  }}
-                  aria-label="Learn"
-                >
-                  <GraduationCap size={18} />
-                </IconButton>
+                <Tooltip title="Learn">
+                  <IconButton
+                    component="span"
+                    size="small"
+                    sx={{
+                      display: { xs: "flex", sm: "none" },
+                      color: "text.secondary",
+                    }}
+                    aria-label="Learn"
+                  >
+                    <GraduationCap size={18} />
+                  </IconButton>
+                </Tooltip>
                 <Typography
                   variant="body2"
                   fontWeight={500}
