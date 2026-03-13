@@ -216,6 +216,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
   useEffect(() => {
     resultRefs.current[highlightedIndex]?.scrollIntoView({
       block: "nearest",
+      behavior: "smooth",
     });
   }, [highlightedIndex]);
 
@@ -273,7 +274,9 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
       borderRadius: 1,
       mx: 1,
       bgcolor: isHighlighted ? "action.selected" : "transparent",
-      transition: "background-color 0.1s ease",
+      transform: isHighlighted ? "translateX(4px)" : "translateX(0)",
+      transition:
+        "background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease",
       scrollMarginTop: 40,
       "&:hover": { bgcolor: "action.hover" },
     }) as const;
@@ -312,6 +315,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             color: isHighlighted
               ? theme.palette.primary.main
               : theme.palette.text.primary,
+            transition: "color 0.15s ease",
           }}
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
@@ -321,6 +325,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
               noWrap
               sx={{
                 color: isHighlighted ? "primary.main" : "text.primary",
+                transition: "color 0.15s ease",
               }}
             >
               {highlightMatches(
@@ -388,6 +393,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             color: isHighlighted
               ? theme.palette.primary.main
               : theme.palette.text.primary,
+            transition: "color 0.15s ease",
           }}
         />
         <Box sx={{ minWidth: 0 }}>
@@ -396,6 +402,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             noWrap
             sx={{
               color: isHighlighted ? "primary.main" : "text.primary",
+              transition: "color 0.15s ease",
             }}
           >
             {item.title}
