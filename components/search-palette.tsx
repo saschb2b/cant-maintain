@@ -8,8 +8,6 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  alpha,
-  useTheme,
 } from "@mui/material";
 import {
   Search,
@@ -124,7 +122,6 @@ interface SearchPaletteProps {
 }
 
 export function SearchPalette({ open, onClose }: SearchPaletteProps) {
-  const theme = useTheme();
   const router = useRouter();
 
   const [query, setQuery] = useState("");
@@ -308,13 +305,13 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         onMouseEnter={() => setHighlightedIndex(globalIndex)}
         sx={rowSx(isHighlighted)}
       >
-        <Icon
+        <Box
+          component={Icon}
           size={18}
-          style={{
+          strokeWidth={2.5}
+          sx={{
             flexShrink: 0,
-            color: isHighlighted
-              ? theme.palette.primary.main
-              : theme.palette.text.primary,
+            color: isHighlighted ? "primary.light" : "text.primary",
             transition: "color 0.15s ease",
           }}
         />
@@ -324,7 +321,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
               variant="subtitle2"
               noWrap
               sx={{
-                color: isHighlighted ? "primary.main" : "text.primary",
+                color: isHighlighted ? "primary.light" : "text.primary",
                 transition: "color 0.15s ease",
               }}
             >
@@ -386,13 +383,13 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         onMouseEnter={() => setHighlightedIndex(globalIndex)}
         sx={rowSx(isHighlighted)}
       >
-        <Icon
+        <Box
+          component={Icon}
           size={18}
-          style={{
+          strokeWidth={2.5}
+          sx={{
             flexShrink: 0,
-            color: isHighlighted
-              ? theme.palette.primary.main
-              : theme.palette.text.primary,
+            color: isHighlighted ? "primary.light" : "text.primary",
             transition: "color 0.15s ease",
           }}
         />
@@ -401,7 +398,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             variant="subtitle2"
             noWrap
             sx={{
-              color: isHighlighted ? "primary.main" : "text.primary",
+              color: isHighlighted ? "primary.light" : "text.primary",
               transition: "color 0.15s ease",
             }}
           >
@@ -428,6 +425,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         top: 0,
         zIndex: 1,
         bgcolor: "background.paper",
+        backgroundImage: "var(--Paper-overlay)",
       }}
     >
       {label}
@@ -451,7 +449,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         },
         backdrop: {
           sx: {
-            bgcolor: alpha(theme.palette.background.default, 0.7),
+            bgcolor: "rgba(var(--mui-palette-background-defaultChannel) / 0.7)",
             backdropFilter: "blur(8px)",
           },
         },
@@ -464,7 +462,8 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             maxHeight: "70vh",
             border: 1,
             borderColor: "divider",
-            boxShadow: `0 16px 48px ${alpha(theme.palette.text.primary, 0.15)}`,
+            boxShadow:
+              "0 16px 48px rgba(var(--mui-palette-text-primaryChannel) / 0.15)",
           },
         },
       }}
@@ -487,9 +486,10 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Search
+                  <Box
+                    component={Search}
                     size={18}
-                    style={{ color: theme.palette.text.secondary }}
+                    sx={{ color: "text.secondary" }}
                   />
                 </InputAdornment>
               ),
