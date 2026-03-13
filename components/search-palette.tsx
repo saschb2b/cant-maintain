@@ -2,7 +2,9 @@
 
 import {
   Box,
+  Chip,
   Dialog,
+  IconButton,
   InputAdornment,
   TextField,
   Typography,
@@ -14,6 +16,10 @@ import {
   FileText,
   BookOpen,
   Code,
+  Gamepad2,
+  GraduationCap,
+  ScrollText,
+  X,
   ArrowUp,
   ArrowDown,
   CornerDownLeft,
@@ -22,7 +28,10 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Fuse, { type FuseResult } from "fuse.js";
 import { searchItems, type SearchItem } from "@/lib/search-items";
+import { CATEGORY_SECTIONS } from "@/lib/game/categories";
 import { trackEvent } from "@/lib/analytics";
+
+const MAX_VISIBLE_CHALLENGES = 5;
 
 // ---------------------------------------------------------------------------
 // Highlight helper — wraps matched characters in <mark>
@@ -71,13 +80,40 @@ function highlightMatches(
 }
 
 // ---------------------------------------------------------------------------
-// Icon map
+// Icon resolution
 // ---------------------------------------------------------------------------
-const iconMap: Record<SearchItem["type"], typeof Search> = {
+const typeIconMap: Record<SearchItem["type"], typeof Search> = {
   page: FileText,
   category: BookOpen,
   challenge: Code,
 };
+
+const pageIconMap: Record<string, typeof Search> = {
+  play: Gamepad2,
+  learn: GraduationCap,
+  changelog: ScrollText,
+};
+
+function getIcon(item: SearchItem): typeof Search {
+  if (item.icon) return pageIconMap[item.icon] ?? typeIconMap[item.type];
+  return typeIconMap[item.type];
+}
+
+// ---------------------------------------------------------------------------
+// Difficulty dot color
+// ---------------------------------------------------------------------------
+function difficultyColor(difficulty: string): string {
+  switch (difficulty) {
+    case "easy":
+      return "var(--mui-palette-success-main)";
+    case "medium":
+      return "var(--mui-palette-warning-main)";
+    case "hard":
+      return "var(--mui-palette-error-main)";
+    default:
+      return "var(--mui-palette-text-disabled)";
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Main component
@@ -93,6 +129,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
 
   const [query, setQuery] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [showAllChallenges, setShowAllChallenges] = useState(false);
   const resultRefs = useRef<(HTMLDivElement | null)[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -126,25 +163,54 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
     return { pages, categories, challenges };
   }, [results]);
 
+  const hiddenChallengeCount =
+    !showAllChallenges && grouped.challenges.length > MAX_VISIBLE_CHALLENGES
+      ? grouped.challenges.length - MAX_VISIBLE_CHALLENGES
+      : 0;
+
+  const visibleChallenges = showAllChallenges
+    ? grouped.challenges
+    : grouped.challenges.slice(0, MAX_VISIBLE_CHALLENGES);
+
   // Flat list for keyboard navigation
   const flatResults = useMemo(
     () => [
       ...grouped.pages,
       ...grouped.categories,
-      ...grouped.challenges,
+      ...visibleChallenges,
     ],
-    [grouped],
+    [grouped.pages, grouped.categories, visibleChallenges],
   );
 
   // Show all items when query is empty (browseable)
   const showBrowse = !query.trim();
   const browseItems = useMemo(() => {
     const pages = searchItems.filter((i) => i.type === "page");
-    const categories = searchItems.filter((i) => i.type === "category");
-    return { pages, categories, flat: [...pages, ...categories] };
+    const categoryItems = searchItems.filter((i) => i.type === "category");
+    const categoryMap = new Map(categoryItems.map((c) => [c.href, c]));
+
+    // Group categories by section, preserving CATEGORY_SECTIONS order
+    const sections = CATEGORY_SECTIONS.map((section) => ({
+      label: section.label,
+      items: section.categories
+        .map((cat) => categoryMap.get(`/learn/${cat}`))
+        .filter(Boolean) as SearchItem[],
+    })).filter((s) => s.items.length > 0);
+
+    const flat = [
+      ...pages,
+      ...sections.flatMap((s) => s.items),
+    ];
+
+    return { pages, sections, flat };
   }, []);
 
   const activeList = showBrowse ? browseItems.flat : flatResults;
+
+  // Reset "show all" when query changes
+  useEffect(() => {
+    setShowAllChallenges(false);
+  }, [query]);
 
   // Scroll highlighted item into view
   useEffect(() => {
@@ -158,6 +224,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
     setTimeout(() => {
       setQuery("");
       setHighlightedIndex(0);
+      setShowAllChallenges(false);
     }, 200);
   }, [onClose]);
 
@@ -218,7 +285,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
     const titleMatch = result.matches?.find((m) => m.key === "title");
     const descMatch = result.matches?.find((m) => m.key === "description");
     const isHighlighted = globalIndex === highlightedIndex;
-    const Icon = iconMap[result.item.type];
+    const Icon = getIcon(result.item);
 
     return (
       <Box
@@ -246,19 +313,32 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
               : theme.palette.text.secondary,
           }}
         />
-        <Box sx={{ minWidth: 0 }}>
-          <Typography
-            variant="subtitle2"
-            noWrap
-            sx={{
-              color: isHighlighted ? "primary.main" : "text.primary",
-            }}
-          >
-            {highlightMatches(
-              result.item.title,
-              titleMatch?.indices as [number, number][] | undefined,
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography
+              variant="subtitle2"
+              noWrap
+              sx={{
+                color: isHighlighted ? "primary.main" : "text.primary",
+              }}
+            >
+              {highlightMatches(
+                result.item.title,
+                titleMatch?.indices as [number, number][] | undefined,
+              )}
+            </Typography>
+            {result.item.difficulty && (
+              <Box
+                sx={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: "50%",
+                  bgcolor: difficultyColor(result.item.difficulty),
+                  flexShrink: 0,
+                }}
+              />
             )}
-          </Typography>
+          </Box>
           <Typography variant="caption" noWrap color="text.secondary" display="block">
             {highlightMatches(
               result.item.description,
@@ -281,7 +361,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
 
   const renderBrowseItem = (item: SearchItem, globalIndex: number) => {
     const isHighlighted = globalIndex === highlightedIndex;
-    const Icon = iconMap[item.type];
+    const Icon = getIcon(item);
 
     return (
       <Box
@@ -332,10 +412,14 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
       variant="overline"
       sx={{
         px: 3,
-        py: 0.75,
+        pt: hasItemsAbove ? 1.25 : 0.75,
+        pb: 0.75,
         display: "block",
         color: "text.secondary",
-        mt: hasItemsAbove ? 0.5 : 0,
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        bgcolor: "background.paper",
       }}
     >
       {label}
@@ -401,6 +485,21 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
                   />
                 </InputAdornment>
               ),
+              endAdornment: query ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    onClick={() => {
+                      setQuery("");
+                      setHighlightedIndex(0);
+                      inputRef.current?.focus();
+                    }}
+                    sx={{ color: "text.secondary" }}
+                  >
+                    <X size={16} />
+                  </IconButton>
+                </InputAdornment>
+              ) : null,
               sx: {
                 bgcolor: "secondary.main",
                 "& fieldset": { border: "none" },
@@ -415,7 +514,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         sx={{
           maxHeight: "calc(70vh - 130px)",
           overflowY: "auto",
-          py: 0.5,
+          pb: 0.5,
         }}
       >
         {showBrowse ? (
@@ -428,26 +527,25 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
                 )}
               </>
             )}
-            {browseItems.categories.length > 0 && (
-              <>
-                {renderGroupHeader(
-                  "Categories",
-                  browseItems.pages.length > 0,
-                )}
-                {browseItems.categories.map((item) =>
+            {browseItems.sections.map((section) => (
+              <Box key={section.label}>
+                {renderGroupHeader(section.label, true)}
+                {section.items.map((item) =>
                   renderBrowseItem(item, globalIndex++),
                 )}
-              </>
-            )}
+              </Box>
+            ))}
           </>
         ) : flatResults.length === 0 ? (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: "center", py: 4 }}
-          >
-            No results found
-          </Typography>
+          <Box sx={{ textAlign: "center", py: 4, px: 3 }}>
+            <Typography variant="body2" color="text.secondary">
+              No results found
+            </Typography>
+            <Typography variant="caption" color="text.disabled" sx={{ mt: 0.5, display: "block" }}>
+              Try a prop name, category, or pattern like &quot;onClick&quot; or
+              &quot;boolean&quot;
+            </Typography>
+          </Box>
         ) : (
           <>
             {grouped.pages.length > 0 && (
@@ -466,14 +564,34 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
                 )}
               </>
             )}
-            {grouped.challenges.length > 0 && (
+            {visibleChallenges.length > 0 && (
               <>
                 {renderGroupHeader(
                   "Challenges",
                   grouped.pages.length > 0 || grouped.categories.length > 0,
                 )}
-                {grouped.challenges.map((result, i) =>
+                {visibleChallenges.map((result, i) =>
                   renderSearchResult(result, i, globalIndex++),
+                )}
+                {hiddenChallengeCount > 0 && (
+                  <Chip
+                    label={`Show ${String(hiddenChallengeCount)} more challenges`}
+                    size="small"
+                    variant="outlined"
+                    onClick={() => setShowAllChallenges(true)}
+                    sx={{
+                      mx: 3,
+                      mt: 0.5,
+                      mb: 0.5,
+                      borderColor: "divider",
+                      color: "text.secondary",
+                      cursor: "pointer",
+                      "&:hover": {
+                        bgcolor: "secondary.main",
+                        borderColor: "text.secondary",
+                      },
+                    }}
+                  />
                 )}
               </>
             )}

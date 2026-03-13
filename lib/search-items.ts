@@ -13,6 +13,10 @@ export interface SearchItem {
   description: string;
   /** Optional secondary line (e.g. category + difficulty for challenges). */
   subtitle?: string;
+  /** Per-item icon key (falls back to type-based icon when absent). */
+  icon?: "play" | "learn" | "changelog";
+  /** Challenge difficulty for color coding. */
+  difficulty?: "easy" | "medium" | "hard";
   keywords: string[];
   href: string;
 }
@@ -28,6 +32,7 @@ export const searchItems: SearchItem[] = [
     type: "page",
     title: "Play",
     description: "Start a quiz game and test your prop naming skills",
+    icon: "play",
     keywords: ["game", "quiz", "daily", "weekly", "challenge"],
     href: "/play",
   },
@@ -36,6 +41,7 @@ export const searchItems: SearchItem[] = [
     title: "Learn",
     description:
       "Browse all categories and study React component API patterns",
+    icon: "learn",
     keywords: ["learn", "study", "patterns", "overview", "categories"],
     href: "/learn",
   },
@@ -43,6 +49,7 @@ export const searchItems: SearchItem[] = [
     type: "page",
     title: "Changelog",
     description: "See what changed in each version",
+    icon: "changelog",
     keywords: ["changelog", "updates", "releases", "version", "history"],
     href: "/changelog",
   },
@@ -65,6 +72,7 @@ export const searchItems: SearchItem[] = [
     title: c.title,
     description: firstSentence(c.explanationCorrect),
     subtitle: `${CATEGORY_LABELS[c.category]} · ${c.difficulty}`,
+    difficulty: c.difficulty,
     keywords: extractCodeKeywords(c.goodCode, c.badCode),
     href: `/learn/${c.category}#${c.id}`,
   })),
