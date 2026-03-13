@@ -212,7 +212,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
   // Scroll highlighted item into view
   useEffect(() => {
     resultRefs.current[highlightedIndex]?.scrollIntoView({
-      block: "nearest",
+      block: "center",
       behavior: "smooth",
     });
   }, [highlightedIndex]);
