@@ -34,9 +34,9 @@ export const componentNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "The component name should describe **what it is**, not **where it lives**. `CallToActionButton` is reusable anywhere. `HomePageHeroSectionCallToActionButton` bakes in its location, discouraging reuse and making refactors painful.\n\nIf you move this button to the pricing page, the name becomes a lie.",
+      "The component name should describe **what it is**, not **where it lives**. `CallToActionButton` is reusable anywhere. `HomePageHeroSectionCallToActionButton` bakes in its location, which discourages reuse and makes refactors painful.\n\nIf you move this button to the pricing page, the name becomes a lie.",
     explanationWrong:
-      "Embedding the page, section, and layout context into a component name makes it appear single-use. Other developers won't reach for `HomePageHeroSectionCallToActionButton` when building the pricing page — they'll create a duplicate. Name components by **role**, not by **placement**.",
+      "Embedding the page, section, and layout context into a component name makes it look single-use. Other developers won't reach for `HomePageHeroSectionCallToActionButton` when building the pricing page. They'll just create a duplicate. Name components by **role**, not by **placement**.",
     sourceUrl:
       "https://react.dev/learn/your-first-component#nesting-and-organizing-components",
     sourceLabel: "React Docs: Nesting and Organizing Components",
@@ -82,7 +82,7 @@ export const componentNamingChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      "`ProductCard` tells you exactly what domain entity it represents and what visual form it takes. `Item` is so generic it could be anything — a list item, a menu entry, a cart line.\n\nGood component names combine the **domain concept** with the **UI pattern**: `ProductCard`, `UserAvatar`, `OrderSummary`.",
+      "`ProductCard` tells you exactly what domain entity it represents and what visual form it takes. `Item` is so generic it could be anything: a list item, a menu entry, a cart line.\n\nGood component names combine the **domain concept** with the **UI pattern**: `ProductCard`, `UserAvatar`, `OrderSummary`.",
     explanationWrong:
       "`Item` forces every developer to open the file and read the implementation to understand what it renders. In a codebase with multiple list-like views, you'd end up with `Item`, `Item2`, `ListItem`, `TheItem`. A specific name like `ProductCard` is self-documenting and searchable.",
     sourceUrl:
@@ -136,9 +136,9 @@ function UserProfileAvatar({ src }: { src: string }) {
 />`,
     correctSide: "right",
     explanationCorrect:
-      "When each sub-component wraps a single HTML element and is never used independently, they add naming overhead without value. A single `UserProfile` component is easier to understand, use, and maintain.\n\nSplit components when they have **independent reuse value** or **complex internal logic** — not just because the parent has multiple sections.",
+      "When each sub-component wraps a single HTML element and is never used independently, they add naming overhead without value. A single `UserProfile` is easier to understand, use, and maintain.\n\nSplit components when they have **independent reuse value** or **complex internal logic**, not just because the parent has multiple sections.",
     explanationWrong:
-      "Three components that each render one HTML element, are always used together, and share the same data source are a sign of premature decomposition. The naming pattern `UserProfileHeader`, `UserProfileBio`, `UserProfileAvatar` creates the illusion of modularity, but in practice they're tightly coupled and should be a single `UserProfile`.",
+      "Three components that each render one HTML element, are always used together, and share the same data source? That's premature decomposition. The naming pattern `UserProfileHeader`, `UserProfileBio`, `UserProfileAvatar` creates the illusion of modularity, but in practice they're tightly coupled and should just be one `UserProfile`.",
     sourceUrl:
       "https://react.dev/learn/thinking-in-react#step-1-break-the-ui-into-a-component-hierarchy",
     sourceLabel: "React Docs: Thinking in React",
@@ -147,47 +147,55 @@ function UserProfileAvatar({ src }: { src: string }) {
     id: "cn-004",
     category: "component-naming",
     difficulty: "easy",
-    title: "Context leaking into name",
-    badCode: `function SidebarNavigationLink({
-  href,
-  icon,
-  label,
+    title: "Naming after implementation",
+    badCode: `function StyledFlexRow({
+  children,
+  gap = 8,
 }: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
+  children: React.ReactNode;
+  gap?: number;
 }) {
   return (
-    <a href={href} className="nav-link">
-      {icon}
-      <span>{label}</span>
-    </a>
+    <div style={{ display: "flex", gap }}>
+      {children}
+    </div>
   );
-}`,
-    goodCode: `function NavLink({
-  href,
-  icon,
-  label,
+}
+
+// Usage
+<StyledFlexRow gap={16}>
+  <Avatar src={user.avatar} />
+  <span>{user.name}</span>
+  <RoleBadge role={user.role} />
+</StyledFlexRow>`,
+    goodCode: `function UserInfo({
+  children,
+  gap = 8,
 }: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
+  children: React.ReactNode;
+  gap?: number;
 }) {
   return (
-    <a href={href} className="nav-link">
-      {icon}
-      <span>{label}</span>
-    </a>
+    <div style={{ display: "flex", gap }}>
+      {children}
+    </div>
   );
-}`,
+}
+
+// Usage
+<UserInfo gap={16}>
+  <Avatar src={user.avatar} />
+  <span>{user.name}</span>
+  <RoleBadge role={user.role} />
+</UserInfo>`,
     correctSide: "right",
     explanationCorrect:
-      "`NavLink` describes what the component **is**: a navigation link with an icon. `SidebarNavigationLink` describes where it's **used**: the sidebar. The component itself has nothing sidebar-specific — it renders an anchor with an icon and label.\n\nThe parent (`Sidebar`) provides the context. The child should just be a reusable `NavLink`.",
+      "`UserInfo` describes **what** the component represents. `StyledFlexRow` describes **how** it's implemented: a styled div with `display: flex`. If you refactor to CSS Grid tomorrow, the name becomes a lie.\n\nName components after their **purpose in the UI**, not the CSS properties or HTML elements inside them.",
     explanationWrong:
-      "If the component has no sidebar-specific behavior or styling, baking `Sidebar` into the name prevents reuse. Tomorrow when you need the same link pattern in a mobile drawer or a top nav, you'll either misuse `SidebarNavigationLink` or duplicate it.\n\nLet the **file location** or **parent component** provide context, not the component name.",
+      "`StyledFlexRow` leaks implementation details into the component tree. In JSX, `<StyledFlexRow>` reads like a CSS utility, not a meaningful UI element. Names like `FlexContainer`, `GridWrapper`, `StyledDiv` are symptoms of thinking in CSS rather than in UI concepts.\n\nAsk yourself: \"What does this represent to the user?\" not \"How is this laid out?\"",
     sourceUrl:
-      "https://react.dev/learn/your-first-component#nesting-and-organizing-components",
-    sourceLabel: "React Docs: Nesting and Organizing Components",
+      "https://react.dev/learn/your-first-component",
+    sourceLabel: "React Docs: Your First Component",
   },
   {
     id: "cn-005",
@@ -222,9 +230,9 @@ function UserProfileAvatar({ src }: { src: string }) {
 }`,
     correctSide: "right",
     explanationCorrect:
-      "React components are **nouns**, not **verbs**. `UserList` is a thing you place in the tree. `RenderUserList` sounds like a function you call imperatively.\n\nThe `Render` prefix is redundant — every component renders. Reserve verb prefixes like `use` for hooks and `get`/`fetch` for utility functions.",
+      "React components are **nouns**, not **verbs**. `UserList` is a thing you place in the tree. `RenderUserList` sounds like a function you call imperatively.\n\nThe `Render` prefix is redundant since every component renders. Reserve verb prefixes like `use` for hooks and `get`/`fetch` for utility functions.",
     explanationWrong:
-      "The `Render` prefix suggests this is an imperative function rather than a declarative component. In JSX, `<RenderUserList />` reads oddly — you're not instructing React to render, you're declaring that a user list exists here.\n\nComponents describe **what** is on screen. Hooks and helpers describe **actions**.",
+      "The `Render` prefix suggests this is an imperative function rather than a declarative component. In JSX, `<RenderUserList />` reads oddly. You're not instructing React to render something, you're declaring that a user list exists here.\n\nComponents describe **what** is on screen. Hooks and helpers describe **actions**.",
     sourceUrl:
       "https://react.dev/learn/your-first-component",
     sourceLabel: "React Docs: Your First Component",
@@ -272,7 +280,7 @@ function WarningAlert({
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Three nearly identical components that differ only in a CSS class should be one component with a `severity` prop. `Alert` is a single concept with variants, not three separate concepts.\n\nThis mirrors how design systems work: MUI's `<Alert severity=\"error\" />`, not `<ErrorAlert />`.",
+      "Three nearly identical components that differ only in a CSS class should be one component with a `severity` prop. `Alert` is a single concept with variants, not three separate concepts.\n\nThis mirrors how design systems work: MUI has `<Alert severity=\"error\" />`, not `<ErrorAlert />`.",
     explanationWrong:
       "Separate `ErrorAlert`, `SuccessAlert`, and `WarningAlert` components triple the API surface for zero benefit. Every new variant (info, neutral) requires a new component, a new import, and a new entry in your barrel file. A single `Alert` with a `severity` union scales cleanly.",
     sourceUrl: "https://mui.com/material-ui/react-alert/",
@@ -341,52 +349,64 @@ Menu.Divider = function MenuDivider() {
 </Menu>`,
     correctSide: "right",
     explanationCorrect:
-      "The dot notation (`Menu.Item`, `Menu.Divider`) makes the parent-child relationship explicit and keeps names concise. `MenuButtonItem` and `MenuSectionDividerLine` try to cram the entire hierarchy into a flat name.\n\nCompound components communicate ownership through **structure**, not through increasingly verbose prefixes.",
+      "Dot notation (`Menu.Item`, `Menu.Divider`) makes the parent-child relationship explicit and keeps names concise. `MenuButtonItem` and `MenuSectionDividerLine` try to cram the entire hierarchy into a flat name.\n\nCompound components communicate ownership through **structure**, not through increasingly verbose prefixes.",
     explanationWrong:
-      "Flat names like `MenuButtonItem` and `MenuSectionDividerLine` grow unwieldy as the component tree deepens. With dot notation, the `Menu.` prefix acts as a namespace, and sub-component names stay short: `Item`, `Divider`, `Group`.\n\nThis also improves discoverability — type `Menu.` and your editor shows all related parts.",
+      "Flat names like `MenuButtonItem` and `MenuSectionDividerLine` grow unwieldy as the component tree deepens. With dot notation, `Menu.` acts as a namespace, and sub-component names stay short: `Item`, `Divider`, `Group`.\n\nThis also improves discoverability. Type `Menu.` and your editor shows all related parts.",
     sourceUrl: "https://react.dev/learn/passing-props-to-a-component",
     sourceLabel: "React Docs: Passing Props to a Component",
   },
   {
     id: "cn-008",
     category: "component-naming",
-    difficulty: "easy",
-    title: "Layout component naming",
-    badCode: `function DashboardContentAreaWrapper({
-  children,
-  sidebar,
+    difficulty: "medium",
+    title: "Technical suffix pollution",
+    badCode: `function NotificationManager({
+  notifications,
+  onDismiss,
 }: {
-  children: React.ReactNode;
-  sidebar: React.ReactNode;
+  notifications: Notification[];
+  onDismiss: (id: string) => void;
 }) {
   return (
-    <div className="layout">
-      <aside>{sidebar}</aside>
-      <main>{children}</main>
-    </div>
+    <ul className="notification-list">
+      {notifications.map((n) => (
+        <li key={n.id}>
+          {n.message}
+          <button onClick={() => onDismiss(n.id)}>
+            Dismiss
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 }`,
-    goodCode: `function SidebarLayout({
-  children,
-  sidebar,
+    goodCode: `function NotificationList({
+  notifications,
+  onDismiss,
 }: {
-  children: React.ReactNode;
-  sidebar: React.ReactNode;
+  notifications: Notification[];
+  onDismiss: (id: string) => void;
 }) {
   return (
-    <div className="layout">
-      <aside>{sidebar}</aside>
-      <main>{children}</main>
-    </div>
+    <ul className="notification-list">
+      {notifications.map((n) => (
+        <li key={n.id}>
+          {n.message}
+          <button onClick={() => onDismiss(n.id)}>
+            Dismiss
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 }`,
     correctSide: "right",
     explanationCorrect:
-      "`SidebarLayout` names the **pattern** (sidebar + main content), not the **page** (dashboard) or the **role** (wrapper). It's reusable on any page that needs a sidebar layout.\n\nAvoid `Wrapper`, `Container`, and `Area` suffixes — they describe implementation mechanics, not purpose. Name layout components after the **layout pattern** they implement.",
+      "`NotificationList` tells you what it renders: a list of notifications. `NotificationManager` implies business logic, state management, scheduling, lifecycle. But this component just maps over an array and renders items.\n\nSuffixes like `Manager`, `Handler`, `Controller`, and `Service` belong in backend code or hooks, not in presentational components.",
     explanationWrong:
-      "`DashboardContentAreaWrapper` has four problems: it's page-specific (`Dashboard`), uses a vague noun (`Content`), adds an unnecessary spatial term (`Area`), and uses the dreaded `Wrapper` suffix.\n\n`Wrapper` is almost never the right name — it tells you nothing about what the component does. Ask: \"What layout does this create?\" Answer: a sidebar layout. That's your name.",
+      "`Manager` is a backend pattern that implies orchestration and state ownership. But this component receives data via props and renders it. It doesn't manage anything. When every component is a `*Manager` or `*Container`, the names stop conveying information.\n\nAsk yourself: is this component managing state, or displaying it? If it just renders, name it after the **UI element**: `NotificationList`, `NotificationFeed`, `NotificationStack`.",
     sourceUrl:
-      "https://react.dev/learn/your-first-component#nesting-and-organizing-components",
-    sourceLabel: "React Docs: Nesting and Organizing Components",
+      "https://react.dev/learn/your-first-component",
+    sourceLabel: "React Docs: Your First Component",
   },
 ];
