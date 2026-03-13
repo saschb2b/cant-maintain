@@ -193,7 +193,7 @@ export default async function LandingPage() {
                     direction="row"
                     alignItems="center"
                     spacing={0.75}
-                    sx={{ px: 2, pt: 1.5 }}
+                    sx={{ px: 2, pt: { xs: 1, sm: 1.5 } }}
                   >
                     <Box
                       sx={{
@@ -220,7 +220,15 @@ export default async function LandingPage() {
                     </Typography>
                   </Stack>
                   <Box
-                    sx={codeBlockStyles}
+                    sx={{
+                      ...codeBlockStyles,
+                      "& pre": {
+                        ...codeBlockStyles["& pre"],
+                        p: { xs: 1.5, sm: 2 },
+                        fontSize: { xs: "0.8rem", sm: "0.85rem" },
+                        lineHeight: { xs: 1.5, sm: 1.7 },
+                      },
+                    }}
                     dangerouslySetInnerHTML={{ __html: badCodeHtml }}
                   />
                 </Box>
@@ -234,7 +242,7 @@ export default async function LandingPage() {
                     direction="row"
                     alignItems="center"
                     spacing={0.75}
-                    sx={{ px: 2, pt: 1.5 }}
+                    sx={{ px: 2, pt: { xs: 1, sm: 1.5 } }}
                   >
                     <Box
                       sx={{
@@ -261,7 +269,15 @@ export default async function LandingPage() {
                     </Typography>
                   </Stack>
                   <Box
-                    sx={codeBlockStyles}
+                    sx={{
+                      ...codeBlockStyles,
+                      "& pre": {
+                        ...codeBlockStyles["& pre"],
+                        p: { xs: 1.5, sm: 2 },
+                        fontSize: { xs: "0.8rem", sm: "0.85rem" },
+                        lineHeight: { xs: 1.5, sm: 1.7 },
+                      },
+                    }}
                     dangerouslySetInnerHTML={{ __html: goodCodeHtml }}
                   />
                 </Box>
