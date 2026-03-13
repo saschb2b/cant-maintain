@@ -274,6 +274,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
       mx: 1,
       bgcolor: isHighlighted ? "action.selected" : "transparent",
       transition: "background-color 0.1s ease",
+      scrollMarginTop: 40,
       "&:hover": { bgcolor: "action.hover" },
     }) as const;
 
