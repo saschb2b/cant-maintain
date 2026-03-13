@@ -19,7 +19,8 @@ export type ChallengeCategory =
   | "server-component-props"
   | "generic-props"
   | "enumerated-variants"
-  | "styling-api";
+  | "styling-api"
+  | "component-naming";
 
 /**
  * A single challenge in the game.

@@ -3,6 +3,7 @@ import type { ChallengeCategory } from "./types";
 /** Canonical display order of challenge categories. */
 export const CATEGORY_ORDER: ChallengeCategory[] = [
   // Naming & Docs
+  "component-naming",
   "boolean-naming",
   "callback-naming",
   "jsdoc",
@@ -45,6 +46,7 @@ export const CATEGORY_LABELS: Record<ChallengeCategory, string> = {
   "generic-props": "Generic Props",
   "enumerated-variants": "Enumerated Variants",
   "styling-api": "Styling API",
+  "component-naming": "Component Naming",
 };
 
 /** Logical grouping of categories for sidebar navigation. */
@@ -56,7 +58,7 @@ export interface CategorySection {
 export const CATEGORY_SECTIONS: CategorySection[] = [
   {
     label: "Naming & Docs",
-    categories: ["boolean-naming", "callback-naming", "jsdoc"],
+    categories: ["component-naming", "boolean-naming", "callback-naming", "jsdoc"],
   },
   {
     label: "Prop Design",
@@ -125,4 +127,6 @@ export const CATEGORY_DESCRIPTIONS: Record<ChallengeCategory, string> = {
     "Replacing boolean prop explosion with string union enums for size, variant, color, and other visual dimensions.",
   "styling-api":
     "Choosing between className, style, variants, and design tokens to keep styling concerns out of your prop API.",
+  "component-naming":
+    "Naming components by role, not location. Avoiding over-specific prefixes, redundant splitting, and verb-based names.",
 };

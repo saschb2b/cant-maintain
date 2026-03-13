@@ -16,6 +16,7 @@ import { renderPropsChallenges } from "./render-props";
 import { enumeratedVariantsChallenges } from "./enumerated-variants";
 import { stylingApiChallenges } from "./styling-api";
 import { serverComponentPropsChallenges } from "./server-component-props";
+import { componentNamingChallenges } from "./component-naming";
 
 /**
  * All challenges for the game, combined from per-category modules.
@@ -25,6 +26,7 @@ import { serverComponentPropsChallenges } from "./server-component-props";
  * Difficulty sorting and side randomization happen automatically in the game hook.
  */
 export const challenges: Challenge[] = [
+  ...componentNamingChallenges,
   ...callbackNamingChallenges,
   ...booleanNamingChallenges,
   ...jsdocChallenges,
