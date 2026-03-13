@@ -2,6 +2,15 @@
 
 All notable changes to **Can't Maintain** are documented here.
 
+## [0.10.0] - 2026-03-13
+
+### Added
+
+- **Dark mode** — system preference detection with manual toggle, warm dark palette across all components
+- **Search palette** — fuzzy search dialog for pages, categories, and challenges with keyboard navigation and match highlighting
+
+---
+
 ## [0.9.0] - 2026-03-13
 
 ### Added
