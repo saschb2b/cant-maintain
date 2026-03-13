@@ -129,6 +129,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
   const [showAllChallenges, setShowAllChallenges] = useState(false);
   const resultRefs = useRef<(HTMLDivElement | null)[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isKeyboardNav = useRef(false);
 
   // Fuse instance (static data, no fetch needed)
   const fuse = useMemo(
@@ -209,12 +210,15 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
     setShowAllChallenges(false);
   }, [query]);
 
-  // Scroll highlighted item into view
+  // Scroll highlighted item into view (keyboard navigation only)
   useEffect(() => {
-    resultRefs.current[highlightedIndex]?.scrollIntoView({
-      block: "center",
-      behavior: "smooth",
-    });
+    if (isKeyboardNav.current) {
+      resultRefs.current[highlightedIndex]?.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+      isKeyboardNav.current = false;
+    }
   }, [highlightedIndex]);
 
   const handleClose = useCallback(() => {
@@ -238,9 +242,11 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
     (e: React.KeyboardEvent) => {
       if (e.key === "ArrowDown") {
         e.preventDefault();
+        isKeyboardNav.current = true;
         setHighlightedIndex((i) => (i < activeList.length - 1 ? i + 1 : 0));
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
+        isKeyboardNav.current = true;
         setHighlightedIndex((i) => (i > 0 ? i - 1 : activeList.length - 1));
       } else if (e.key === "Enter") {
         e.preventDefault();

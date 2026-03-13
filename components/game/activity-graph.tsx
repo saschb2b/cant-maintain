@@ -76,8 +76,9 @@ function calcLayout(containerWidth: number): {
 }
 
 export function ActivityGraph() {
-  const { mode } = useColorScheme();
-  const levelColors = mode === "dark" ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT;
+  const { mode, systemMode } = useColorScheme();
+  const resolvedMode = mode === "system" ? systemMode : mode;
+  const levelColors = resolvedMode === "dark" ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [layout, setLayout] = useState<{
