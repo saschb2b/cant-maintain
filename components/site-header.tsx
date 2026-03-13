@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import { useColorScheme } from "@mui/material/styles";
-import { Search, Sun, Moon } from "lucide-react";
+import { Search, Sun, Moon, GraduationCap } from "lucide-react";
 import packageJson from "@/package.json";
 import { SearchPalette } from "@/components/search-palette";
 import { trackEvent } from "@/lib/analytics";
@@ -80,7 +80,7 @@ export function SiteHeader() {
               }}
             >
               <Image src="/icon.svg" alt="" width={28} height={28} />
-              <Box>
+              <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <Typography
                   variant="subtitle1"
                   fontWeight={700}
@@ -92,7 +92,6 @@ export function SiteHeader() {
                   variant="caption"
                   color="text.secondary"
                   fontFamily="var(--font-geist-mono), monospace"
-                  sx={{ display: { xs: "none", sm: "block" } }}
                 >
                   Can you spot the better API?
                 </Typography>
@@ -125,14 +124,27 @@ export function SiteHeader() {
 
             <Stack
               direction="row"
-              spacing={2}
+              spacing={{ xs: 1, sm: 2 }}
               alignItems="center"
               sx={{ ml: "auto" }}
             >
+              {/* Search: icon button on mobile, pill on desktop */}
+              <IconButton
+                onClick={() => openSearch("button")}
+                size="small"
+                sx={{
+                  display: { xs: "flex", sm: "none" },
+                  color: "text.secondary",
+                }}
+                aria-label="Search"
+              >
+                <Search size={18} />
+              </IconButton>
               <Button
                 onClick={() => openSearch("button")}
                 size="small"
                 sx={{
+                  display: { xs: "none", sm: "inline-flex" },
                   color: "primary.main",
                   gap: 0.75,
                   borderRadius: 100,
@@ -156,12 +168,7 @@ export function SiteHeader() {
                 }}
               >
                 <Search size={14} />
-                <Box
-                  component="span"
-                  sx={{ display: { xs: "none", sm: "inline" } }}
-                >
-                  Search
-                </Box>
+                Search
                 <Box
                   component="kbd"
                   sx={{
@@ -180,11 +187,23 @@ export function SiteHeader() {
                 href="/learn"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
+                <IconButton
+                  component="span"
+                  size="small"
+                  sx={{
+                    display: { xs: "flex", sm: "none" },
+                    color: "text.secondary",
+                  }}
+                  aria-label="Learn"
+                >
+                  <GraduationCap size={18} />
+                </IconButton>
                 <Typography
                   variant="body2"
                   fontWeight={500}
                   fontFamily="var(--font-geist-mono), monospace"
                   sx={{
+                    display: { xs: "none", sm: "block" },
                     color: "text.secondary",
                     "&:hover": { color: "text.primary" },
                   }}
