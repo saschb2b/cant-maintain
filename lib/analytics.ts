@@ -59,7 +59,12 @@ interface SearchSelectedData {
   selectedHref: string;
 }
 
+interface NotFoundVisitedData {
+  path: string;
+}
+
 interface EventMap {
+  "404-visited": NotFoundVisitedData;
   "challenge-answered": ChallengeAnsweredData;
   "game-finished": GameFinishedData;
   "game-shared": GameSharedData;
