@@ -17,7 +17,7 @@ export const jsdocChallenges: Challenge[] = [
    * The visual style variant of the badge.
    * @default 'default'
    */
-  variant: 'default' | 'success' | 'warning';
+  variant?: 'default' | 'success' | 'warning';
 }`,
     correctSide: "right",
     explanationCorrect:
