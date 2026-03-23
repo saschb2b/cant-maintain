@@ -1,6 +1,6 @@
-# Can't Maintain - React Prop Naming Game
+# Can't Maintain - React Component API Design Game
 
-A "Can't Unsee"-style training game that teaches React/TypeScript developers proper prop naming conventions, component API design, and JSDoc documentation.
+A "Can't Unsee"-style training game that teaches React/TypeScript developers how to design clean, maintainable component APIs — from naming and props to composition patterns and TypeScript techniques.
 
 ## Architecture
 
@@ -28,22 +28,25 @@ lib/
     use-game.ts          # Core game state hook (shuffle, score, progression, review)
     categories.ts        # Category order, labels, descriptions, sections
     challenges/
-      index.ts              # Combines all per-category arrays
-      callback-naming.ts    # cb-* challenges
-      boolean-naming.ts     # bl-* challenges
-      jsdoc.ts              # jd-* challenges
-      prop-specificity.ts   # ps-* challenges
-      render-props.ts       # rp-* challenges
-      children-pattern.ts   # cp-* challenges
-      discriminated-unions.ts # du-* challenges
-      extending-html.ts     # eh-* challenges
-      ref-forwarding.ts     # rf-* challenges
-      accessibility-props.ts # ap-* challenges
-      default-values.ts     # dv-* challenges
-      prop-organization.ts  # po-* challenges
+      index.ts                   # Combines all per-category arrays
+      component-naming.ts        # cn-* challenges
+      boolean-naming.ts          # bl-* challenges
+      callback-naming.ts         # cb-* challenges
+      jsdoc.ts                   # jd-* challenges
+      default-values.ts          # dv-* challenges
+      prop-specificity.ts        # ps-* challenges
+      prop-organization.ts       # po-* challenges
+      enumerated-variants.ts     # ev-* challenges
+      styling-api.ts             # sa-* challenges
       controlled-uncontrolled.ts # cu-* challenges
+      children-pattern.ts        # cp-* challenges
+      render-props.ts            # rp-* challenges
+      extending-html.ts          # eh-* challenges
+      ref-forwarding.ts          # rf-* challenges
+      generic-props.ts           # gp-* challenges
+      accessibility-props.ts     # ap-* challenges
+      discriminated-unions.ts    # du-* challenges
       server-component-props.ts  # sc-* challenges
-      generic-props.ts      # gp-* challenges
 
 components/
   theme-provider.tsx     # MUI ThemeProvider + CssBaseline
@@ -84,23 +87,26 @@ Find the relevant category file in `lib/game/challenges/` (e.g. `callback-naming
 
 Each session picks 3 easy, 4 medium, and 3 hard challenges, shuffled within tiers. Side randomization happens automatically.
 
-## Topics Covered (15 categories, 108 challenges)
+## Topics Covered (18 categories, 121 challenges)
 
-- **Callback naming**: `on` prefix, descriptive event names, dual-level events
+- **Component naming**: naming by role not location, avoiding over-specific prefixes and verb-based names
 - **Boolean naming**: `is`/`has`/`should`/`disable`/`keep`/`hide` prefixes
+- **Callback naming**: `on` prefix, descriptive event names, dual-level events
 - **JSDoc**: `@default`, `@example`, `@deprecated`, prop descriptions
+- **Default values**: destructuring defaults, stable references, default callbacks
 - **Prop specificity**: union types vs primitives, template literals, accessible text
-- **Render props**: `render*` vs `get*`, render functions vs ReactNode slots, headless components
+- **Prop organization**: grouping related props, removing redundancy, extracting sub-components
+- **Enumerated variants**: replacing boolean prop explosion with string union enums for size, variant, and color
+- **Styling API**: choosing between className, style, variants, and design tokens
+- **Controlled & uncontrolled**: `value`/`defaultValue`/`onChange` trio, key resets, array patterns
 - **Children patterns**: composition, compound components, slots, `slots`/`slotProps`
-- **Discriminated unions**: variant-dependent props, `never` type, linked optionals
+- **Render props**: `render*` vs `get*`, render functions vs ReactNode slots, headless components
 - **Extending HTML**: `React.ComponentProps`, `Omit`, polymorphic `as` prop
 - **Ref forwarding**: `React.forwardRef`, `useImperativeHandle`, ref callback patterns
-- **Accessibility props**: ARIA attributes, semantic HTML, screen reader support
-- **Default values**: destructuring defaults, stable references, default callbacks
-- **Prop organization**: grouping related props, removing redundancy, extracting sub-components
-- **Controlled & uncontrolled**: `value`/`defaultValue`/`onChange` trio, key resets, array patterns
-- **Server component props**: serializable props, avoiding functions in server components
 - **Generic props**: type inference, constrained generics, multi-generic form fields
+- **Accessibility props**: ARIA attributes, semantic HTML, screen reader support
+- **Discriminated unions**: variant-dependent props, `never` type, linked optionals
+- **Server component props**: serializable props, avoiding functions in server components
 
 ## Tech Stack
 
