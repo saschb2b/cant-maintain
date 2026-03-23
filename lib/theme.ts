@@ -116,10 +116,16 @@ const theme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
+        "*, *::before, *::after": {
+          transition:
+            "background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, fill 0.3s ease, stroke 0.3s ease",
+        },
         body: {
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
           minHeight: "100vh",
+          transition:
+            "background-color 0.3s ease, background-image 0.3s ease, color 0.3s ease",
         },
         ".light body, body.light": {
           backgroundImage:
