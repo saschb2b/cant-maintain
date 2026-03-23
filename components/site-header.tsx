@@ -60,7 +60,9 @@ function ThemeIcon({ isDark, size = 18 }: { isDark: boolean; size?: number }) {
         style={{
           transformOrigin: "center",
           transition: "transform 0.5s ease, opacity 0.3s ease",
-          transform: isDark ? "rotate(45deg) scale(0)" : "rotate(0deg) scale(1)",
+          transform: isDark
+            ? "rotate(45deg) scale(0)"
+            : "rotate(0deg) scale(1)",
           opacity: isDark ? 0 : 1,
         }}
       >
@@ -95,7 +97,11 @@ function ColorSchemeToggle() {
   const isDark = resolvedMode === "dark";
 
   return (
-    <Tooltip title={mounted ? (isDark ? "Switch to light mode" : "Switch to dark mode") : ""}>
+    <Tooltip
+      title={
+        mounted ? (isDark ? "Switch to light mode" : "Switch to dark mode") : ""
+      }
+    >
       <IconButton
         size="small"
         onClick={mounted ? () => setMode(isDark ? "light" : "dark") : undefined}
@@ -111,7 +117,9 @@ function ColorSchemeToggle() {
             justifyContent: "center",
             transition: "opacity 0.4s ease, transform 0.4s ease",
             opacity: mounted ? 1 : 0,
-            transform: mounted ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(-90deg)",
+            transform: mounted
+              ? "scale(1) rotate(0deg)"
+              : "scale(0.5) rotate(-90deg)",
           }}
         >
           <ThemeIcon isDark={isDark} />

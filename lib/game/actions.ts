@@ -9,6 +9,8 @@ import {
   type RecentResult,
 } from "./recent-results-store";
 
+// Server actions must be async per Next.js convention, but these are synchronous.
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function submitGameResult(data: {
   sessionId: string;
   score: number;
@@ -46,6 +48,7 @@ export async function submitGameResult(data: {
   });
 }
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function fetchRecentResults(): Promise<RecentResult[]> {
   return getRecentResults();
 }

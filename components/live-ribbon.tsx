@@ -39,7 +39,10 @@ function ResultCard({ result }: { result: RecentResult }) {
         variant="caption"
         fontWeight={700}
         fontFamily="var(--font-geist-mono), monospace"
-        sx={{ color: scoreColor(result.score, result.total), fontSize: "0.7rem" }}
+        sx={{
+          color: scoreColor(result.score, result.total),
+          fontSize: "0.7rem",
+        }}
       >
         {result.score}/{result.total}
       </Typography>
@@ -174,7 +177,12 @@ export function LiveRibbon() {
             }}
           >
             {items.map((r, i) => (
-              <Stack key={`${r.id}-${String(i)}`} direction="row" alignItems="center" spacing={2}>
+              <Stack
+                key={`${r.id}-${String(i)}`}
+                direction="row"
+                alignItems="center"
+                spacing={2}
+              >
                 {i > 0 && <Dot />}
                 <ResultCard result={r} />
               </Stack>

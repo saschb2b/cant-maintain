@@ -45,7 +45,8 @@ const NOUNS = [
 ];
 
 export function generateAnonymousName(): string {
-  const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)]!;
-  const noun = NOUNS[Math.floor(Math.random() * NOUNS.length)]!;
+  const adj =
+    ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)] ?? "anon";
+  const noun = NOUNS[Math.floor(Math.random() * NOUNS.length)] ?? "dev";
   return `${adj}_${noun}`;
 }
