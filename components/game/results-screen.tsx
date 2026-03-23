@@ -150,7 +150,7 @@ export function ResultsScreen({
   }, [resultsParam]);
 
   return (
-    <Stack spacing={4} sx={{ py: 4 }}>
+    <Stack spacing={4} sx={{ py: { xs: 0, sm: 4 } }}>
       {/* Hero */}
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Paper
@@ -158,8 +158,8 @@ export function ResultsScreen({
           sx={{
             border: 1,
             borderColor: "divider",
-            py: 4,
-            px: 3,
+            py: { xs: 3, sm: 4 },
+            px: { xs: 2, sm: 3 },
             textAlign: "center",
             maxWidth: { md: 600 },
             width: "100%",
@@ -274,27 +274,28 @@ export function ResultsScreen({
             direction="row"
             spacing={1}
             justifyContent="center"
+            alignItems="center"
             sx={{ mt: 3 }}
           >
             <Button
               variant="outlined"
-              size="large"
+              size="medium"
               onClick={handleShare}
               startIcon={
-                hasCopied ? <ClipboardCheck size={18} /> : <Share2 size={18} />
+                hasCopied ? <ClipboardCheck size={16} /> : <Share2 size={16} />
               }
             >
               {hasCopied ? "Copied!" : "Share"}
             </Button>
             <Button
               variant="contained"
-              size="large"
+              size="medium"
               onClick={onRetry}
-              startIcon={<RotateCcw size={18} />}
+              startIcon={<RotateCcw size={16} />}
             >
               Retry
             </Button>
-            <Button variant="text" size="large" onClick={onNewGame}>
+            <Button variant="text" size="medium" onClick={onNewGame}>
               New Game
             </Button>
           </Stack>
@@ -302,8 +303,8 @@ export function ResultsScreen({
           {/* Footer CTA */}
           <Box
             sx={{
-              mt: 3,
-              pt: 2.5,
+              mt: 2.5,
+              pt: 2,
               borderTop: 1,
               borderColor: "divider",
             }}
@@ -311,14 +312,17 @@ export function ResultsScreen({
             <Typography
               variant="caption"
               color="text.secondary"
-              sx={{ mb: 1.5, display: "block" }}
+              sx={{ mb: 1, display: "block" }}
             >
               Enjoying the game?
             </Typography>
             <Stack
-              direction={{ xs: "column", sm: "row" }}
+              direction="row"
               spacing={1.5}
               justifyContent="center"
+              flexWrap="wrap"
+              useFlexGap
+              sx={{ rowGap: 1 }}
             >
               <Button
                 component="a"
