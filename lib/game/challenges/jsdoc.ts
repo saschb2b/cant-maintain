@@ -8,7 +8,7 @@ export const jsdocChallenges: Challenge[] = [
     title: "Simple prop documentation",
     badCode: `interface BadgeProps {
   label: string;
-  variant: 'default' | 'success' | 'warning';
+  variant?: 'default' | 'success' | 'warning';
 }`,
     goodCode: `interface BadgeProps {
   /** The text displayed inside the badge. */
