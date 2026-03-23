@@ -2,7 +2,7 @@
 
 import NextLink from "next/link";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
@@ -20,9 +20,16 @@ import { trackEvent } from "@/lib/analytics";
 
 function ColorSchemeToggle() {
   const { mode, systemMode, setMode } = useColorScheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const emptySubscribe = useCallback(
+    // No external store to subscribe to — returns a no-op unsubscribe
+    () => () => undefined,
+    [],
+  );
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
   // Avoid hydration mismatch — render nothing until mounted
   if (!mounted) {

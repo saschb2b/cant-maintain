@@ -128,7 +128,8 @@ export default async function LearnPage() {
                   sx={{
                     borderTop: 1,
                     borderColor: "divider",
-                    bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+                    bgcolor:
+                      "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
                   }}
                 >
                   <Box sx={{ flex: "1 1 50%", minWidth: 0 }}>

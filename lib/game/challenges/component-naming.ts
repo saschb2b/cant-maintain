@@ -85,8 +85,7 @@ export const componentNamingChallenges: Challenge[] = [
       "`ProductCard` tells you exactly what domain entity it represents and what visual form it takes. `Item` is so generic it could be anything: a list item, a menu entry, a cart line.\n\nGood component names combine the **domain concept** with the **UI pattern**: `ProductCard`, `UserAvatar`, `OrderSummary`.",
     explanationWrong:
       "`Item` forces every developer to open the file and read the implementation to understand what it renders. In a codebase with multiple list-like views, you'd end up with `Item`, `Item2`, `ListItem`, `TheItem`. A specific name like `ProductCard` is self-documenting and searchable.",
-    sourceUrl:
-      "https://react.dev/learn/your-first-component",
+    sourceUrl: "https://react.dev/learn/your-first-component",
     sourceLabel: "React Docs: Your First Component",
   },
   {
@@ -192,9 +191,8 @@ function UserProfileAvatar({ src }: { src: string }) {
     explanationCorrect:
       "`UserInfo` describes **what** the component represents. `StyledFlexRow` describes **how** it's implemented: a styled div with `display: flex`. If you refactor to CSS Grid tomorrow, the name becomes a lie.\n\nName components after their **purpose in the UI**, not the CSS properties or HTML elements inside them.",
     explanationWrong:
-      "`StyledFlexRow` leaks implementation details into the component tree. In JSX, `<StyledFlexRow>` reads like a CSS utility, not a meaningful UI element. Names like `FlexContainer`, `GridWrapper`, `StyledDiv` are symptoms of thinking in CSS rather than in UI concepts.\n\nAsk yourself: \"What does this represent to the user?\" not \"How is this laid out?\"",
-    sourceUrl:
-      "https://react.dev/learn/your-first-component",
+      '`StyledFlexRow` leaks implementation details into the component tree. In JSX, `<StyledFlexRow>` reads like a CSS utility, not a meaningful UI element. Names like `FlexContainer`, `GridWrapper`, `StyledDiv` are symptoms of thinking in CSS rather than in UI concepts.\n\nAsk yourself: "What does this represent to the user?" not "How is this laid out?"',
+    sourceUrl: "https://react.dev/learn/your-first-component",
     sourceLabel: "React Docs: Your First Component",
   },
   {
@@ -233,8 +231,7 @@ function UserProfileAvatar({ src }: { src: string }) {
       "React components are **nouns**, not **verbs**. `UserList` is a thing you place in the tree. `RenderUserList` sounds like a function you call imperatively.\n\nThe `Render` prefix is redundant since every component renders. Reserve verb prefixes like `use` for hooks and `get`/`fetch` for utility functions.",
     explanationWrong:
       "The `Render` prefix suggests this is an imperative function rather than a declarative component. In JSX, `<RenderUserList />` reads oddly. You're not instructing React to render something, you're declaring that a user list exists here.\n\nComponents describe **what** is on screen. Hooks and helpers describe **actions**.",
-    sourceUrl:
-      "https://react.dev/learn/your-first-component",
+    sourceUrl: "https://react.dev/learn/your-first-component",
     sourceLabel: "React Docs: Your First Component",
   },
   {
@@ -280,7 +277,7 @@ function WarningAlert({
 }`,
     correctSide: "right",
     explanationCorrect:
-      "Three nearly identical components that differ only in a CSS class should be one component with a `severity` prop. `Alert` is a single concept with variants, not three separate concepts.\n\nThis mirrors how design systems work: MUI has `<Alert severity=\"error\" />`, not `<ErrorAlert />`.",
+      'Three nearly identical components that differ only in a CSS class should be one component with a `severity` prop. `Alert` is a single concept with variants, not three separate concepts.\n\nThis mirrors how design systems work: MUI has `<Alert severity="error" />`, not `<ErrorAlert />`.',
     explanationWrong:
       "Separate `ErrorAlert`, `SuccessAlert`, and `WarningAlert` components triple the API surface for zero benefit. Every new variant (info, neutral) requires a new component, a new import, and a new entry in your barrel file. A single `Alert` with a `severity` union scales cleanly.",
     sourceUrl: "https://mui.com/material-ui/react-alert/",
@@ -405,8 +402,7 @@ Menu.Divider = function MenuDivider() {
       "`NotificationList` tells you what it renders: a list of notifications. `NotificationManager` implies business logic, state management, scheduling, lifecycle. But this component just maps over an array and renders items.\n\nSuffixes like `Manager`, `Handler`, `Controller`, and `Service` belong in backend code or hooks, not in presentational components.",
     explanationWrong:
       "`Manager` is a backend pattern that implies orchestration and state ownership. But this component receives data via props and renders it. It doesn't manage anything. When every component is a `*Manager` or `*Container`, the names stop conveying information.\n\nAsk yourself: is this component managing state, or displaying it? If it just renders, name it after the **UI element**: `NotificationList`, `NotificationFeed`, `NotificationStack`.",
-    sourceUrl:
-      "https://react.dev/learn/your-first-component",
+    sourceUrl: "https://react.dev/learn/your-first-component",
     sourceLabel: "React Docs: Your First Component",
   },
 ];

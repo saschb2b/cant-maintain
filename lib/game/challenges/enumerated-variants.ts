@@ -74,9 +74,9 @@ export const enumeratedVariantsChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Six booleans collapse into two enums plus event callbacks. `variant` and `color` are independent dimensions, so you can combine any variant with any color. And clickable/deletable are better expressed by the presence of their callbacks: if `onClick` is defined, the chip is clickable.\n\nThis is exactly how MUI\'s Chip API works.',
+      "Six booleans collapse into two enums plus event callbacks. `variant` and `color` are independent dimensions, so you can combine any variant with any color. And clickable/deletable are better expressed by the presence of their callbacks: if `onClick` is defined, the chip is clickable.\n\nThis is exactly how MUI's Chip API works.",
     explanationWrong:
-      'Six booleans create 64 theoretical combinations, most of which are invalid. `<Chip isOutlined isFilled />` contradicts itself. `<Chip isClickable />` has no handler. `<Chip isPrimary isSecondary />` is meaningless.\n\nSeparate each visual dimension into its own union prop, and derive behavior from event callbacks instead of boolean flags.',
+      "Six booleans create 64 theoretical combinations, most of which are invalid. `<Chip isOutlined isFilled />` contradicts itself. `<Chip isClickable />` has no handler. `<Chip isPrimary isSecondary />` is meaningless.\n\nSeparate each visual dimension into its own union prop, and derive behavior from event callbacks instead of boolean flags.",
     sourceUrl: "https://mui.com/material-ui/api/chip/",
     sourceLabel: "MUI: Chip API",
   },
@@ -101,7 +101,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     explanationCorrect:
       'This is a textbook case for a union. `align` maps directly to the CSS `text-align` property, making the prop name and values immediately familiar. One prop, one concept, one value.\n\n`<Text align="center" />` is concise and self-explanatory. MUI\'s Typography uses this exact pattern.',
     explanationWrong:
-      'Four mutually exclusive booleans for a single CSS property is a red flag. `<Text alignLeft alignCenter />` is contradictory, and the component needs defensive code to handle it. Every additional alignment option means another boolean.\n\nWhen the values map 1:1 to a known domain (CSS, HTML, ARIA), mirror the domain\'s naming with a union.',
+      "Four mutually exclusive booleans for a single CSS property is a red flag. `<Text alignLeft alignCenter />` is contradictory, and the component needs defensive code to handle it. Every additional alignment option means another boolean.\n\nWhen the values map 1:1 to a known domain (CSS, HTML, ARIA), mirror the domain's naming with a union.",
     sourceUrl: "https://mui.com/material-ui/api/typography/",
     sourceLabel: "MUI: Typography API",
   },
@@ -125,11 +125,10 @@ export const enumeratedVariantsChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Async state is a finite state machine. The view is always in exactly one state. A `status` union models this correctly and lets you exhaustively handle every case in a switch.\n\nWith booleans, `isLoading && isError` is a valid but meaningless combination that your component must defend against.',
+      "Async state is a finite state machine. The view is always in exactly one state. A `status` union models this correctly and lets you exhaustively handle every case in a switch.\n\nWith booleans, `isLoading && isError` is a valid but meaningless combination that your component must defend against.",
     explanationWrong:
       "Four independent booleans create 16 possible combinations, but only 5 are valid states. The component must include defensive logic for impossible combos like `isLoading && isEmpty` or `isError && isRefreshing`.\n\nA status enum makes the state machine explicit. It's also easier to add new states later without worrying about interactions with existing booleans.",
-    sourceUrl:
-      "https://tkdodo.eu/blog/status-checks-in-react-query",
+    sourceUrl: "https://tkdodo.eu/blog/status-checks-in-react-query",
     sourceLabel: "TkDodo: Status Checks in React Query",
   },
   {
@@ -158,7 +157,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
     explanationCorrect:
       'The "icon-only" variant is fundamentally different: it requires `aria-label` for accessibility and has no `children`. That\'s a discriminated union, not a boolean.\n\nFor icon + text buttons, `iconPosition` is a clean enum. `<Button icon={<Save />} iconPosition="end">Save</Button>` reads naturally. Three booleans for one concept is a code smell.',
     explanationWrong:
-      '`isIconBefore` and `isIconAfter` are mutually exclusive, a classic sign that a union is better. `isIconOnly` changes the component\'s requirements entirely (needs `aria-label`, no text), but the type doesn\'t enforce this.\n\n`<Button isIconBefore isIconAfter />` compiles. `<Button isIconOnly />` compiles without an `aria-label`. Both are bugs that types should prevent.',
+      "`isIconBefore` and `isIconAfter` are mutually exclusive, a classic sign that a union is better. `isIconOnly` changes the component's requirements entirely (needs `aria-label`, no text), but the type doesn't enforce this.\n\n`<Button isIconBefore isIconAfter />` compiles. `<Button isIconOnly />` compiles without an `aria-label`. Both are bugs that types should prevent.",
     sourceUrl: "https://mui.com/material-ui/api/button/",
     sourceLabel: "MUI: Button API",
   },
@@ -186,8 +185,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
       "Named spacing tokens enforce visual consistency. `gap=\"md\"` constrains consumers to your design system's scale, so every component uses the same values.\n\nNote: MUI uses numbers (`gap={2}`) that multiply `theme.spacing`, which also works because the multiplier constrains values to the scale. The key insight is the same: don't accept arbitrary pixel values. Whether you use string tokens or a numeric multiplier, the API should map to a finite set of spacing steps.",
     explanationWrong:
       'Raw pixel values (`gap={12}`, `gap={14}`, `gap={16}`) create invisible inconsistency. There\'s no way to enforce spacing scale adherence through the type system. A team of 10 developers will produce 10 different spacing values.\n\nConstrain the prop to a finite scale, either with string tokens (`"sm" | "md" | "lg"`) or numeric multipliers (`1 | 2 | 3` mapped to `theme.spacing`). Both approaches keep the API consistent and decoupled from raw pixel values.',
-    sourceUrl:
-      "https://tailwindcss.com/docs/customizing-spacing",
+    sourceUrl: "https://tailwindcss.com/docs/customizing-spacing",
     sourceLabel: "Tailwind: Customizing Spacing",
   },
   {
@@ -215,7 +213,7 @@ export const enumeratedVariantsChallenges: Challenge[] = [
 }`,
     correctSide: "right",
     explanationCorrect:
-      'Five booleans are really three independent dimensions: surface style (`variant`), density (`padding`), and layout (`direction`). Each dimension gets its own union prop. `isInteractive` is better expressed by the presence of `onClick`. If there\'s a click handler, the card is interactive.\n\nBooleans create 32 combinations, many conflicting. Enums produce 18, and every single one is valid.',
+      "Five booleans are really three independent dimensions: surface style (`variant`), density (`padding`), and layout (`direction`). Each dimension gets its own union prop. `isInteractive` is better expressed by the presence of `onClick`. If there's a click handler, the card is interactive.\n\nBooleans create 32 combinations, many conflicting. Enums produce 18, and every single one is valid.",
     explanationWrong:
       "Five independent booleans produce 32 combinations, many of which conflict (`isElevated isOutlined`), are unclear (`isCompact`, how compact?), or lack behavior (`isInteractive` without a handler).\n\nThe fix: identify independent visual dimensions, give each a union prop, and derive interaction from callbacks. Fewer props, clearer API, impossible to misconfigure.",
     sourceUrl: "https://mui.com/material-ui/api/card/",

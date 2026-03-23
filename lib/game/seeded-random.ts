@@ -37,7 +37,7 @@ export function generateSeed(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1 to avoid confusion
   let seed = "";
   for (let i = 0; i < 6; i++) {
-    seed += chars[Math.floor(Math.random() * chars.length)];
+    seed += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return seed;
 }
@@ -51,7 +51,7 @@ export function seedFromKey(key: string): string {
   const rng = createRng(hashSeed(key));
   let seed = "";
   for (let i = 0; i < 6; i++) {
-    seed += chars[Math.floor(rng() * chars.length)];
+    seed += chars.charAt(Math.floor(rng() * chars.length));
   }
   return seed;
 }
@@ -59,7 +59,7 @@ export function seedFromKey(key: string): string {
 /** Get today's date string in YYYY-MM-DD format (UTC). */
 export function getTodayKey(): string {
   const d = new Date();
-  return `daily-${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+  return `daily-${String(d.getUTCFullYear())}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
 }
 
 /** Get the current ISO week key (UTC). */
@@ -69,8 +69,10 @@ export function getWeekKey(): string {
   const jan4 = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
   const start = new Date(jan4.getTime());
   start.setUTCDate(jan4.getUTCDate() - ((jan4.getUTCDay() + 6) % 7));
-  const weekNum = Math.ceil(((d.getTime() - start.getTime()) / 86400000 + 1) / 7);
-  return `weekly-${d.getUTCFullYear()}-W${String(weekNum).padStart(2, "0")}`;
+  const weekNum = Math.ceil(
+    ((d.getTime() - start.getTime()) / 86400000 + 1) / 7,
+  );
+  return `weekly-${String(d.getUTCFullYear())}-W${String(weekNum).padStart(2, "0")}`;
 }
 
 /**
@@ -86,7 +88,8 @@ export function encodeSeed(
   if (excludedCategories.size === 0) return rawSeed;
   let mask = 0;
   for (let i = 0; i < CATEGORY_ORDER.length; i++) {
-    if (excludedCategories.has(CATEGORY_ORDER[i]!)) {
+    const cat = CATEGORY_ORDER[i];
+    if (cat && excludedCategories.has(cat)) {
       mask |= 1 << i;
     }
   }
@@ -97,9 +100,10 @@ export function encodeSeed(
  * Decode a seed string into a raw seed and excluded categories.
  * Handles both plain seeds ("GC9PJS") and seeds with a bitmask suffix ("GC9PJS-1FFFE").
  */
-export function decodeSeed(
-  seed: string,
-): { rawSeed: string; excludedCategories: Set<ChallengeCategory> } {
+export function decodeSeed(seed: string): {
+  rawSeed: string;
+  excludedCategories: Set<ChallengeCategory>;
+} {
   const dashIndex = seed.lastIndexOf("-");
   if (dashIndex === -1) {
     return { rawSeed: seed, excludedCategories: new Set() };
@@ -112,8 +116,9 @@ export function decodeSeed(
   }
   const excluded = new Set<ChallengeCategory>();
   for (let i = 0; i < CATEGORY_ORDER.length; i++) {
-    if (mask & (1 << i)) {
-      excluded.add(CATEGORY_ORDER[i]!);
+    const cat = CATEGORY_ORDER[i];
+    if (mask & (1 << i) && cat) {
+      excluded.add(cat);
     }
   }
   return { rawSeed, excludedCategories: excluded };

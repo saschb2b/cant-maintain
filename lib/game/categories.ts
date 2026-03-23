@@ -58,7 +58,12 @@ export interface CategorySection {
 export const CATEGORY_SECTIONS: CategorySection[] = [
   {
     label: "Naming & Docs",
-    categories: ["component-naming", "boolean-naming", "callback-naming", "jsdoc"],
+    categories: [
+      "component-naming",
+      "boolean-naming",
+      "callback-naming",
+      "jsdoc",
+    ],
   },
   {
     label: "Prop Design",

@@ -43,7 +43,11 @@ interface ResultsScreenProps {
   onNewGame: () => void;
 }
 
-export function ResultsScreen({ state, onRetry, onNewGame }: ResultsScreenProps) {
+export function ResultsScreen({
+  state,
+  onRetry,
+  onNewGame,
+}: ResultsScreenProps) {
   const total = state.challenges.length;
   const correct = Object.values(state.answers).filter(
     (a) => a.result === "correct",
@@ -137,7 +141,11 @@ export function ResultsScreen({ state, onRetry, onNewGame }: ResultsScreenProps)
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-    window.history.replaceState(null, "", `/play/results?r=${resultsParam}&seed=${state.seed}`);
+    window.history.replaceState(
+      null,
+      "",
+      `/play/results?r=${resultsParam}&seed=${state.seed}`,
+    );
     return () => window.history.replaceState(null, "", "/play");
   }, [resultsParam]);
 
@@ -286,11 +294,7 @@ export function ResultsScreen({ state, onRetry, onNewGame }: ResultsScreenProps)
             >
               Retry
             </Button>
-            <Button
-              variant="text"
-              size="large"
-              onClick={onNewGame}
-            >
+            <Button variant="text" size="large" onClick={onNewGame}>
               New Game
             </Button>
           </Stack>

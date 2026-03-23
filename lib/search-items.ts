@@ -39,8 +39,7 @@ export const searchItems: SearchItem[] = [
   {
     type: "page",
     title: "Learn",
-    description:
-      "Browse all categories and study React component API patterns",
+    description: "Browse all categories and study React component API patterns",
     icon: "learn",
     keywords: ["learn", "study", "patterns", "overview", "categories"],
     href: "/learn",
@@ -58,12 +57,9 @@ export const searchItems: SearchItem[] = [
     type: "category" as const,
     title: CATEGORY_LABELS[category],
     description: CATEGORY_DESCRIPTIONS[category],
-    keywords: [
-      category,
-      sectionFor(category),
-      "learn",
-      "pattern",
-    ].filter(Boolean) as string[],
+    keywords: [category, sectionFor(category), "learn", "pattern"].filter(
+      Boolean,
+    ) as string[],
     href: `/learn/${category}`,
   })),
   // Individual challenges — searchable by title and code snippets

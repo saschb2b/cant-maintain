@@ -172,11 +172,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
 
   // Flat list for keyboard navigation
   const flatResults = useMemo(
-    () => [
-      ...grouped.pages,
-      ...grouped.categories,
-      ...visibleChallenges,
-    ],
+    () => [...grouped.pages, ...grouped.categories, ...visibleChallenges],
     [grouped.pages, grouped.categories, visibleChallenges],
   );
 
@@ -195,10 +191,7 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
         .filter(Boolean) as SearchItem[],
     })).filter((s) => s.items.length > 0);
 
-    const flat = [
-      ...pages,
-      ...sections.flatMap((s) => s.items),
-    ];
+    const flat = [...pages, ...sections.flatMap((s) => s.items)];
 
     return { pages, sections, flat };
   }, []);
@@ -348,7 +341,13 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
               />
             )}
           </Box>
-          <Typography variant="caption" noWrap color="text.primary" display="block" sx={{ opacity: 0.7 }}>
+          <Typography
+            variant="caption"
+            noWrap
+            color="text.primary"
+            display="block"
+            sx={{ opacity: 0.7 }}
+          >
             {highlightMatches(
               result.item.description,
               descMatch?.indices as [number, number][] | undefined,
@@ -410,7 +409,13 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
           >
             {item.title}
           </Typography>
-          <Typography variant="caption" noWrap color="text.primary" display="block" sx={{ opacity: 0.7 }}>
+          <Typography
+            variant="caption"
+            noWrap
+            color="text.primary"
+            display="block"
+            sx={{ opacity: 0.7 }}
+          >
             {item.description}
           </Typography>
         </Box>
@@ -478,7 +483,10 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             width: { xs: "100%", sm: "100%" },
             borderRadius: { xs: 0, sm: 1 },
             borderWidth: { xs: 0, sm: 1 },
-            boxShadow: { xs: "none", sm: "0 16px 48px rgba(var(--mui-palette-text-primaryChannel) / 0.15)" },
+            boxShadow: {
+              xs: "none",
+              sm: "0 16px 48px rgba(var(--mui-palette-text-primaryChannel) / 0.15)",
+            },
           },
         },
       }}
@@ -584,7 +592,11 @@ export function SearchPalette({ open, onClose }: SearchPaletteProps) {
             <Typography variant="body2" color="text.secondary">
               No results found
             </Typography>
-            <Typography variant="caption" color="text.disabled" sx={{ mt: 0.5, display: "block" }}>
+            <Typography
+              variant="caption"
+              color="text.disabled"
+              sx={{ mt: 0.5, display: "block" }}
+            >
               Try a prop name, category, or pattern like &quot;onClick&quot; or
               &quot;boolean&quot;
             </Typography>

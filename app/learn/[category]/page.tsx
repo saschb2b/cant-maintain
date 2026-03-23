@@ -180,7 +180,14 @@ export default async function CategoryPage({ params }: PageProps) {
               }
               sx={{ borderTop: 1, borderBottom: 1, borderColor: "divider" }}
             >
-              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)" }}>
+              <Box
+                sx={{
+                  flex: "1 1 50%",
+                  minWidth: 0,
+                  bgcolor:
+                    "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+                }}
+              >
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -221,7 +228,14 @@ export default async function CategoryPage({ params }: PageProps) {
 
               <Divider sx={{ display: { sm: "none" } }} />
 
-              <Box sx={{ flex: "1 1 50%", minWidth: 0, bgcolor: "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)" }}>
+              <Box
+                sx={{
+                  flex: "1 1 50%",
+                  minWidth: 0,
+                  bgcolor:
+                    "rgba(var(--mui-palette-secondary-mainChannel) / 0.5)",
+                }}
+              >
                 <Stack
                   direction="row"
                   alignItems="center"

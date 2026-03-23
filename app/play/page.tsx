@@ -47,7 +47,11 @@ export default async function PlayPage({
         component="section"
         sx={{ py: 4, flex: 1, position: "relative", zIndex: 1 }}
       >
-        <Game challenges={challenges} highlightMap={highlightMap} defaultSeed={defaultSeed} />
+        <Game
+          challenges={challenges}
+          highlightMap={highlightMap}
+          defaultSeed={defaultSeed}
+        />
       </Container>
 
       <SiteFooter />
