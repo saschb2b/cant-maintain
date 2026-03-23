@@ -281,17 +281,21 @@ export function ResultsScreen({
             sx={{ mt: 3 }}
           >
             <Button
-              variant="outlined"
+              variant={percentage >= 70 ? "contained" : "outlined"}
               size={buttonSize}
               onClick={handleShare}
               startIcon={
-                hasCopied ? <ClipboardCheck size={18} /> : <Share2 size={18} />
+                hasCopied ? (
+                  <ClipboardCheck size={18} />
+                ) : (
+                  <Share2 size={18} />
+                )
               }
             >
               {hasCopied ? "Copied!" : "Share"}
             </Button>
             <Button
-              variant="contained"
+              variant={percentage >= 70 ? "outlined" : "contained"}
               size={buttonSize}
               onClick={onRetry}
               startIcon={<RotateCcw size={18} />}
@@ -605,11 +609,9 @@ export function ResultsScreen({
                 ))}
               </Paper>
             </Box>
-
           </Stack>
         )}
       </Box>
-
     </Stack>
   );
 }
