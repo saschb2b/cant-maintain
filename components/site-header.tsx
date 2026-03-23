@@ -31,24 +31,23 @@ function ColorSchemeToggle() {
     () => false,
   );
 
-  // Avoid hydration mismatch — render nothing until mounted
-  if (!mounted) {
-    return <IconButton size="small" sx={{ color: "text.secondary" }} />;
-  }
-
   // Resolve "system" to the actual preference
   const resolvedMode = mode === "system" ? systemMode : mode;
   const isDark = resolvedMode === "dark";
 
   return (
-    <Tooltip title={isDark ? "Switch to light mode" : "Switch to dark mode"}>
+    <Tooltip title={mounted ? (isDark ? "Switch to light mode" : "Switch to dark mode") : ""}>
       <IconButton
         size="small"
-        onClick={() => setMode(isDark ? "light" : "dark")}
+        onClick={mounted ? () => setMode(isDark ? "light" : "dark") : undefined}
         sx={{ color: "text.secondary" }}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       >
-        {isDark ? <Sun size={18} /> : <Moon size={18} />}
+        {mounted ? (
+          isDark ? <Sun size={18} /> : <Moon size={18} />
+        ) : (
+          <Box sx={{ width: 18, height: 18 }} />
+        )}
       </IconButton>
     </Tooltip>
   );
@@ -104,7 +103,7 @@ export function SiteHeader() {
                 gap: 12,
               }}
             >
-              <Image src="/icon.svg" alt="" width={28} height={28} />
+              <Image src="/icon.svg" alt="" width={28} height={28} priority />
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <Typography
                   variant="subtitle1"
