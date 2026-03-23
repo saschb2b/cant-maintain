@@ -112,38 +112,75 @@ export function LiveRibbon() {
     >
       <Container
         maxWidth="lg"
-        sx={{
-          overflow: "hidden",
-          maskImage:
-            "linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent)",
-          WebkitMaskImage:
-            "linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent)",
-        }}
+        sx={{ display: "flex", alignItems: "center", gap: 2 }}
       >
+        {/* Pinned count */}
         <Stack
-          className="ribbon-track"
           direction="row"
           alignItems="center"
-          spacing={2}
+          spacing={0.75}
+          sx={{ flexShrink: 0 }}
+        >
+          <Box
+            sx={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              bgcolor: "success.main",
+              animation: "pulse-dot 2s ease-in-out infinite",
+              "@keyframes pulse-dot": {
+                "0%, 100%": { opacity: 1 },
+                "50%": { opacity: 0.3 },
+              },
+            }}
+          />
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            fontFamily="var(--font-geist-mono), monospace"
+            sx={{ fontSize: "0.65rem", whiteSpace: "nowrap" }}
+          >
+            {results.length} today
+          </Typography>
+        </Stack>
+
+        {/* Scrolling track */}
+        <Box
           sx={{
-            width: "max-content",
-            animation: "ribbon-scroll 60s linear infinite",
-            "&:hover": {
-              animationPlayState: "paused",
-            },
-            "@keyframes ribbon-scroll": {
-              "0%": { transform: "translateX(0)" },
-              "100%": { transform: "translateX(-50%)" },
-            },
+            overflow: "hidden",
+            flex: 1,
+            minWidth: 0,
+            maskImage:
+              "linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent)",
           }}
         >
-          {items.map((r, i) => (
-            <Stack key={`${r.id}-${String(i)}`} direction="row" alignItems="center" spacing={2}>
-              {i > 0 && <Dot />}
-              <ResultCard result={r} />
-            </Stack>
-          ))}
-        </Stack>
+          <Stack
+            className="ribbon-track"
+            direction="row"
+            alignItems="center"
+            spacing={2}
+            sx={{
+              width: "max-content",
+              animation: "ribbon-scroll 60s linear infinite",
+              "&:hover": {
+                animationPlayState: "paused",
+              },
+              "@keyframes ribbon-scroll": {
+                "0%": { transform: "translateX(0)" },
+                "100%": { transform: "translateX(-50%)" },
+              },
+            }}
+          >
+            {items.map((r, i) => (
+              <Stack key={`${r.id}-${String(i)}`} direction="row" alignItems="center" spacing={2}>
+                {i > 0 && <Dot />}
+                <ResultCard result={r} />
+              </Stack>
+            ))}
+          </Stack>
+        </Box>
       </Container>
     </Box>
   );
