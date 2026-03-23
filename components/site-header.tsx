@@ -13,10 +13,69 @@ import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import { useColorScheme } from "@mui/material/styles";
-import { Search, Sun, Moon, GraduationCap } from "lucide-react";
+import { Search, GraduationCap } from "lucide-react";
 import packageJson from "@/package.json";
 import { SearchPalette } from "@/components/search-palette";
 import { trackEvent } from "@/lib/analytics";
+
+/** Sun/moon SVG that morphs between states via CSS transitions. */
+function ThemeIcon({ isDark, size = 18 }: { isDark: boolean; size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ overflow: "visible" }}
+    >
+      {/* Moon mask — slides in to create crescent, slides out for full sun */}
+      <mask id="theme-toggle-mask">
+        <rect x="0" y="0" width="100%" height="100%" fill="white" />
+        <circle
+          cx={isDark ? 17 : 32}
+          cy={isDark ? 7 : 2}
+          r="9"
+          fill="black"
+          style={{ transition: "cx 0.5s ease, cy 0.5s ease" }}
+        />
+      </mask>
+
+      {/* Sun body / moon body */}
+      <circle
+        cx="12"
+        cy="12"
+        r={isDark ? 9 : 5}
+        fill="currentColor"
+        stroke="none"
+        mask="url(#theme-toggle-mask)"
+        style={{ transition: "r 0.5s ease" }}
+      />
+
+      {/* Sun rays — scale out in dark mode */}
+      <g
+        style={{
+          transformOrigin: "center",
+          transition: "transform 0.5s ease, opacity 0.3s ease",
+          transform: isDark ? "rotate(45deg) scale(0)" : "rotate(0deg) scale(1)",
+          opacity: isDark ? 0 : 1,
+        }}
+      >
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </g>
+    </svg>
+  );
+}
 
 function ColorSchemeToggle() {
   const { mode, systemMode, setMode } = useColorScheme();
@@ -43,11 +102,20 @@ function ColorSchemeToggle() {
         sx={{ color: "text.secondary" }}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       >
-        {mounted ? (
-          isDark ? <Sun size={18} /> : <Moon size={18} />
-        ) : (
-          <Box sx={{ width: 18, height: 18 }} />
-        )}
+        <Box
+          sx={{
+            width: 18,
+            height: 18,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "opacity 0.4s ease, transform 0.4s ease",
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "scale(1) rotate(0deg)" : "scale(0.5) rotate(-90deg)",
+          }}
+        >
+          <ThemeIcon isDark={isDark} />
+        </Box>
       </IconButton>
     </Tooltip>
   );
