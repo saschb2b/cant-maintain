@@ -608,6 +608,8 @@ export default async function LandingPage() {
               <Button
                 variant="outlined"
                 size="medium"
+                data-umami-event="contribute-clicked"
+                data-umami-event-location="home-page"
                 sx={{
                   px: 3,
                   borderColor: "divider",

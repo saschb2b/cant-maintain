@@ -63,6 +63,10 @@ interface NotFoundVisitedData {
   path: string;
 }
 
+interface CtaClickedData {
+  location: "result-card" | "home-page";
+}
+
 interface EventMap {
   "404-visited": NotFoundVisitedData;
   "challenge-answered": ChallengeAnsweredData;
@@ -75,6 +79,8 @@ interface EventMap {
   "learn-link-clicked": LinkClickedData;
   "search-opened": SearchOpenedData;
   "search-selected": SearchSelectedData;
+  "contribute-clicked": CtaClickedData;
+  "buymeacoffee-clicked": CtaClickedData;
 }
 
 declare global {

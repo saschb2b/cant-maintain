@@ -298,6 +298,83 @@ export function ResultsScreen({
               New Game
             </Button>
           </Stack>
+
+          {/* Footer CTA */}
+          <Box
+            sx={{
+              mt: 3,
+              pt: 2.5,
+              borderTop: 1,
+              borderColor: "divider",
+            }}
+          >
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ mb: 1.5, display: "block" }}
+            >
+              Enjoying the game?
+            </Typography>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1.5}
+              justifyContent="center"
+            >
+              <Button
+                component="a"
+                href="https://github.com/saschb2b/cant-maintain"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                size="small"
+                startIcon={<GitPullRequestArrow size={16} />}
+                onClick={() =>
+                  trackEvent("contribute-clicked", {
+                    location: "result-card",
+                  })
+                }
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 500,
+                  borderColor: "divider",
+                  color: "text.secondary",
+                  "&:hover": {
+                    borderColor: "text.primary",
+                    color: "text.primary",
+                  },
+                }}
+              >
+                Contribute challenges or fixes
+              </Button>
+              <Button
+                component="a"
+                href="https://buymeacoffee.com/qohreuukw"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                size="small"
+                startIcon={<Coffee size={16} />}
+                onClick={() =>
+                  trackEvent("buymeacoffee-clicked", {
+                    location: "result-card",
+                  })
+                }
+                sx={{
+                  textTransform: "none",
+                  fontWeight: 500,
+                  borderColor: "divider",
+                  color: "warning.main",
+                  "&:hover": {
+                    borderColor: "warning.main",
+                    bgcolor:
+                      "rgba(var(--mui-palette-warning-mainChannel) / 0.08)",
+                  },
+                }}
+              >
+                Buy me a coffee
+              </Button>
+            </Stack>
+          </Box>
         </Paper>
       </Box>
 
@@ -522,102 +599,10 @@ export function ResultsScreen({
               </Paper>
             </Box>
 
-            {/* Contribute / Support CTA */}
-            <Paper
-              elevation={0}
-              sx={{ border: 1, borderColor: "divider", p: 2.5 }}
-            >
-              <Stack spacing={2} alignItems="center">
-                <Link
-                  href="https://github.com/saschb2b/cant-maintain"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  underline="hover"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    color: "text.secondary",
-                    fontWeight: 500,
-                    typography: "body2",
-                    "&:hover": { color: "text.primary" },
-                  }}
-                >
-                  <GitPullRequestArrow size={16} />
-                  Contribute challenges or fixes
-                </Link>
-                <Link
-                  href="https://buymeacoffee.com/qohreuukw"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  underline="hover"
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    color: "text.secondary",
-                    fontWeight: 500,
-                    typography: "body2",
-                    "&:hover": { color: "text.primary" },
-                  }}
-                >
-                  <Coffee size={16} />
-                  Buy me a coffee
-                </Link>
-              </Stack>
-            </Paper>
           </Stack>
         )}
       </Box>
 
-      {/* CTA fallback when no correct answers */}
-      {correctChallenges.length === 0 && (
-        <Paper elevation={0} sx={{ border: 1, borderColor: "divider", p: 2.5 }}>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            alignItems="center"
-            justifyContent="center"
-            spacing={{ xs: 2, sm: 4 }}
-          >
-            <Link
-              href="https://github.com/saschb2b/cant-maintain"
-              target="_blank"
-              rel="noopener noreferrer"
-              underline="hover"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                color: "text.secondary",
-                fontWeight: 500,
-                typography: "body2",
-                "&:hover": { color: "text.primary" },
-              }}
-            >
-              <GitPullRequestArrow size={16} />
-              Contribute challenges or fixes
-            </Link>
-            <Link
-              href="https://buymeacoffee.com/qohreuukw"
-              target="_blank"
-              rel="noopener noreferrer"
-              underline="hover"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                color: "text.secondary",
-                fontWeight: 500,
-                typography: "body2",
-                "&:hover": { color: "text.primary" },
-              }}
-            >
-              <Coffee size={16} />
-              Buy me a coffee
-            </Link>
-          </Stack>
-        </Paper>
-      )}
     </Stack>
   );
 }
