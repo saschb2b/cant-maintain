@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
@@ -48,6 +49,8 @@ export function ResultsScreen({
   onRetry,
   onNewGame,
 }: ResultsScreenProps) {
+  const isSmUp = useMediaQuery("(min-width:600px)");
+  const buttonSize = isSmUp ? "large" : "medium";
   const total = state.challenges.length;
   const correct = Object.values(state.answers).filter(
     (a) => a.result === "correct",
@@ -279,23 +282,23 @@ export function ResultsScreen({
           >
             <Button
               variant="outlined"
-              size="medium"
+              size={buttonSize}
               onClick={handleShare}
               startIcon={
-                hasCopied ? <ClipboardCheck size={16} /> : <Share2 size={16} />
+                hasCopied ? <ClipboardCheck size={18} /> : <Share2 size={18} />
               }
             >
               {hasCopied ? "Copied!" : "Share"}
             </Button>
             <Button
               variant="contained"
-              size="medium"
+              size={buttonSize}
               onClick={onRetry}
-              startIcon={<RotateCcw size={16} />}
+              startIcon={<RotateCcw size={18} />}
             >
               Retry
             </Button>
-            <Button variant="text" size="medium" onClick={onNewGame}>
+            <Button variant="text" size={buttonSize} onClick={onNewGame}>
               New Game
             </Button>
           </Stack>
