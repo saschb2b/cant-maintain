@@ -18,6 +18,7 @@ import {
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { MeshGradient } from "@/components/mesh-gradient";
+import { LiveRibbon } from "@/components/live-ribbon";
 import { getHighlighter, highlightDual } from "@/lib/shiki";
 import { codeBlockStyles } from "@/lib/code-styles";
 
@@ -48,12 +49,13 @@ export default async function LandingPage() {
     >
       <MeshGradient />
       <SiteHeader />
+      <LiveRibbon />
 
       {/* Hero */}
       <Container
         maxWidth="lg"
         sx={{
-          pt: { xs: 3, md: 12 },
+          pt: { xs: 3, md: 6 },
           pb: { xs: 3, md: 8 },
           position: "relative",
           zIndex: 1,

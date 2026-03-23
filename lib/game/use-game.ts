@@ -11,6 +11,7 @@ import type {
 import { createRng, encodeSeed, hashSeed } from "./seeded-random";
 import { recordGame } from "./history";
 import { recordActivity } from "./activity";
+import { submitGameResult } from "./actions";
 
 /** Fisher-Yates shuffle (immutable) using a provided RNG. */
 function shuffle<T>(arr: T[], rng: () => number): T[] {
@@ -244,6 +245,13 @@ export function useGame(
       state.bestStreak,
     );
     recordActivity();
+    void submitGameResult({
+      sessionId: `${state.seed}-${String(state.startedAt)}`,
+      score: state.score,
+      total: state.challenges.length,
+      bestStreak: state.bestStreak,
+      durationSec: Math.round((state.finishedAt - state.startedAt) / 1000),
+    });
   }, [state?.isFinished]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /** Track restart analytics. The actual reset is handled by the parent. */
