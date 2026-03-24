@@ -285,11 +285,7 @@ export function ResultsScreen({
               size={buttonSize}
               onClick={handleShare}
               startIcon={
-                hasCopied ? (
-                  <ClipboardCheck size={18} />
-                ) : (
-                  <Share2 size={18} />
-                )
+                hasCopied ? <ClipboardCheck size={18} /> : <Share2 size={18} />
               }
             >
               {hasCopied ? "Copied!" : "Share"}

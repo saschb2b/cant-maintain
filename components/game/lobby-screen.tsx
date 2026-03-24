@@ -207,8 +207,10 @@ export function LobbyScreen({
 }: LobbyScreenProps) {
   const defaultDecoded = defaultSeed ? decodeSeed(defaultSeed) : null;
   const [seedInput, setSeedInput] = useState(defaultSeed);
-  const [excluded, setExcluded] = useState<Set<ChallengeCategory>>(
-    defaultDecoded?.excludedCategories ?? defaultExcluded ?? new Set(),
+  const [excluded, setExcluded] = useState(
+    defaultDecoded?.excludedCategories ??
+      defaultExcluded ??
+      new Set<ChallengeCategory>(),
   );
 
   const [history, setHistory] = useState<HistoryEntry[]>([]);

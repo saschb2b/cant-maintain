@@ -110,7 +110,7 @@ export function useGame(
   gameType: "daily" | "weekly" | "custom" = "custom",
 ) {
   const [state, setState] = useState<GameState | null>(null);
-  const challengeShownAt = useRef<number>(0);
+  const challengeShownAt = useRef(0);
 
   // Initialize game when a seed is provided (deferred to client for hydration safety)
   // retryKey forces re-initialization for same-seed retries

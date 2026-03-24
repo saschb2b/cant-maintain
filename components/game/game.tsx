@@ -30,9 +30,9 @@ interface GameProps {
 export function Game({ challenges, highlightMap, defaultSeed }: GameProps) {
   const [activeSeed, setActiveSeed] = useState<string | null>(null);
   const [lobbySeed, setLobbySeed] = useState(defaultSeed);
-  const [excludedCategories, setExcludedCategories] = useState<
-    Set<ChallengeCategory>
-  >(new Set());
+  const [excludedCategories, setExcludedCategories] = useState(
+    new Set<ChallengeCategory>(),
+  );
   const [retryKey, setRetryKey] = useState(0);
   const [gameType, setGameType] = useState<GameType>("custom");
 

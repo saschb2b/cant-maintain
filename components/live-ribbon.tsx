@@ -166,7 +166,7 @@ export function LiveRibbon() {
             spacing={2}
             sx={{
               width: "max-content",
-              animation: `ribbon-scroll ${Math.max(60, results.length * 3)}s linear infinite`,
+              animation: `ribbon-scroll ${String(Math.max(60, results.length * 3))}s linear infinite`,
               "&:hover": {
                 animationPlayState: "paused",
               },
