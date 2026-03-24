@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-    "types": [
-      "node"
-    ],
+    "lib": ["dom", "esnext"],
+    "types": ["node"],
     "allowJs": true,
     "target": "ES2017",
     "skipLibCheck": true,
@@ -25,9 +20,7 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
     "esModuleInterop": true
   },
@@ -38,7 +31,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
