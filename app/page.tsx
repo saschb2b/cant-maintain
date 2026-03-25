@@ -14,6 +14,7 @@ import {
   GitPullRequest,
   Code2,
   Heart,
+  ExternalLink,
 } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -510,6 +511,98 @@ export default async function LandingPage() {
           </Stack>
         </Container>
       </Box>
+
+      {/* Can't series */}
+      <Container
+        maxWidth="md"
+        sx={{ py: { xs: 5, md: 6 }, position: "relative", zIndex: 1 }}
+      >
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          fontFamily="var(--font-geist-mono), monospace"
+          sx={{ textAlign: "center", mb: 2.5, fontSize: "0.8rem" }}
+        >
+          {"Part of the Can't series"}
+        </Typography>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          justifyContent="center"
+        >
+          <Paper
+            elevation={0}
+            sx={{
+              flex: 1,
+              maxWidth: { sm: 280 },
+              p: 2.5,
+              border: 1,
+              borderColor: "primary.main",
+              bgcolor: "rgba(var(--mui-palette-primary-mainChannel) / 0.04)",
+            }}
+          >
+            <Typography variant="body2" fontWeight={600} sx={{ mb: 0.5 }}>
+              {"Can't Maintain"}
+            </Typography>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ lineHeight: 1.5 }}
+            >
+              React component API design. You are here.
+            </Typography>
+          </Paper>
+          <NextLink
+            href="https://cant-resize.saschb2b.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              flex: 1,
+              display: "flex",
+              maxWidth: 280,
+            }}
+          >
+            <Paper
+              elevation={0}
+              sx={{
+                flex: 1,
+                p: 2.5,
+                border: 1,
+                borderColor: "divider",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  borderColor: "text.secondary",
+                  transform: "translateY(-1px)",
+                },
+              }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={0.75}
+                sx={{ mb: 0.5 }}
+              >
+                <Typography variant="body2" fontWeight={600}>
+                  {"Can't Resize"}
+                </Typography>
+                <ExternalLink
+                  size={12}
+                  color="var(--mui-palette-text-disabled)"
+                />
+              </Stack>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ lineHeight: 1.5 }}
+              >
+                Responsive design patterns. Same format, different topic.
+              </Typography>
+            </Paper>
+          </NextLink>
+        </Stack>
+      </Container>
 
       {/* Open source */}
       <Container
